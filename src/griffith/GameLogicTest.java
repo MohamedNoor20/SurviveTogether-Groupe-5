@@ -13,5 +13,13 @@ public class GameLogicTest {
         fire.check(water);
         assertFalse(water.alive);  
     }
+    @Test
+    void fireDoesNotKillFireboy() {
+        Player fireboy = new Player(0, 0, Type.FIRE);
+        Hazard fire = new Hazard(new Rectangle(0, 0, 50, 50), Type.FIRE);
+        
+        fire.check(fireboy);
+        assertTrue(fireboy.alive);  
+    }
     
 }
