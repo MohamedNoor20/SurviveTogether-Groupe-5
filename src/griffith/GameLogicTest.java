@@ -29,4 +29,11 @@ public class GameLogicTest {
         assertFalse(fireboy.alive);  
 
     }
+    @Test
+    void waterDoesNotKillWatergirl() {
+        Player watergirl = new Player(0, 0, Type.WATER);
+        Hazard water = new Hazard(new Rectangle(0, 0, 50, 50), Type.WATER);
+        water.check(watergirl);
+        assertTrue(watergirl.alive);
+    }
 }
