@@ -50,4 +50,11 @@ public class GameLogicTest {
         assertFalse(door.isInside(fireboy));
     
     }
+    @Test
+    void testNoCollisionNoDeath() {
+        Player fireboy = new Player(100, 100, Type.FIRE);
+        Hazard fire = new Hazard(new Rectangle(0, 0, 50, 50), Type.FIRE);
+        fire.check(fireboy);
+        assertTrue(fireboy.alive);
+    }
 }
