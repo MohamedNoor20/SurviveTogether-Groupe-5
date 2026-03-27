@@ -36,4 +36,11 @@ public class GameLogicTest {
         water.check(watergirl);
         assertTrue(watergirl.alive);
     }
+    @Test
+    void testWinCondition() {
+        Player fireboy = new Player(10, 10, Type.FIRE);
+        Player watergirl = new Player(10, 10, Type.WATER);
+        Door door = new Door(new Rectangle(0, 0, 50, 50));
+        assertTrue(door.isInside(fireboy) && door.isInside(watergirl));
+    }
 }
