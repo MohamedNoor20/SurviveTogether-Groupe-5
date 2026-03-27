@@ -43,4 +43,11 @@ public class GameLogicTest {
         Door door = new Door(new Rectangle(0, 0, 50, 50));
         assertTrue(door.isInside(fireboy) && door.isInside(watergirl));
     }
+    @Test
+    void testPlayerOutsideDoor() {
+        Player fireboy = new Player(100, 100, Type.FIRE);
+        Door door = new Door(new Rectangle(0, 0, 50, 50));
+        assertFalse(door.isInside(fireboy));
+    
+    }
 }
