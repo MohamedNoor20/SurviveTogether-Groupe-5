@@ -15,12 +15,12 @@ public void check(Player p) {
 	// Player 40x40 hitbox i.e sprite size (Susan Ogozi)
 	 Rectangle playerBox = new Rectangle(p.x, p.y, 40, 40);
 	 if (area.intersects(playerBox)) {
-         System.out.println("TOUCH!");
+        
          /*If the player touches the hazard the what happens to that player
-          * Death logic (Susan Ogozi)*/
+          * Death logic  (Susan Ogozi)*/
        if (p.type != this.type) {
-	                p.alive = false;
-	                System.out.println("DEAD!");
+	                p.alive = false; 
+	              
 	            }
 	           
 	        }
