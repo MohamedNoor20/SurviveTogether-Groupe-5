@@ -49,50 +49,46 @@ public class GamePanel extends JPanel {
             System.out.println("GAME OVER");
         }
     }
-    
-    
-    //Afaq Ahmed
-    //Graphics methods stubs
+      //Afaq Ahmed
+      //Graphics methods stubs
 
-     //this returns the fireboy X-axis position
-     public int getFireboyX() {
-         return 0;
-         }
+      //this returns the fireboy x-axis position
+      public int getFireboyX() {
+          return 50;
+          }
 
-     //this returns the fireboy Y-axis position
-     public int getFireboyY() {
-         return 0;
-         }
+      //this returns the fireboy y-axis position
+      public int getFireboyY() {
+          return 50;
+          }
 
-     ////this returns the watergirl Y-axis position
-     public int getWatergirlX() {
-         return 0;
-         }
+      //this returns the watergirl x-axis position
+      public int getWatergirlX() {
+          return 50;
+          }
 
-     ////this returns the watergirl Y-axis position
-     public int getWatergirlY() {
-         return 0;
-         }
+      //this returns the watergirl y-axis position
+      public int getWatergirlY() {
+          return 150;
+          }
 
-     //this will return if fireboy is alive
-     public boolean isFireboyAlive() {
-         return true;
-         }
+      //this will return if fireboy is alive
+      public boolean isFireboyAlive() {
+          return true;
+          }
 
-     //this will return if watergirl is alive
-     public boolean isWatergirlAlive() {
-         return true;
-         }
+      //this will return if watergirl is alive
+      public boolean isWatergirlAlive() {
+          return true;
+          }
 
-     //this will return fireboy color
-     public java.awt.Color getFireboyColor() {
-         return java.awt.Color.RED;
-         }
+      //this will return fireboy color
+      public java.awt.Color getFireboyColor() {
+          return java.awt.Color.RED;
+          }
 
-     //this will return watergirl color
-     public java.awt.Color getWatergirlColor() {
-         return java.awt.Color.BLUE;
-         }
-    
-    
-}
+      //this will return watergirl color
+      public java.awt.Color getWatergirlColor() {
+          return java.awt.Color.BLUE;
+          }
+      }
