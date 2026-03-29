@@ -9,6 +9,7 @@ class PlayerTest {
 	@Test
 	void testMoveUp() {
 		Player player = new Player(100, 100, Type.WATER);
+		
 		player.isJumping = false;
 		player.moveUp();
 		
@@ -19,6 +20,7 @@ class PlayerTest {
 	@Test
 	void testMoveDown() {
 		Player player = new Player(100, 100, Type.FIRE);
+		
 		player.yVelocity = 0;
 		player.moveDown();
 		
@@ -28,6 +30,7 @@ class PlayerTest {
 	@Test
 	void testMoveLeft() {
 		Player player = new Player(100, 100, Type.FIRE);
+		
 		int startX = player.x;
 		player.moveLeft();
 		assertEquals(startX - 3, player.x, "player mmoves to the left");		
@@ -36,6 +39,7 @@ class PlayerTest {
 	@Test
 	void testMoveRight() {
 		Player player = new Player(100, 100, Type.FIRE);
+		
 		int startX = player.x;
 		player.moveRight();
 		assertEquals(startX + 3, player.x, "player mmoves to the Right");	
@@ -43,7 +47,12 @@ class PlayerTest {
 
 	@Test
 	void testGravity() {
-		fail("Not yet implemented");
+		Player player = new Player(100, 100, Type.FIRE);
+		
+		player.y = 100;
+		player.yVelocity = 0;
+		player.gravity();
+		assertEquals(1, player.yVelocity, "Gravity working");
 	}
 
 }
