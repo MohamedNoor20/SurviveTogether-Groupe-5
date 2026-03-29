@@ -91,4 +91,25 @@ public class GamePanel extends JPanel {
       public java.awt.Color getWatergirlColor() {
           return java.awt.Color.BLUE;
           }
+      
+      
+      
+      
+      //adding draw method stubs
+      
+      public void drawFireboy(java.awt.Graphics g) {
+    	    //draws fireboy
+    	  }
+
+      public void drawWatergirl(java.awt.Graphics g) {
+    	    //draws watergirl
+    	  }
+
+      public void drawHazards(java.awt.Graphics g) {
+    	    //placeholder for hazard drawing
+    	  }
+
+      public void drawDoor(java.awt.Graphics g) {
+    	    //placeholder for door drawing
+    	  }
       }
