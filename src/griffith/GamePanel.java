@@ -35,16 +35,16 @@ public class GamePanel extends JPanel implements KeyListener {
         setBackground(new Color(18, 18, 38));
     	
 		//Create players
-		player1 = new Player(50, 50, Type.FIRE);
-		player2 = new Player(50, 150, Type.WATER);
+        player1 = new Player(50, 330, Type.FIRE);
+        player2 = new Player(130, 330, Type.WATER);
 		
         setFocusable(true);
         // to be able to use KeyListener library
         addKeyListener(this);
 
         // Create hazards
-        firePool = new Hazard(new Rectangle(300, 100, 100, 50), Type.FIRE);
-        waterPool = new Hazard(new Rectangle(300, 100, 150, 200), Type.WATER);
+        firePool = new Hazard(new Rectangle(210, 380, 80, 50), Type.FIRE);
+        waterPool = new Hazard(new Rectangle(430, 380, 80, 50), Type.WATER);
 
         // Create door
         door = new Door(new Rectangle(685, 320, 60, 80));
