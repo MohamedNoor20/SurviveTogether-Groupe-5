@@ -5,10 +5,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class PlayerTest {
-
+	
 	@Test
 	void testMoveUp() {
-		fail("Not yet implemented");
+		Player player = new Player(100, 100, Type.WATER);
+		player.isJumping = false;
+		player.moveUp();
+		assertEquals(-15, player.yVelocity, "jumped seccesfuly");
+		assertTrue(player.isJumping, "isJumping turned on");
 	}
 
 	@Test
