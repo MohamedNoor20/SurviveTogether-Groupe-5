@@ -11,13 +11,18 @@ class PlayerTest {
 		Player player = new Player(100, 100, Type.WATER);
 		player.isJumping = false;
 		player.moveUp();
+		
 		assertEquals(-15, player.yVelocity, "jumped seccesfuly");
 		assertTrue(player.isJumping, "isJumping turned on");
 	}
 
 	@Test
 	void testMoveDown() {
-		fail("Not yet implemented");
+		Player player = new Player(100, 100, Type.FIRE);
+		player.yVelocity = 0;
+		player.moveDown();
+		
+		assertEquals(1, player.yVelocity, "yVelocity increases by 1 so it it goes down");
 	}
 
 	@Test

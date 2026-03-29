@@ -33,7 +33,7 @@ public class Player {
 	}
 
 	public void moveDown(){
-		this.yVelocity -= 1;
+		this.yVelocity += 1;
 	}
 
 	public void moveLeft(){
