@@ -22,7 +22,6 @@ public class GamePanel extends JPanel {
         player1 = new Player(50, 50, Type.FIRE);
         player2 = new Player(50, 150, Type.WATER);
         
-        addKeyListener(new KeyHandler(player1,player2));
         setFocusable(true);
 
         // Create hazards
