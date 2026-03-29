@@ -92,11 +92,10 @@ public class GamePanel extends JPanel {
           return java.awt.Color.BLUE;
           }
       
+
+      //implementing draw method stubs one by one
       
-      
-      
-      //adding draw method stubs
-      
+      //fireboy
       public void drawFireboy(java.awt.Graphics g) {
     	  //this will stop from drawing if the player is dead
     	  if (!player1.alive) return;
@@ -116,10 +115,29 @@ public class GamePanel extends JPanel {
     	  g.drawString("F", x + 15, y + 25);
     	  
       }
+      
 
+      //firegirl
       public void drawWatergirl(java.awt.Graphics g) {
-    	    //draws watergirl
-    	  }
+    	  //this will stop from drawing if the player is dead
+    	  if (!player2.alive) return;
+    	  //fire girl position
+    	  int x = player2.x;
+    	  int y = player2.y;
+    	  
+    	  //firegirl body
+    	  g.setColor(java.awt.Color.BLUE);
+    	  g.fillRect(x, y, 40, 40);
+    	  
+    	  //firegirl outline
+    	  g.setColor(java.awt.Color.CYAN);
+    	  g.drawRect(x, y, 40, 40);
+    	  
+    	  // label
+    	  g.setColor(java.awt.Color.WHITE);
+    	  g.drawString("W", x + 15, y + 25);
+    	  
+      }
 
       public void drawHazards(java.awt.Graphics g) {
     	    //placeholder for hazard drawing
