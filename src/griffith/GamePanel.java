@@ -98,8 +98,24 @@ public class GamePanel extends JPanel {
       //adding draw method stubs
       
       public void drawFireboy(java.awt.Graphics g) {
-    	    //draws fireboy
-    	  }
+    	  //this will stop from drawing if the player is dead
+    	  if (!player1.alive) return;
+    	  //fire boy positions
+    	  int x = player1.x;
+    	  int y = player1.y;
+    	  
+    	  //body of fireboy
+    	  g.setColor(java.awt.Color.RED);
+    	  g.fillRect(x, y, 40, 40);
+    	  
+    	  //outline of fireboy
+    	  g.setColor(java.awt.Color.ORANGE);
+    	  g.drawRect(x, y, 40, 40);
+    	  //label 
+    	  g.setColor(java.awt.Color.WHITE);
+    	  g.drawString("F", x + 15, y + 25);
+    	  
+      }
 
       public void drawWatergirl(java.awt.Graphics g) {
     	    //draws watergirl
