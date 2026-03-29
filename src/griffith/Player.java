@@ -28,6 +28,8 @@ public class Player {
 		this.x -= 1;
 	}
 
-	public void moveRight(){}
+	public void moveRight(){
+		this.x += 1;
+	}
 
 }
