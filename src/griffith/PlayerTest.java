@@ -27,7 +27,10 @@ class PlayerTest {
 
 	@Test
 	void testMoveLeft() {
-		fail("Not yet implemented");
+		Player player = new Player(100, 100, Type.FIRE);
+		int startX = player.x;
+		player.moveLeft();
+		assertEquals(startX - 3, player.x, "player mmoves to the left");		
 	}
 
 	@Test
