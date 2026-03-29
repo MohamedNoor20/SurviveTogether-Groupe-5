@@ -14,4 +14,14 @@ public class Player {
 		this.y = y;
 		this.type = type;
 	}
+
+
+	public void moveUp(){}
+
+	public void moveDown(){}
+
+	public void moveLeft(){}
+
+	public void moveRight(){}
+
 }
