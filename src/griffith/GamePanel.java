@@ -1,3 +1,5 @@
+package griffith;
+
 import java.awt.Rectangle;
 
 import javax.swing.JPanel;
