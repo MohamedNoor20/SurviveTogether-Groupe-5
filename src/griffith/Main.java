@@ -3,7 +3,7 @@ package griffith;
 import javax.swing.JFrame;
 
 public class Main {
-	
+	// Moahmed
 	public static void main(String[] args) throws InterruptedException {
 
         JFrame frame = new JFrame("Fireboy & Watergirl Mini");
