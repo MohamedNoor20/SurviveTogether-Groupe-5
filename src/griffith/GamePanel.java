@@ -3,6 +3,7 @@ import java.awt.Rectangle;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
+
     Player player1;
     Player player2;
 
