@@ -20,7 +20,9 @@ public class Player {
 		this.y += 1;
 	}
 
-	public void moveDown(){}
+	public void moveDown(){
+		this.y -= 1;
+	}
 
 	public void moveLeft(){}
 
