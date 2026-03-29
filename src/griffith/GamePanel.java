@@ -47,52 +47,60 @@ public class GamePanel extends JPanel {
         // Lose condition
         if (!player1.alive || !player2.alive) {
             System.out.println("GAME OVER");
+            }
         }
-    }
+    
+    
+    
+    
+    
       //Afaq Ahmed
       //Graphics methods stubs
 
-      //this returns the fireboy x-axis position
-      public int getFireboyX() {
-          return 50;
-          }
+     
+    //return the fireboy x position from player1 object
+    public int getFireboyX() {
+        return player1.x;
+        }
 
-      //this returns the fireboy y-axis position
-      public int getFireboyY() {
-          return 50;
-          }
+    //return the fireboy y position from player1 object
+    public int getFireboyY() {
+        return player1.y;
+        }
 
-      //this returns the watergirl x-axis position
-      public int getWatergirlX() {
-          return 50;
-          }
+    //returns watergirl x position from player2 object
+    public int getWatergirlX() {
+        return player2.x;
+        }
 
-      //this returns the watergirl y-axis position
-      public int getWatergirlY() {
-          return 150;
-          }
+    //returns watergirl y position from player2 object
+    public int getWatergirlY() {
+        return player2.y;
+        }
 
-      //this will return if fireboy is alive
-      public boolean isFireboyAlive() {
-          return true;
-          }
+    //returns whether fireboy is alive
+    public boolean isFireboyAlive() {
+        return player1.alive;
+        }
 
-      //this will return if watergirl is alive
-      public boolean isWatergirlAlive() {
-          return true;
-          }
+    //returns whether watergirl is alive
+    public boolean isWatergirlAlive() {
+        return player2.alive;
+        }
 
-      //this will return fireboy color
-      public java.awt.Color getFireboyColor() {
-          return java.awt.Color.RED;
-          }
+    //returns fireboy color
+    public java.awt.Color getFireboyColor() {
+        return java.awt.Color.RED;
+        }
 
-      //this will return watergirl color
-      public java.awt.Color getWatergirlColor() {
-          return java.awt.Color.BLUE;
-          }
-      
+    //returns watergirl color
+    public java.awt.Color getWatergirlColor() {
+        return java.awt.Color.BLUE;
+        }      
 
+    
+    
+    
       //implementing draw method stubs one by one
       
       //fireboy
@@ -117,7 +125,7 @@ public class GamePanel extends JPanel {
       }
       
 
-      //firegirl
+      //watergirl
       public void drawWatergirl(java.awt.Graphics g) {
     	  //this will stop from drawing if the player is dead
     	  if (!player2.alive) return;
