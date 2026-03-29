@@ -24,7 +24,9 @@ public class Player {
 		this.y -= 1;
 	}
 
-	public void moveLeft(){}
+	public void moveLeft(){
+		this.x -= 1;
+	}
 
 	public void moveRight(){}
 
