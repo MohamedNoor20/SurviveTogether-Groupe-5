@@ -16,7 +16,9 @@ public class Player {
 	}
 
 
-	public void moveUp(){}
+	public void moveUp(){
+		this.y += 1;
+	}
 
 	public void moveDown(){}
 
