@@ -15,14 +15,22 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
+        
+        panel.requestFocusInWindow();
+        
+        boolean gameRun = true;
 
         // GAME LOOP
-        while (true) {
-            panel.updateGame();  // Susam's 
-            panel.repaint();    // Afaq's drawing 
-
-            Thread.sleep(16);   // ~60 FPS
+        while (gameRun) {
+           boolean check =  panel.updateGame();  
+                       
+            if(check != false) {
+            	panel.repaint();    // Afaq's drawing 
+                Thread.sleep(16);   // ~60 FPS
+            }
+            else {
+            	gameRun = false;
+            }
         }
     }
-
 }
