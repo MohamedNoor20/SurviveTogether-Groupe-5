@@ -1,11 +1,10 @@
 package griffith;
 
-import java.awt.Rectangle;
-import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.Font;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements KeyListener {
@@ -56,14 +55,18 @@ public class GamePanel extends JPanel implements KeyListener {
 
 
         if (p1Up) player1.moveUp();
-        if (p1Down) player1.moveDown();
+       // if (p1Down) player1.moveDown();
         if (p1Left) player1.moveLeft();
         if (p1Right) player1.moveRight();
 
         if (p2Up) player2.moveUp();
-        if (p2Down) player2.moveDown();
+       // if (p2Down) player2.moveDown();
         if (p2Left) player2.moveLeft();
         if (p2Right) player2.moveRight();
+
+        player1.gravity();
+        player2.gravity();
+        
 
         // This will call Susan's logic
         firePool.check(player1);

@@ -7,8 +7,8 @@ public class Player {
 	public int x, y; // the position (susan ogozi)
 	public Type type; // Fire and water type (susan ogozi)
 	public boolean alive = true;
+	
 	public int yVelocity = 0;
-
 	public int gravity = 1;
 	public int jumpPower = 1;
 	public int playerSize = 50;
@@ -25,18 +25,19 @@ public class Player {
 
 
 	public void moveUp(){
-		this.y -= 1;
+		this.y = jumpPower;
 	}
 
 	public void moveDown(){
-		this.y += 1;
+		this.yVelocity -= 1;
 	}
 
 	public void moveLeft(){
 		if (this.x - 1 > 0){
 			this.x -= 1;
-		}
+		}else{
 		this.x -= 0;
+		}
 
 	}
 
@@ -48,6 +49,18 @@ public class Player {
 		}
 	}
 
-	
+	public void gravity(){
+		this.y += yVelocity;
+
+		if (this.y + playerSize < floor){
+			this.yVelocity += gravity;
+		}else{
+			this.y = floor - playerSize;
+			this.yVelocity = 0;
+		}
+
+	}
+
+
 
 }
