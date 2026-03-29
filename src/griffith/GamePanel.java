@@ -94,9 +94,9 @@ public class GamePanel extends JPanel {
         }
 
     //returns watergirl color
-    public java.awt.Color getWatergirlColor() {
-        return java.awt.Color.BLUE;
-        }      
+      public java.awt.Color getWatergirlColor() {
+          return java.awt.Color.BLUE;
+          }      
 
     
     
@@ -154,4 +154,16 @@ public class GamePanel extends JPanel {
       public void drawDoor(java.awt.Graphics g) {
     	    //placeholder for door drawing
     	  }
+      
+      
+      @Override
+      protected void paintComponent(java.awt.Graphics g) {
+    	  //it clears the screen and prepares the canvas
+          super.paintComponent(g);
+          //rendering
+          drawFireboy(g);
+          drawWatergirl(g);
+          drawHazards(g);
+          drawDoor(g);
+          }
       }
