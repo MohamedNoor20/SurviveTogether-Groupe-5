@@ -57,7 +57,6 @@ public class GamePanel extends JPanel implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        //Empty for now
     }
 
     @Override
