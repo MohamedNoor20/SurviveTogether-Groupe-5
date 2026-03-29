@@ -1,10 +1,14 @@
 package griffith;
-import java.awt.Rectangle; 
+
+import java.awt.Rectangle;
+
 //Fire/Water death hazards (Susan Ogozi)
 public class Hazard {
-	 public Rectangle area; //hazard hit box
-	 public Type type; // firee or water hazard (Susan Ogozi)
-	 //creates the hazard pool (Susan Ogozi)
+
+	public Rectangle area; // hazard hit box
+	public Type type; // firee or water hazard (Susan Ogozi)
+
+	// creates the hazard pool (Susan Ogozi)
 	public Hazard(Rectangle area, Type type) {
 		this.area = area; // the position (Susan Ogozi)
 		this.type = type; // the fire or water type (Susan Ogozi)
