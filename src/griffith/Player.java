@@ -10,7 +10,8 @@ public class Player {
 	
 	public int yVelocity = 0;
 	public int gravity = 1;
-	public int jumpPower = 1;
+	public boolean isJumping = false;
+	public int jumpPower = -15;
 	public int playerSize = 50;
 
 	public int screen = 800;
@@ -25,7 +26,10 @@ public class Player {
 
 
 	public void moveUp(){
-		this.y = jumpPower;
+		if (!isJumping){
+		this.yVelocity = jumpPower;
+		this.isJumping = true;
+		}
 	}
 
 	public void moveDown(){
@@ -57,6 +61,7 @@ public class Player {
 		}else{
 			this.y = floor - playerSize;
 			this.yVelocity = 0;
+			this.isJumping = false;
 		}
 
 	}
