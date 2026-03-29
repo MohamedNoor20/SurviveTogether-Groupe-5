@@ -2,9 +2,11 @@ package griffith;
 
 import java.awt.Rectangle;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements KeyListener {
 
     Player player1;
     Player player2;
@@ -49,5 +51,21 @@ public class GamePanel extends JPanel {
             System.out.println("GAME OVER");
         }
     }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        //Empty for now
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        //Empty for now
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        //Empty for now
+    }
+
     
 }
