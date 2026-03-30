@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.awt.Font;
 import javax.swing.JPanel;
 
@@ -17,6 +18,7 @@ public class GamePanel extends JPanel implements KeyListener {
     Hazard waterPool;
 
     Door door;
+    ArrayList<Floor> floors;
     
     //player 1
     boolean p1Up;
@@ -35,25 +37,48 @@ public class GamePanel extends JPanel implements KeyListener {
         setBackground(new Color(18, 18, 38));
     	
 		//Create players
-        player1 = new Player(50, 330, Type.FIRE);
-        player2 = new Player(130, 330, Type.WATER);
+        player1 = new Player(50, 444, Type.FIRE);
+        player2 = new Player(130, 444, Type.WATER);
 		
         setFocusable(true);
         // to be able to use KeyListener library
         addKeyListener(this);
-
-        // Create hazards
-        firePool = new Hazard(new Rectangle(210, 380, 80, 50), Type.FIRE);
-        waterPool = new Hazard(new Rectangle(430, 380, 80, 50), Type.WATER);
-
+ 
+        // Create hazards at DIFFERENT positions
+        firePool = new Hazard(new Rectangle(200, 100, 100, 50), Type.FIRE);
+        waterPool = new Hazard(new Rectangle(400, 100, 100, 50), Type.WATER);
+ 
         // Create door
-        door = new Door(new Rectangle(685, 320, 60, 80));
+        door = new Door(new Rectangle(600, 150, 50, 80));
+        
+        // Create floors
+        floors = new ArrayList<>();
+     // ===== GROUND FLOOR (Floor 1): Full width =====
+        floors.add(new Floor(new Rectangle(0, 490, 800, 30)));
+        
+        // ===== FLOOR 2: Has gaps on sides - must jump to cross =====
+        // Left platform
+        floors.add(new Floor(new Rectangle(0, 350, 280, 30)));
+        // Gap in middle (from x=280 to x=420) - 140 pixels gap
+        // Right platform
+        floors.add(new Floor(new Rectangle(420, 350, 380, 30)));
+        
+        // ===== FLOOR 3 (Top): Also has gaps - for more challenge =====
+        // Left platform
+        floors.add(new Floor(new Rectangle(100, 160, 250, 30)));
+        // Gap in middle (from x=350 to x=500) - 150 pixels gap
+        // Right platform
+        floors.add(new Floor(new Rectangle(500, 160, 300, 30)));
     }
     
     // Mohamed
     // This runs the frame
     public boolean updateGame() {
 
+    	 for (Floor floor : floors) {
+             floor.stopFallThrough(player1);
+             floor.stopFallThrough(player2);
+         }
 
         if (p1Up) player1.moveUp();
         if (p1Down) player1.moveDown();
@@ -81,6 +106,7 @@ public class GamePanel extends JPanel implements KeyListener {
         if (!player1.alive || !player2.alive) {
             return false;
         }
+        
         return true;
     }
 
@@ -425,5 +451,10 @@ public class GamePanel extends JPanel implements KeyListener {
         drawWatergirl(g);
         drawMessages(g);
         drawControlsInfo(g);
+        g.setColor(new Color(100, 100, 100)); // Gray
+        for (Floor floor : floors) {
+            g.fillRect(floor.area.x, floor.area.y,
+                      floor.area.width, floor.area.height);
+        }
     }
 }
