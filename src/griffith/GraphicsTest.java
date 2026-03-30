@@ -18,32 +18,32 @@ public class GraphicsTest {
     @Test
     void testFireboyY() {
         //checking if fireboy Y is on screen
-        assertEquals(50, game.getFireboyY());
+        assertEquals(330, game.getFireboyY());
         }
 
     @Test
     void testWatergirlX() {
         //checking if watergirl X is valid
-        assertEquals(50, game.getWatergirlX());
+        assertEquals(130, game.getWatergirlX());
         }
 
     @Test
     void testWatergirlY() {
         //checking if watergirl Y is valid
-        assertEquals(150, game.getWatergirlY());
+        assertEquals(330, game.getWatergirlY());
         }
 
     //testing colors 
     @Test
     void testFireboyColor() {
         //fireboy should be red
-        assertEquals(Color.RED, game.getFireboyColor());
+        assertEquals(new Color(200, 50, 10), game.getFireboyColor());
         }
 
     @Test
     void testWatergirlColor() {
         //watergirl must be blue
-        assertEquals(Color.BLUE, game.getWatergirlColor());
+        assertEquals(new Color(20, 80, 200), game.getWatergirlColor());
         }
 
     //testing alive status
