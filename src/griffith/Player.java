@@ -38,7 +38,7 @@ public class Player {
 
 	public void moveLeft(){
 		if (this.x - 1 > 0){
-			this.x -= 3;
+			this.x -= 5;
 		}else{
 		this.x -= 0;
 		}
@@ -47,7 +47,7 @@ public class Player {
 
 	public void moveRight(){
 		if (this.x + 1 + playerSize <= screen) {
-            this.x += 3;
+            this.x += 5;
         } else {
 		this.x += 0;
 		}

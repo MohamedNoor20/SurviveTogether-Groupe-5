@@ -42,11 +42,11 @@ public class GamePanel extends JPanel implements KeyListener {
         addKeyListener(this);
 
         // Create hazards
-        firePool = new Hazard(new Rectangle(210, 380, 80, 50), Type.FIRE);
-        waterPool = new Hazard(new Rectangle(430, 380, 80, 50), Type.WATER);
+        firePool = new Hazard(new Rectangle(210, 482, 80, 50), Type.FIRE);
+        waterPool = new Hazard(new Rectangle(430, 480, 80, 50), Type.WATER);
 
         // Create door
-        door = new Door(new Rectangle(685, 320, 60, 80));
+        door = new Door(new Rectangle(685, 430, 60, 80));
     }
     
     // Mohamed
@@ -346,7 +346,7 @@ public class GamePanel extends JPanel implements KeyListener {
         //label
         g.setColor(new Color(255, 240, 180));
         g.setFont(new Font("Arial", Font.BOLD, 11));
-        g.drawString("EXIT", door.area.x + 12, door.area.y + door.area.height + 14);
+        g.drawString("EXIT", door.area.x + 14, door.area.y - 14); // putting the exit name above the door
     }
     
     //draws win/lose messages
