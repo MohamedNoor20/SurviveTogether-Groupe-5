@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 
 public class GamePanel extends JPanel implements KeyListener {
 
@@ -16,6 +17,7 @@ public class GamePanel extends JPanel implements KeyListener {
     Hazard waterPool;
 
     Door door;
+    private Main main;
     
     //player 1
     boolean p1Up;
@@ -28,7 +30,14 @@ public class GamePanel extends JPanel implements KeyListener {
     boolean p2Left;
     boolean p2Right;
     // Mohamed
+    
+    //constructor for testing 
     public GamePanel() {
+        this(null);
+        }
+    
+    public GamePanel(Main main) {
+        this.main = main;
 
     	//dark background
         setBackground(new Color(18, 18, 38));
@@ -47,7 +56,20 @@ public class GamePanel extends JPanel implements KeyListener {
 
         // Create door
         door = new Door(new Rectangle(685, 430, 60, 80));
-    }
+        
+        //ADD MENU BUTTON
+        JButton menuButton = new JButton("MENU");
+        //button position
+        menuButton.setBounds(700, 10, 80, 30);
+        menuButton.setFont(new Font("Arial", Font.BOLD, 14));
+        menuButton.setBackground(new Color(200, 200, 200));
+        menuButton.setForeground(Color.BLACK);
+        menuButton.setFocusPainted(false);
+        menuButton.addActionListener(e -> main.showMenu());
+        //allows absolute position
+        this.setLayout(null);
+        this.add(menuButton);
+        }
     
     // Mohamed
     // This runs the frame
