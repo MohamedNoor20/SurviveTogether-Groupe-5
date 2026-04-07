@@ -371,7 +371,7 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     
     //draws controls info bar
-    public void drawControlsInfo(java.awt.Graphics g) {
+   /* public void drawControlsInfo(java.awt.Graphics g) {
         g.setColor(new Color(15, 15, 30));
         g.fillRect(0, 515, 800, 105);
         
@@ -394,7 +394,7 @@ public class GamePanel extends JPanel implements KeyListener {
         //divider
         g.setColor(new Color(45, 45, 70));
         g.drawLine(0, 562, 800, 562);
-    }
+    }*/
     
     //draws background with brick pattern
     public void drawBackground(java.awt.Graphics g) {
@@ -427,6 +427,6 @@ public class GamePanel extends JPanel implements KeyListener {
         drawFireboy(g);
         drawWatergirl(g);
         drawMessages(g);
-        drawControlsInfo(g);
+        //drawControlsInfo(g);
     }
 }
