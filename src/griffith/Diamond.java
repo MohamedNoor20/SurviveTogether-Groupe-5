@@ -13,4 +13,14 @@ public class Diamond {
     public boolean canCollect(Type playerType) {
         return this.type == playerType && !collected;
     }
+
+    public void collect(Player p) {
+        Rectangle playerBox = new Rectangle(p.x, p.y, 40, 40);
+        Rectangle diamondBox = new Rectangle(x, y, 20, 20);
+
+       
+        if (diamondBox.intersects(playerBox) && canCollect(p.type)) {
+            collected = true; 
+}
+    }
 }
