@@ -63,4 +63,11 @@ public class GameLogicTest {
         fire.check(fireboy); //no overlap (susan ogozi)
         assertTrue(fireboy.alive); //safe during normal movement  (susan ogozi)
     }
+    @Test
+    void testIceFloorFlag() {
+        Player fireboy = new Player(0,0,Type.FIRE);
+        Hazard iceFloor = new Hazard(new Rectangle(0,0,50,50), Type.ICE);
+        iceFloor.check(fireboy);
+        assertTrue(fireboy.onIce);  
+    }
 }
