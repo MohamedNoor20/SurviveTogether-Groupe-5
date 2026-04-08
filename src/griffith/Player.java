@@ -7,6 +7,7 @@ public class Player {
 	public int x, y; // the position (susan ogozi)
 	public Type type; // Fire and water type (susan ogozi)
 	public boolean alive = true;
+	public boolean onIce = false;
 
 	// create the player
 	public Player(int x, int y, Type type) {
