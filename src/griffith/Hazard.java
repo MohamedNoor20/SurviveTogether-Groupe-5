@@ -19,12 +19,15 @@ public void check(Player p) {
          /*If the player touches the hazard the what happens to that player
           * Death logic  (Susan Ogozi)*/
        if ( this.type == Type.GREEN || p.type != this.type) {
-    	   if (this.type == Type.ICE) return;
-	                p.alive = false; 
-	              
+    		   p.alive = false;  
 	            }
-	           
-	        }
-	    
+	        
+	 if (this.type == Type.ICE) {
+		 p.onIce = true;
+	 }
+}
+else {
+	p.onIce = false; 
+}
 }
 }
