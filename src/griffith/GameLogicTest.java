@@ -91,4 +91,10 @@ public class GameLogicTest {
         iceFloor.check(watergirl);
         assertTrue(watergirl.onIce); 
     }
+    @Test
+    void testPlayerOutsideDoorWatergirl() {
+        Player watergirl = new Player(100, 100, Type.WATER); 
+        Door door = new Door(new Rectangle(0, 0, 50, 50));
+        assertFalse(door.isInside(watergirl)); 
+    }
 }
