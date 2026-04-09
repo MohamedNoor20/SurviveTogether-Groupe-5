@@ -70,4 +70,11 @@ public class GameLogicTest {
         iceFloor.check(fireboy);
         assertTrue(fireboy.onIce);  
     }
+    @Test
+    void testGreenKillsFireboy() {
+        Player fireboy = new Player(0, 0, Type.FIRE);
+        Hazard green = new Hazard(new Rectangle(0, 0, 50, 50), Type.GREEN);
+        green.check(fireboy);
+        assertFalse(fireboy.alive); 
+}
 }
