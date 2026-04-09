@@ -84,4 +84,11 @@ public class GameLogicTest {
         green.check(watergirl);
         assertFalse(watergirl.alive); 
     }
+    @Test
+    void testIceFloorFlagWatergirl() {
+        Player watergirl = new Player(0, 0, Type.WATER);
+        Hazard iceFloor = new Hazard(new Rectangle(0, 0, 50, 50), Type.ICE);
+        iceFloor.check(watergirl);
+        assertTrue(watergirl.onIce); 
+    }
 }
