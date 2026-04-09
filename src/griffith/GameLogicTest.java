@@ -97,4 +97,11 @@ public class GameLogicTest {
         Door door = new Door(new Rectangle(0, 0, 50, 50));
         assertFalse(door.isInside(watergirl)); 
     }
+    @Test
+    void testNoCollisionNoDeathWatergirl() {
+        Player watergirl = new Player(100, 100, Type.WATER);
+        Hazard water = new Hazard(new Rectangle(0, 0, 50, 50), Type.WATER);
+        water.check(watergirl); 
+        assertTrue(watergirl.alive);
+}
 }
