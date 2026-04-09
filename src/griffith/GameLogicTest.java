@@ -77,4 +77,11 @@ public class GameLogicTest {
         green.check(fireboy);
         assertFalse(fireboy.alive); 
 }
+    @Test
+    void testGreenKillsWatergirl() {
+        Player watergirl = new Player(0, 0, Type.WATER);
+        Hazard green = new Hazard(new Rectangle(0, 0, 50, 50), Type.GREEN);
+        green.check(watergirl);
+        assertFalse(watergirl.alive); 
+    }
 }
