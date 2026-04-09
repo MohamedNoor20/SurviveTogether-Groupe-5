@@ -15,8 +15,6 @@ public class Door {
 	public boolean isInside(Player p) {
 		// player overlaps the door? (susan ogozi)
 		return area.intersects(new Rectangle(p.x, p.y, 40, 40));
-	}
-	public boolean bothInside(Player fireboy, Player watergirl) {
-	    return isInside(fireboy) && isInside(watergirl);
+	
 	}
 }
