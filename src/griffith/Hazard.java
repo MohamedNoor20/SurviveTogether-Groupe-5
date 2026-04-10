@@ -18,12 +18,12 @@ public void check(Player p) {
         
          /*If the player touches the hazard the what happens to that player
           * Death logic  (Susan Ogozi)*/
-       if ( this.type == Type.GREEN || p.type != this.type) {
-    		   p.alive = false;  
+       if ( this.type == Type.GREEN || p.type != this.type) { // this is the green poison players die when they enter this green pool (susan ogozi)
+    		   p.alive = false;  //they are not alive if they enter the pool(susan ogozi)
 	            }
 	        
-	 if (this.type == Type.ICE) {
-		 p.onIce = true;
+	 if (this.type == Type.ICE) { //this just flags that players on ice stay alive(susan ogozi) 
+		 p.onIce = true; // to tell if they are on the ice or not 
 	 }
 }
 else {
