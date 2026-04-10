@@ -11,6 +11,10 @@ public boolean running = false;
 	    timerStarts = System.currentTimeMillis();
 	    running = true;
 	}
+	public void stop() {
+	    running = false;
+	
+}
 	public int getSeconds() {
 	    if (!running) return 0;
 	    return (int)((System.currentTimeMillis() - timerStarts) / 1000);
