@@ -117,4 +117,9 @@ public class GameLogicTest {
         t.stop();
         assertFalse(t.running);
 }
+    @Test
+    void testTimerNotRunningAtStart() {
+        Timer t = new Timer();
+        assertFalse(t.running);
+}
 }
