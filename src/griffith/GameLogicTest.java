@@ -104,4 +104,10 @@ public class GameLogicTest {
         water.check(watergirl); 
         assertTrue(watergirl.alive);
 }
+    @Test
+    void testTimerStartsRunning() {
+        Timer t = new Timer();
+        t.start();
+        assertTrue(t.running); 
+}
 }
