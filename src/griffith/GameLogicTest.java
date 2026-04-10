@@ -110,4 +110,11 @@ public class GameLogicTest {
         t.start();
         assertTrue(t.running); 
 }
+    @Test
+    void testTimerStops() {
+        Timer t = new Timer();
+        t.start();
+        t.stop();
+        assertFalse(t.running);
+}
 }
