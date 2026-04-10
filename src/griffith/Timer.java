@@ -1,15 +1,15 @@
 package griffith;
 
 public class Timer {
-private long timerstarts;
-public boolean isRunning = false;
+private long timerStarts;
+public boolean running = false;
 	public Timer() {
-		isRunning = false;
+		running = false;
 		
 	}
 	public void start() {
-	    timerstarts = System.currentTimeMillis();
-	    isRunning = true;
+	    timerStarts = System.currentTimeMillis();
+	    running = true;
 	}
 
 }
