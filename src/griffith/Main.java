@@ -72,35 +72,35 @@ public class Main {
                     gamePanel.repaint();
                     try {
                         // wait 16ms
-                        Thread.sleep(16);  
-                    }
+                        Thread.sleep(16);
+                        }
                     catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
-                } 
+                        }
+                    } 
                 else {
                     gameRun = false;
                     gamePanel.repaint();
-                    try {
+                    try{
                         Thread.sleep(16);
-                    }
+                        }
                     catch (InterruptedException e) {
                         e.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
+            });
         gameThread.start();
-    }
+        }
     
     // restart the game
     public void restartGame() {
         startGame();
-    }
+        }
     
     // main method
     public static void main(String[] args) {
         // create the Main object
         new Main();
+        }
     }
-}

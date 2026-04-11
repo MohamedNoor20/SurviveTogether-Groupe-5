@@ -87,6 +87,9 @@ public class MenuPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        //add background first
+        drawBackground(g);
+        //then draw title on top
         drawTitle(g);
         }
     
@@ -107,4 +110,25 @@ public class MenuPanel extends JPanel {
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         g.drawString("A Cooperative Adventure", 290, 210);
         }
+    
+    //adding same background as the game
+    //draws background with brick pattern
+    public void drawBackground(java.awt.Graphics g) {
+        //back wall
+        g.setColor(new Color(28, 28, 52));
+        g.fillRect(0, 0, 800, 510);
+        
+        //brick pattern
+        g.setColor(new Color(38, 38, 65));
+        for (int row = 0; row < 510; row += 28) {
+            int offset = (row / 28 % 2 == 0) ? 0 : 40;
+            for (int col = -40 + offset; col < 800; col += 80) {
+                g.drawRoundRect(col + 2, row + 2, 76, 24, 3, 3);
+            }
+        }
+        
+        //floor line
+        g.setColor(new Color(55, 42, 25));
+        g.fillRect(0, 510, 800, 4);
+    }
     }
