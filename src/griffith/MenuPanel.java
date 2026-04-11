@@ -35,6 +35,7 @@ public class MenuPanel extends JPanel {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	showFullMenu();
             	//telling main to start the game
                 mainFrame.startGame();
                 }
@@ -51,6 +52,7 @@ public class MenuPanel extends JPanel {
         restartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	showFullMenu();
             	//telling Main to restart
                 mainFrame.restartGame();
                 }
@@ -131,4 +133,15 @@ public class MenuPanel extends JPanel {
         g.setColor(new Color(55, 42, 25));
         g.fillRect(0, 510, 800, 4);
     }
+    
+
+    //this will show 3 buttons when menu button is clicked not only restart button
+    public void showFullMenu() {
+        startButton.setVisible(true);
+        exitButton.setVisible(true);
+        //back to the original position
+        restartButton.setBounds(300, 350, 200, 50);
+        showGameOver = false;
+        repaint();
+        }
     }
