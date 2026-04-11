@@ -107,10 +107,11 @@ public class MenuPanel extends JPanel {
         g.setFont(new Font("Arial", Font.BOLD, 48));
         g.drawString("FIREBOY & WATERGIRL", 160, 150);
         
-        //small subtitle below the title
+        /*//small subtitle below the title
         g.setColor(new Color(180, 180, 220));
         g.setFont(new Font("Arial", Font.PLAIN, 20));
-        g.drawString("A Cooperative Adventure", 290, 210);
+        g.drawString("Adventure Game", 290, 210);
+        }*/
         }
     
     //adding same background as the game
