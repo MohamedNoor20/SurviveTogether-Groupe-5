@@ -140,4 +140,12 @@ public class GameLogicTest {
      Door door = new Door(new Rectangle(0, 0, 50, 50));
      assertTrue(door.bothInside(fireboy, watergirl)); // both inside they win (susan ogozi)
  }
+    @Test
+ // test 18 checks bothInside returns false when only one player inside (susan ogozi)
+ void testBothInsideOnlyOne() {
+     Player fireboy = new Player(10, 10, Type.FIRE); // inside door (susan ogozi)
+     Player watergirl = new Player(100, 100, Type.WATER); // outside door (susan ogozi)
+     Door door = new Door(new Rectangle(0, 0, 50, 50));
+     assertFalse(door.bothInside(fireboy, watergirl)); // only one inside  no win (susan ogozi)
+ }
 }
