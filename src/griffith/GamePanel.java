@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements KeyListener {
         menuButton.setBackground(new Color(200, 200, 200));
         menuButton.setForeground(Color.BLACK);
         menuButton.setFocusPainted(false);
-        menuButton.addActionListener(e -> main.showMenu());
+        menuButton.addActionListener(e -> main.showMenu(false));
         //allows absolute position
         this.setLayout(null);
         this.add(menuButton);
@@ -104,8 +104,11 @@ public class GamePanel extends JPanel implements KeyListener {
 
         // Lose condition
         if (!player1.alive || !player2.alive) {
+            if (main != null) {
+                main.showMenu(true);
+                }
             return false;
-        }
+            }
         return true;
     }
 
@@ -372,6 +375,7 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     
     //draws win/lose messages
+    //draws win message only
     public void drawMessages(java.awt.Graphics g) {
         //win message
         if (door.isInside(player1) && door.isInside(player2)) {
@@ -381,15 +385,16 @@ public class GamePanel extends JPanel implements KeyListener {
             g.setFont(new Font("Arial", Font.BOLD, 32));
             g.drawString("YOU WIN!", 320, 262);
         }
+    
         
-        //lose message
+        /*//lose message
         if (!player1.alive || !player2.alive) {
             g.setColor(new Color(0, 0, 0, 140));
             g.fillRoundRect(250, 220, 300, 60, 12, 12);
             g.setColor(new Color(240, 60, 60));
             g.setFont(new Font("Arial", Font.BOLD, 32));
             g.drawString("GAME OVER", 290, 262);
-        }
+        }*/
     }
     
     //draws controls info bar

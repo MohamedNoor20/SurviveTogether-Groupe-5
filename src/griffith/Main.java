@@ -24,27 +24,30 @@ public class Main {
         gamePanel = new GamePanel(this);
         
         // show the menu first when program starts
-        showMenu();
+        showMenu(false);
         
         // make the window visible
         frame.setVisible(true);
-    }
+        }
     
-    // switches from game to menu
-    public void showMenu() {
-        // remove game screen if it is there
+    //switches from game to menu
+    public void showMenu(boolean isGameOver) {
+    	//remove game screen if it is there
         if (gamePanel != null) {
             frame.remove(gamePanel);
-        }
-        // add menu screen
+            }
         frame.add(menuPanel);
-        // refresh the window
+        
+        if (isGameOver) {
+            menuPanel.showGameOverMenu();
+            }
+        //refresh the window
         frame.revalidate();  
-        // redraw everything
+        //redraw everything
         frame.repaint();
         // menu gets keyboard focus
         menuPanel.requestFocusInWindow();
-    }
+        }
     
     // starts a new game
     public void startGame() {

@@ -16,6 +16,7 @@ public class MenuPanel extends JPanel {
     private JButton exitButton;
     //reference to main to switch screens
     private Main mainFrame;
+    private boolean showGameOver = false;
     
     //constructor for the menu
     public MenuPanel(Main main) {
@@ -71,6 +72,15 @@ public class MenuPanel extends JPanel {
                 }
             });
         add(exitButton);
+        }
+    
+    //this shows only restart button when player dies
+    public void showGameOverMenu() {
+        startButton.setVisible(false);
+        exitButton.setVisible(false);
+        restartButton.setBounds(300, 320, 200, 50);
+        showGameOver = true;
+        repaint();
         }
     
     //this will draw the title every time the screen refreshes
