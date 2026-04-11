@@ -132,4 +132,12 @@ public class GameLogicTest {
         Timer t = new Timer(); // create timer (susan ogozi)
         assertFalse(t.running); // not started yet (susan ogozi)
 }
+    @Test
+ // test 17 checks both players inside door returns true (susan ogozi)
+ void testBothInsideDoor() {
+     Player fireboy = new Player(10, 10, Type.FIRE);
+     Player watergirl = new Player(10, 10, Type.WATER);
+     Door door = new Door(new Rectangle(0, 0, 50, 50));
+     assertTrue(door.bothInside(fireboy, watergirl)); // both inside they win (susan ogozi)
+ }
 }
