@@ -28,8 +28,11 @@ public class Main {
             	panel.repaint();    // Afaq's drawing 
                 Thread.sleep(16);   // ~60 FPS
             }
+            
             else {
             	gameRun = false;
+            	panel.repaint();    // Afaq's drawing 
+                Thread.sleep(16); 
             }
         }
     }

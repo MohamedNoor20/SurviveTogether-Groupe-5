@@ -43,13 +43,14 @@ public class GamePanel extends JPanel implements KeyListener {
         setFocusable(true);
         // to be able to use KeyListener library
         addKeyListener(this);
+
  
-        // Create hazards at DIFFERENT positions
-        firePool = new Hazard(new Rectangle(200, 100, 100, 50), Type.FIRE);
-        waterPool = new Hazard(new Rectangle(400, 100, 100, 50), Type.WATER);
- 
-        // Create door
-        door = new Door(new Rectangle(600, 150, 50, 80));
+		//Create hazards
+		firePool = new Hazard(new Rectangle(210, 482, 80, 50), Type.FIRE);
+		waterPool = new Hazard(new Rectangle(430, 480, 80, 50), Type.WATER);
+		
+		// Create door
+		door = new Door(new Rectangle(685, 430, 60, 80));
         
         // Create floors
         floors = new ArrayList<>();
@@ -69,6 +70,7 @@ public class GamePanel extends JPanel implements KeyListener {
         // Gap in middle (from x=350 to x=500) - 150 pixels gap
         // Right platform
         floors.add(new Floor(new Rectangle(500, 160, 300, 30)));
+
     }
     
     // Mohamed
@@ -373,7 +375,7 @@ public class GamePanel extends JPanel implements KeyListener {
         //label
         g.setColor(new Color(255, 240, 180));
         g.setFont(new Font("Arial", Font.BOLD, 11));
-        g.drawString("EXIT", door.area.x + 12, door.area.y + door.area.height + 14);
+        g.drawString("EXIT", door.area.x + 14, door.area.y - 14); // putting the exit name above the door
     }
     
     //draws win/lose messages
