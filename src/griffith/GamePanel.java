@@ -479,7 +479,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	            }
 	        }
 	    }
-	}
+	
 
 	@Override
 	protected void paintComponent(Graphics g) {
