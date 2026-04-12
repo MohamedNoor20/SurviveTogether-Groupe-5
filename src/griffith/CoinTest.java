@@ -33,7 +33,16 @@ public class CoinTest {
         assertEquals(1, player.score, "Player score should increase by 1.");
 
     }
+	@Test
 	void testCoinCannotBeCollectedTwice() {
-		
+		player = new Player(100, 100, Type.FIRE);
+		coin = new Coin(new Rectangle(100, 100, 20, 20));		
+		// checking if the player collects the coin once and then if the player pass again by by the coin score most not increase 
+		coin.checkCollision(player);
+        assertEquals(1, player.score, "Score should be 1.");
+        assertTrue(coin.isCollected, "Coin is collected.");
+		//now trying to collect the same coin
+        coin.checkCollision(player);
+        assertEquals(1, player.score, "coin is already collected.");
 	}
 }
