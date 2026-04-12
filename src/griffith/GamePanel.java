@@ -31,6 +31,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	ArrayList<Coin> coins; 
 
 	private Main main;
+	
+	public Image coinImage;
 
 	// player 1
 	boolean p1Up;
@@ -56,6 +58,14 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		// dark background
 		setBackground(new Color(18, 18, 38));
+		
+		// here to load the coins 
+		try {
+		    ImageIcon icon = new ImageIcon(getClass().getResource("coin.png"));
+		    coinImage = icon.getImage();
+		} catch (Exception e) {
+		    System.out.println("Could not find the coin image.");
+		}
 
 		// Create players
 		player1 = new Player(50, 670, Type.FIRE);
@@ -458,6 +468,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		}
 		g.setColor(new Color(55, 42, 25));
 		g.fillRect(0, ScreenHeight - UI_Height, ScreenWidth, 4);
+	}
+	public void drawCoins(Graphics g) {
+
 	}
 
 	@Override
