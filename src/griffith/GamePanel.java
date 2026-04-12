@@ -25,6 +25,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Hazard waterPool;
 	Hazard greenPool;
 	Door door;
+	Timer gameTimer = new Timer(); // tracks level time (Susan Ogozi) 
 	ArrayList<Floor> floors;
 	ArrayList<Floor> iceFloor;
 
@@ -113,6 +114,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	}
 
 	public void startGame() {
+		gameTimer.start(); // start tracking time Susan Ogozi 
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
@@ -475,6 +477,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawMessages(g);
 		drawControlsInfo(g);
 		floorColor(g);
-		
+		  // Display timer on screen Susan Ogozi 3157092
+	    g.setColor(Color.WHITE);
+	    g.setFont(new Font("Arial", Font.BOLD, 18));
+	    g.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
 	}
 }
