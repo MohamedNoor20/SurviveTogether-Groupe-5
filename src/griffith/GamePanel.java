@@ -25,7 +25,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Hazard waterPool;
 	Hazard greenPool;
 	Door door;
-	Timer gameTimer = new Timer(); // tracks level time (Susan Ogozi) 
 	ArrayList<Floor> floors;
 
 	private Main main;
@@ -99,7 +98,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		// ADD MENU BUTTON - only add if we have a main reference (not in test mode)
 		if (main != null) {
 			JButton menuButton = new JButton("MENU");
-			menuButton.setBounds(688, 10, 80, 30);
+			menuButton.setBounds(ScreenWidth - 90, 10, 80, 30);
 			menuButton.setFont(new Font("Arial", Font.BOLD, 14));
 			menuButton.setBackground(new Color(200, 200, 200));
 			menuButton.setForeground(Color.BLACK);
@@ -111,7 +110,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	}
 
 	public void startGame() {
-		gameTimer.start(); // start tracking time Susan Ogozi 
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
@@ -440,7 +438,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		g.setColor(new Color(38, 38, 65));
 		for (int row = 0; row < 510; row += 28) {
 			int offset = (row / 28 % 2 == 0) ? 0 : 40;
-			for (int col = -40 + offset; col < 800; col += 80) {
+			for (int col = -40 + offset; col < ScreenWidth; col += 80) {
 				g.drawRoundRect(col + 2, row + 2, 76, 24, 3, 3);
 			}
 		}
@@ -457,10 +455,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawFireboy(g);
 		drawWatergirl(g);
 		drawMessages(g);
-		// Display timer on screen Susan Ogozi 3157092
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("Arial", Font.BOLD, 18));
-		g.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
 		drawControlsInfo(g);
 		g.setColor(new Color(100, 100, 100));
 		for (Floor floor : floors) {
