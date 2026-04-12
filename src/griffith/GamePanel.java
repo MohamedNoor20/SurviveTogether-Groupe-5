@@ -109,6 +109,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	}
 
 	public void startGame() {
+		gameTimer.start(); // start tracking time Susan Ogozi 
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
