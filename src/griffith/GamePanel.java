@@ -491,6 +491,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawWatergirl(g);
 		drawMessages(g);
 		drawControlsInfo(g);
+		drawCoins(g);
 		g.setColor(new Color(100, 100, 100));
 		for (Floor floor : floors) {
 			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
