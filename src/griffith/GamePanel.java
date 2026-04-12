@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 
 public class GamePanel extends JPanel implements KeyListener, Runnable {
 
@@ -25,6 +26,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Door door;
 	ArrayList<Floor> floors;
 
+	private Main main;
+
 	// player 1
 	boolean p1Up;
 	boolean p1Down;
@@ -35,9 +38,15 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	boolean p2Down;
 	boolean p2Left;
 	boolean p2Right;
-
 	// Mohamed
+
+	// constructor for testing
 	public GamePanel() {
+		this(null);
+	}
+
+	public GamePanel(Main main) {
+		this.main = main;
 
 		// Mohamed
 		this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
@@ -71,25 +80,39 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		floors.add(new Floor(new Rectangle(0, 540, 640, 10)));
 		floors.add(new Floor(new Rectangle(83, 455, 10, 95)));
 		floors.add(new Floor(new Rectangle(0, 455, 83, 10)));
-		
+
 		// 2nd floor
 		floors.add(new Floor(new Rectangle(123, 385, 645, 10)));
 		floors.add(new Floor(new Rectangle(350, 300, 10, 95)));
 		floors.add(new Floor(new Rectangle(350, 300, 83, 10)));
 		floors.add(new Floor(new Rectangle(433, 300, 10, 95)));
-		
+
 		// 3rd floor
 		// right floor
 		floors.add(new Floor(new Rectangle(123, 210, 187, 10)));
 		// wall
 		floors.add(new Floor(new Rectangle(123, 120, 10, 90)));
 		floors.add(new Floor(new Rectangle(300, 120, 10, 90)));
-		
+
 		// left floor
 		floors.add(new Floor(new Rectangle(475, 210, 187, 10)));
-		
+
 		// 4th floor
 		floors.add(new Floor(new Rectangle(0, 120, 475, 10)));
+
+		// ADD MENU BUTTON
+		JButton menuButton = new JButton("MENU");
+		// button position
+		menuButton.setBounds(700, 10, 80, 30);
+		menuButton.setFont(new Font("Arial", Font.BOLD, 14));
+		menuButton.setBackground(new Color(200, 200, 200));
+		menuButton.setForeground(Color.BLACK);
+		menuButton.setFocusPainted(false);
+		menuButton.addActionListener(e -> main.showMenu(false));
+		// allows absolute position
+		this.setLayout(null);
+		this.add(menuButton);
+	}
 
 	}
 
@@ -139,9 +162,16 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 				e.printStackTrace();
 			}
 		}
+		// Lose condition
+		if (!player1.alive || !player2.alive) {
+			if (main != null) {
+				main.showMenu(true);
+			}
+			return false;
+		}
+		return true;
 
 	}
-
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -338,12 +368,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	public void drawHazards(Graphics g) {
 		// draw fire hazard
 		if (firePool != null) {
-			
+
 			int fireX = firePool.area.x;
 			int fireY = firePool.area.y;
 			int w = firePool.area.width;
 			int h = firePool.area.height;
-			
+
 			// pool base
 			g.setColor(new Color(180, 40, 10));
 			g.fillRoundRect(fireX, fireY + 25, w, h, 4, 4);
@@ -356,19 +386,20 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			g.setColor(new Color(255, 150, 0));
 			int[] fx = { fireX + 10, fireX + 20, fireX + 30, fireX + 40, fireX + 55, fireX + 70 };
 			for (int i = 0; i < fx.length - 1; i += 2) {
-				g.fillPolygon(new int[] { fx[i], fx[i] + 10, fx[i + 1] }, new int[] { fireY + 15, fireY - 3, fireY + 15 }, 3);
+				g.fillPolygon(new int[] { fx[i], fx[i] + 10, fx[i + 1] },
+						new int[] { fireY + 15, fireY - 3, fireY + 15 }, 3);
 			}
 
 		}
 
 		// draw water hazard
 		if (waterPool != null) {
-			
+
 			int waterX = waterPool.area.x;
-			int waterY =waterPool.area.y;
+			int waterY = waterPool.area.y;
 			int w = waterPool.area.width;
 			int h = waterPool.area.height;
-			
+
 			// pool base
 			g.setColor(new Color(10, 40, 140));
 			g.fillRoundRect(waterX, waterY + 25, w, h, 4, 4);

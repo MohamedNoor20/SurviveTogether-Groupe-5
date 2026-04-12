@@ -16,10 +16,12 @@ public class Player {
 	public int jumpPower = -15;
 	public int playerSize = 50;
 	public int screen = 768;
-
 	// Mohamed
 	public int width = 40;
 	public int height = 46;
+	// Susan
+	public boolean onIce = false;
+
 
 	// create the player
 	public Player(int x, int y, Type type) {
@@ -55,7 +57,7 @@ public class Player {
 			this.x += 0;
 		}
 	}
-	// Mohamed
+	// Mohamed(Update)
 	public void gravity() {
 	    // Apply gravity to velocity
 	    this.yVelocity += gravity;
