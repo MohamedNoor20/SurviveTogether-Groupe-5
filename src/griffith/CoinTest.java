@@ -47,6 +47,12 @@ public class CoinTest {
 	}
 	 @Test
 	    void testNoCollect() {
+			player = new Player(234, 134, Type.FIRE);
+			coin = new Coin(new Rectangle(100, 100, 20, 20));
+			// now check if the player even with out touching the coins
+			 coin.checkCollision(player);
+		        assertFalse(coin.isCollected, "Coin is not collected.");
+		        assertEquals(0, player.score, "Score should be 0.");
 		 
 	    }
 	
