@@ -26,6 +26,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Hazard greenPool;
 	Door door;
 	ArrayList<Floor> floors;
+	ArrayList<Coin> coins; 
 
 	private Main main;
 
@@ -71,6 +72,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		// Create floors
 		floors = new ArrayList<>();
+		// for the coins 
+		coins = new ArrayList<>();
+		
 		// ground floor
 		floors.add(new Floor(new Rectangle(0, 715, 768, 10)));
 		floors.add(new Floor(new Rectangle(685, 630, 10, 95)));
