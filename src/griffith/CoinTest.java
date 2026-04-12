@@ -5,5 +5,12 @@ import org.junit.jupiter.api.Test;
 import java.awt.Rectangle;
 
 public class CoinTest {
-
+	
+	Player player;
+	Coin coin;
+	
+	@Test
+    void testCoinCollectionStatus() {
+		
+	}
 }
