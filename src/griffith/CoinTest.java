@@ -45,4 +45,10 @@ public class CoinTest {
         coin.checkCollision(player);
         assertEquals(1, player.score, "coin is already collected.");
 	}
+	 @Test
+	    void testNoCollect() {
+		 
+	    }
+	
+	
 }
