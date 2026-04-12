@@ -23,6 +23,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Player player2;
 	Hazard firePool;
 	Hazard waterPool;
+	Hazard greenPool;
 	Door door;
 	ArrayList<Floor> floors;
 
@@ -61,8 +62,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		addKeyListener(this);
 
 		// Create hazards
-		firePool = new Hazard(new Rectangle(210, 700, 80, 5), Type.FIRE);
-		waterPool = new Hazard(new Rectangle(430, 700, 80, 5), Type.WATER);
+		firePool = new Hazard(new Rectangle(210, 695, 80, 5), Type.FIRE);
+		waterPool = new Hazard(new Rectangle(430, 695, 80, 5), Type.WATER);
+		greenPool = new Hazard(new Rectangle(550, 365, 80, 5), Type.GREEN);
 
 		// Create door
 		door = new Door(new Rectangle(10, 40, 60, 80));
@@ -143,6 +145,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			firePool.check(player2);
 			waterPool.check(player1);
 			waterPool.check(player2);
+			greenPool.check(player1);
+			greenPool.check(player2);
 
 			repaint();
 
@@ -358,6 +362,20 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			g.setColor(new Color(100, 180, 255, 180));
 			g.drawArc(waterX + 4, waterY + 11, 30, 14, 0, 180);
 			g.drawArc(waterX + 38, waterY + 11, 30, 14, 0, 180);
+		}
+		
+		if (greenPool != null) {
+			int greenX = greenPool.area.x;
+			int greenY = greenPool.area.y;
+			int w = greenPool.area.width;
+			int h = greenPool.area.height;
+			g.setColor(new Color(0, 100, 5));
+			g.fillRoundRect(greenX, greenY + 25, w, h, 4, 4);
+			g.setColor(new Color(0, 100, 5, 210));
+			g.fillRoundRect(greenX + 2, greenY + 15, w - 4, h, 4, 4);
+			g.setColor(new Color(100, 180, 255, 180));
+			g.drawArc(greenX + 4, greenY + 11, 30, 14, 0, 180);
+			g.drawArc(greenX + 38, greenY + 11, 30, 14, 0, 180);
 		}
 	}
 
