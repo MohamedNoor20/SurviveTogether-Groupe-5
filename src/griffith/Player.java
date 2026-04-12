@@ -1,5 +1,7 @@
 package griffith;
 
+import java.awt.Rectangle;
+
 /**
  * Temporary Player for Person 4 tests(susan ogozi)
  */
@@ -7,15 +9,17 @@ public class Player {
 	public int x, y; // the position (susan ogozi)
 	public Type type; // Fire and water type (susan ogozi)
 	public boolean alive = true;
-	
+
 	public int yVelocity = 0;
 	public int gravity = 1;
 	public boolean isJumping = false;
 	public int jumpPower = -15;
 	public int playerSize = 50;
+	public int screen = 768;
 
-	public int screen = 800;
-	public int floor = 510;
+	// Mohamed
+	public int width = 40;
+	public int height = 46;
 
 	// create the player
 	public Player(int x, int y, Type type) {
@@ -24,48 +28,45 @@ public class Player {
 		this.type = type;
 	}
 
-
-	public void moveUp(){
-		if (!isJumping){
-		this.yVelocity = jumpPower;
-		this.isJumping = true;
+	public void moveUp() {
+		if (!isJumping) {
+			this.yVelocity = jumpPower;
+			this.isJumping = true;
 		}
 	}
 
-	public void moveDown(){
+	public void moveDown() {
 		this.yVelocity += 1;
 	}
 
-	public void moveLeft(){
-		if (this.x - 1 > 0){
+	public void moveLeft() {
+		if (this.x - 1 > 0) {
 			this.x -= 5;
-		}else{
-		this.x -= 0;
+		} else {
+			this.x -= 0;
 		}
 
 	}
 
-	public void moveRight(){
+	public void moveRight() {
 		if (this.x + 1 + playerSize <= screen) {
-            this.x += 5;
-        } else {
-		this.x += 0;
+			this.x += 5;
+		} else {
+			this.x += 0;
 		}
 	}
-
-	public void gravity(){
-		this.y += yVelocity;
-
-		if (this.y + playerSize < floor){
-			this.yVelocity += gravity;
-		}else{
-			this.y = floor - playerSize;
-			this.yVelocity = 0;
-			this.isJumping = false;
-		}
-
+	// Mohamed
+	public void gravity() {
+	    // Apply gravity to velocity
+	    this.yVelocity += gravity;
+	    // Apply velocity to position
+	    this.y += yVelocity;
 	}
 
 
+	// Mohamed
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, width, height);
+	}
 
 }

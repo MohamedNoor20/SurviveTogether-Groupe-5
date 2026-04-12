@@ -11,29 +11,19 @@ public class Main {
         GamePanel panel = new GamePanel(); 
 
         frame.add(panel);
-        frame.setSize(800, 600);
+        frame.setSize(768, 768);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
+        frame.setTitle("Servive Together");
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        frame.pack();
 
         panel.requestFocusInWindow();
         
         boolean gameRun = true;
+        
+        panel.startGame();
 
-        // GAME LOOP
-        while (gameRun) {
-           boolean check =  panel.updateGame();  
-                       
-            if(check != false) {
-            	panel.repaint();    // Afaq's drawing 
-                Thread.sleep(16);   // ~60 FPS
-            }
-            
-            else {
-            	gameRun = false;
-            	panel.repaint();    // Afaq's drawing 
-                Thread.sleep(16); 
-            }
-        }
     }
 }
