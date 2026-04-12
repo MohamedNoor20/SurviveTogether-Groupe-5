@@ -96,7 +96,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		// ADD MENU BUTTON - only add if we have a main reference (not in test mode)
 		if (main != null) {
 			JButton menuButton = new JButton("MENU");
-			menuButton.setBounds(700, 10, 80, 30);
+			menuButton.setBounds(688, 10, 80, 30);
 			menuButton.setFont(new Font("Arial", Font.BOLD, 14));
 			menuButton.setBackground(new Color(200, 200, 200));
 			menuButton.setForeground(Color.BLACK);
