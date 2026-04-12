@@ -21,4 +21,9 @@ public class CoinTest {
 		
 		
 	}
+	
+	@Test
+    void testPlayerScoreIncreases() {
+
+    }
 }
