@@ -439,6 +439,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawFireboy(g);
 		drawWatergirl(g);
 		drawMessages(g);
+		// Display timer on screen Susan Ogozi 3157092
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Arial", Font.BOLD, 18));
+		g.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
 		drawControlsInfo(g);
 		g.setColor(new Color(100, 100, 100));
 		for (Floor floor : floors) {
