@@ -8,5 +8,9 @@ public class Coin {
 	public Coin (Rectangle area) {
 		this.area = area;
 	}
+	
+	public void checkCollision (Player p) {
+
+	}
 
 }
