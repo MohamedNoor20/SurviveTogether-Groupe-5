@@ -470,7 +470,15 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		g.fillRect(0, ScreenHeight - UI_Height, ScreenWidth, 4);
 	}
 	public void drawCoins(Graphics g) {
-
+	    for (Coin coin : coins) {
+	        if (!coin.isCollected) 
+	            // If the image loaded successfully it will draw it
+	            if (coinImage != null) {
+	                // The null at the end is an ImageObserver, we don't need it so it gona be null
+	                g.drawImage(coinImage, coin.area.x, coin.area.y, coin.area.width, coin.area.height, null);
+	            }
+	        }
+	    }
 	}
 
 	@Override
