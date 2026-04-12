@@ -16,6 +16,7 @@ public class Player {
 
 	public int screen = 800;
 	public int floor = 510;
+	public boolean onIce = false;
 
 	// create the player
 	public Player(int x, int y, Type type) {

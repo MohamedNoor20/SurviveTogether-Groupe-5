@@ -63,4 +63,89 @@ public class GameLogicTest {
         fire.check(fireboy); //no overlap (susan ogozi)
         assertTrue(fireboy.alive); //safe during normal movement  (susan ogozi)
     }
+    @Test
+    //test 8 to test if player 
+    void testIceFloorFlag() {
+        Player fireboy = new Player(0,0,Type.FIRE);
+        Hazard iceFloor = new Hazard(new Rectangle(0,0,50,50), Type.ICE);
+        iceFloor.check(fireboy);
+        assertTrue(fireboy.onIce);  
+    }
+    @Test
+ // test 9 checks if GREEN hazard kills fireboy (susan ogozi)
+    void testGreenKillsFireboy() {
+        Player fireboy = new Player(0, 0, Type.FIRE);
+        Hazard green = new Hazard(new Rectangle(0, 0, 50, 50), Type.GREEN);
+        green.check(fireboy);
+        assertFalse(fireboy.alive); //green kills fire boy(susan ogozi)
+}
+    @Test
+ // test 10  checks if GREEN hazard kills watergirl (susan ogozi)
+    void testGreenKillsWatergirl() {
+        Player watergirl = new Player(0, 0, Type.WATER); //water girl at green harzard (susan ogozi)
+        Hazard green = new Hazard(new Rectangle(0, 0, 50, 50), Type.GREEN); //green pool(susan ogozi)
+        green.check(watergirl);
+        assertFalse(watergirl.alive); //green kills water girl(susan ogozi)
+    }
+    @Test
+ // test 11 checks if watergirl gets onIce flag when touching ice floor (susan ogozi)
+    //movement class uses this flag to slow watergirl down vice versa for fire boy (susan ogozi)
+    void testIceFloorFlagWatergirl() {
+        Player watergirl = new Player(0, 0, Type.WATER);
+        Hazard iceFloor = new Hazard(new Rectangle(0, 0, 50, 50), Type.ICE);
+        iceFloor.check(watergirl);
+        assertTrue(watergirl.onIce); 
+    }
+    @Test
+ // test 12 checks watergirl outside door and returns false  (susan ogozi)
+    void testPlayerOutsideDoorWatergirl() {
+        Player watergirl = new Player(100, 100, Type.WATER); 
+        Door door = new Door(new Rectangle(0, 0, 50, 50));
+        assertFalse(door.isInside(watergirl)); 
+    }
+    @Test
+ // test 13  checks watergirl stays alive when not touching hazard (susan ogozi)
+    void testNoCollisionNoDeathWatergirl() {
+        Player watergirl = new Player(100, 100, Type.WATER);
+        Hazard water = new Hazard(new Rectangle(0, 0, 50, 50), Type.WATER);
+        water.check(watergirl); 
+        assertTrue(watergirl.alive);
+}
+    @Test
+ // test 14  checks timer is running after start is called (susan ogozi)
+    void testTimerStartsRunning() {
+        Timer t = new Timer(); //create timer (susan ogozi)
+        t.start(); // start the timer (susan ogozi)
+        assertTrue(t.running); //timer must be running (susan ogozi)
+}
+    @Test
+ // test 15  checks timer stops after stop is called (susan ogozi)
+    void testTimerStops() {
+        Timer t = new Timer();
+        t.start();// start the timer (susan ogozi)
+        t.stop();// stop the timer (susan ogozi)
+        assertFalse(t.running);//timer must be stopped (susan ogozi)
+}
+    @Test
+ // test 16  checks timer is not running before start is called (susan ogozi)
+    void testTimerNotRunningAtStart() {
+        Timer t = new Timer(); // create timer (susan ogozi)
+        assertFalse(t.running); // not started yet (susan ogozi)
+}
+    @Test
+ // test 17 checks both players inside door returns true (susan ogozi)
+ void testBothInsideDoor() {
+     Player fireboy = new Player(10, 10, Type.FIRE);
+     Player watergirl = new Player(10, 10, Type.WATER);
+     Door door = new Door(new Rectangle(0, 0, 50, 50));
+     assertTrue(door.bothInside(fireboy, watergirl)); // both inside they win (susan ogozi)
+ }
+    @Test
+ // test 18 checks bothInside returns false when only one player inside (susan ogozi)
+ void testBothInsideOnlyOne() {
+     Player fireboy = new Player(10, 10, Type.FIRE); // inside door (susan ogozi)
+     Player watergirl = new Player(100, 100, Type.WATER); // outside door (susan ogozi)
+     Door door = new Door(new Rectangle(0, 0, 50, 50));
+     assertFalse(door.bothInside(fireboy, watergirl)); // only one inside  no win (susan ogozi)
+ }
 }
