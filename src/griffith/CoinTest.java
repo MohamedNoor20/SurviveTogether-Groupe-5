@@ -33,4 +33,7 @@ public class CoinTest {
         assertEquals(1, player.score, "Player score should increase by 1.");
 
     }
+	void testCoinCannotBeCollectedTwice() {
+		
+	}
 }
