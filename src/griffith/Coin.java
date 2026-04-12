@@ -10,7 +10,10 @@ public class Coin {
 	}
 	
 	public void checkCollision (Player p) {
-
+		if (!isCollected && area.intersects(p.getBounds())) {
+			this.isCollected = true;
+			p.score++;
+		}
 	}
 
 }
