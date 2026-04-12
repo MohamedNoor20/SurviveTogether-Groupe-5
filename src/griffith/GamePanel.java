@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Timer gameTimer = new Timer(); // tracks level time (Susan Ogozi) 
 	ArrayList<Floor> floors;
 	ArrayList<Floor> iceFloor;
+	ArrayList<Coin> coins; 
 
 	private Main main;
 
@@ -74,6 +75,11 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		// Create floors
 		floors = new ArrayList<>();
 		iceFloor = new ArrayList<>();
+
+		// for the coins 
+		coins = new ArrayList<>();
+		// if you want to add coin you need to use this coins.add(new Coin(new Rectangle(x, y, width, height)));
+
 		// ground floor
 		floors.add(new Floor(new Rectangle(0, 715, 768, 10)));
 		floors.add(new Floor(new Rectangle(685, 630, 10, 95)));
@@ -156,6 +162,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			waterPool.check(player2);
 			greenPool.check(player1);
 			greenPool.check(player2);
+			
+			// here we check if the player did pick up the coin  
+			for (Coin coin : coins) {
+			    coin.checkCollision(player1);
+			    coin.checkCollision(player2);
+			}
 
 			repaint();
 
