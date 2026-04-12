@@ -10,6 +10,8 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class GamePanel extends JPanel implements KeyListener, Runnable {
 
