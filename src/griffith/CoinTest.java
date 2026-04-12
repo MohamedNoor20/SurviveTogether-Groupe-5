@@ -24,6 +24,13 @@ public class CoinTest {
 	
 	@Test
     void testPlayerScoreIncreases() {
+		player = new Player(100, 100, Type.FIRE);
+		coin = new Coin(new Rectangle(100, 100, 20, 20));
+		// test when the game starts the score should be 0
+        assertEquals(0, player.score, "Player score should be 0.");
+        // if the player collects one coin the score should increase by one  
+        coin.checkCollision(player);
+        assertEquals(1, player.score, "Player score should increase by 1.");
 
     }
 }
