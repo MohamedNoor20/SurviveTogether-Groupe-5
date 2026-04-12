@@ -24,6 +24,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Hazard firePool;
 	Hazard waterPool;
 	Door door;
+	Timer gameTimer = new Timer(); // tracks level time (Susan Ogozi) 
 	ArrayList<Floor> floors;
 
 	private Main main;
