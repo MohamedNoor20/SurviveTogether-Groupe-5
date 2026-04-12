@@ -26,6 +26,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Hazard greenPool;
 	Door door;
 	ArrayList<Floor> floors;
+	ArrayList<Floor> iceFloor;
 
 	private Main main;
 
@@ -71,14 +72,16 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		// Create floors
 		floors = new ArrayList<>();
+		iceFloor = new ArrayList<>();
 		// ground floor
 		floors.add(new Floor(new Rectangle(0, 715, 768, 10)));
 		floors.add(new Floor(new Rectangle(685, 630, 10, 95)));
 		floors.add(new Floor(new Rectangle(685, 630, 83, 10)));
 		// 1st floor
-		floors.add(new Floor(new Rectangle(0, 540, 640, 10)));
+		floors.add(new Floor(new Rectangle(0, 540, 150, 10)));
 		floors.add(new Floor(new Rectangle(83, 455, 10, 95)));
 		floors.add(new Floor(new Rectangle(0, 455, 83, 10)));
+		iceFloor.add(new Floor(new Rectangle(150, 540, 490, 10)));
 
 		// 2nd floor
 		floors.add(new Floor(new Rectangle(123, 385, 645, 10)));
@@ -120,6 +123,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 			// game logic
 			for (Floor floor : floors) {
+				floor.stopFallThrough(player1);
+				floor.stopFallThrough(player2);
+			}
+			for (Floor floor : iceFloor) {
 				floor.stopFallThrough(player1);
 				floor.stopFallThrough(player2);
 			}
@@ -445,6 +452,17 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		g.setColor(new Color(55, 42, 25));
 		g.fillRect(0, ScreenHeight - UI_Height, ScreenWidth, 4);
 	}
+	
+	public void floorColor(Graphics g) {
+		g.setColor(new Color(100, 100, 100));
+		for (Floor floor : floors) {
+			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+		}
+		g.setColor(new Color(245, 245, 220));
+		for (Floor floor : iceFloor) {
+			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+		}
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -456,9 +474,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawWatergirl(g);
 		drawMessages(g);
 		drawControlsInfo(g);
-		g.setColor(new Color(100, 100, 100));
-		for (Floor floor : floors) {
-			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
-		}
+		floorColor(g);
+		
 	}
 }
