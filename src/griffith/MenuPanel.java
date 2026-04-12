@@ -1,10 +1,9 @@
 package griffith;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -20,7 +19,14 @@ public class MenuPanel extends JPanel {
     
     //constructor for the menu
     public MenuPanel(Main main) {
-        this.mainFrame = main;
+    	
+    	this.mainFrame = main;
+
+    	double scale = (main != null) ? main.scale : 1.0;
+        int width = (int)(768 * scale);
+        int height = (int)(768 * scale);
+        this.setPreferredSize(new Dimension(width, height));
+
         setLayout(null);
         setBackground(new Color(18, 18, 38));
         
@@ -32,14 +38,14 @@ public class MenuPanel extends JPanel {
         startButton.setForeground(Color.BLACK);
         //when clicked
         startButton.setFocusPainted(false);
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	showFullMenu();
-            	//telling main to start the game
+        startButton.addActionListener(e -> {
+            if (mainFrame != null) {
+                showFullMenu();
                 mainFrame.startGame();
-                }
-            });
+            } else {
+                System.out.println("mainFrame is null");
+            }
+        });
         add(startButton);
         
         //RESTART BUTTON
@@ -49,14 +55,14 @@ public class MenuPanel extends JPanel {
         restartButton.setBackground(new Color(200, 200, 80));
         restartButton.setForeground(Color.BLACK);
         restartButton.setFocusPainted(false);
-        restartButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	showFullMenu();
-            	//telling Main to restart
-                mainFrame.restartGame();
-                }
-            });
+        restartButton.addActionListener(e -> {
+            if (mainFrame != null) {
+                showFullMenu();
+                mainFrame.startGame();
+            } else {
+                System.out.println("ERROR: mainFrame is null");
+            }
+        });
         add(restartButton);
         
         //EXIT BUTTON
@@ -66,13 +72,7 @@ public class MenuPanel extends JPanel {
         exitButton.setBackground(new Color(200, 80, 80));
         exitButton.setForeground(Color.BLACK);
         exitButton.setFocusPainted(false);
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	//close the game
-                System.exit(0);
-                }
-            });
+        exitButton.addActionListener(e -> System.exit(0));
         add(exitButton);
         }
     
@@ -119,7 +119,7 @@ public class MenuPanel extends JPanel {
     public void drawBackground(java.awt.Graphics g) {
         //back wall
         g.setColor(new Color(28, 28, 52));
-        g.fillRect(0, 0, 800, 510);
+        g.fillRect(0, 0, 768, 768);
         
         //brick pattern
         g.setColor(new Color(38, 38, 65));
