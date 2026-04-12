@@ -16,6 +16,7 @@ public class Player {
 	public int jumpPower = -15;
 	public int playerSize = 50;
 	public int screen = 768;
+	public int score = 0;
 	// Mohamed
 	public int width = 40;
 	public int height = 46;
