@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 
 public class GamePanel extends JPanel implements KeyListener {
 
@@ -16,6 +17,7 @@ public class GamePanel extends JPanel implements KeyListener {
     Hazard waterPool;
 
     Door door;
+    private Main main;
     
     //player 1
     boolean p1Up;
@@ -28,7 +30,14 @@ public class GamePanel extends JPanel implements KeyListener {
     boolean p2Left;
     boolean p2Right;
     // Mohamed
+    
+    //constructor for testing 
     public GamePanel() {
+        this(null);
+        }
+    
+    public GamePanel(Main main) {
+        this.main = main;
 
     	//dark background
         setBackground(new Color(18, 18, 38));
@@ -47,7 +56,20 @@ public class GamePanel extends JPanel implements KeyListener {
 
         // Create door
         door = new Door(new Rectangle(685, 430, 60, 80));
-    }
+        
+        //ADD MENU BUTTON
+        JButton menuButton = new JButton("MENU");
+        //button position
+        menuButton.setBounds(700, 10, 80, 30);
+        menuButton.setFont(new Font("Arial", Font.BOLD, 14));
+        menuButton.setBackground(new Color(200, 200, 200));
+        menuButton.setForeground(Color.BLACK);
+        menuButton.setFocusPainted(false);
+        menuButton.addActionListener(e -> main.showMenu(false));
+        //allows absolute position
+        this.setLayout(null);
+        this.add(menuButton);
+        }
     
     // Mohamed
     // This runs the frame
@@ -82,8 +104,11 @@ public class GamePanel extends JPanel implements KeyListener {
 
         // Lose condition
         if (!player1.alive || !player2.alive) {
+            if (main != null) {
+                main.showMenu(true);
+                }
             return false;
-        }
+            }
         return true;
     }
 
@@ -350,6 +375,7 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     
     //draws win/lose messages
+    //draws win message only
     public void drawMessages(java.awt.Graphics g) {
         //win message
         if (door.isInside(player1) && door.isInside(player2)) {
@@ -359,19 +385,20 @@ public class GamePanel extends JPanel implements KeyListener {
             g.setFont(new Font("Arial", Font.BOLD, 32));
             g.drawString("YOU WIN!", 320, 262);
         }
+    
         
-        //lose message
+        /*//lose message
         if (!player1.alive || !player2.alive) {
             g.setColor(new Color(0, 0, 0, 140));
             g.fillRoundRect(250, 220, 300, 60, 12, 12);
             g.setColor(new Color(240, 60, 60));
             g.setFont(new Font("Arial", Font.BOLD, 32));
             g.drawString("GAME OVER", 290, 262);
-        }
+        }*/
     }
     
     //draws controls info bar
-    public void drawControlsInfo(java.awt.Graphics g) {
+   /* public void drawControlsInfo(java.awt.Graphics g) {
         g.setColor(new Color(15, 15, 30));
         g.fillRect(0, 515, 800, 105);
         
@@ -394,7 +421,7 @@ public class GamePanel extends JPanel implements KeyListener {
         //divider
         g.setColor(new Color(45, 45, 70));
         g.drawLine(0, 562, 800, 562);
-    }
+    }*/
     
     //draws background with brick pattern
     public void drawBackground(java.awt.Graphics g) {
@@ -427,6 +454,6 @@ public class GamePanel extends JPanel implements KeyListener {
         drawFireboy(g);
         drawWatergirl(g);
         drawMessages(g);
-        drawControlsInfo(g);
+        //drawControlsInfo(g);
     }
 }

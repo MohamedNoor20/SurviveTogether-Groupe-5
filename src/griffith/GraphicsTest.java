@@ -56,4 +56,77 @@ public class GraphicsTest {
     void testWatergirlAlive() {
         assertTrue(game.isWatergirlAlive());
         }
+    
+    
+    //dynamic movement test
+    
+    @Test
+    void testFireboyMovesRight() {
+        int startX = game.getFireboyX();
+        game.player1.moveRight();
+        int newX = game.getFireboyX();
+        assertTrue(newX > startX, "Fireboy should move right");
+        }
+    
+    @Test
+    void testFireboyMovesLeft() {
+        int startX = game.getFireboyX();
+        game.player1.moveLeft();
+        int newX = game.getFireboyX();
+        assertTrue(newX < startX, "Fireboy should move left");
+        }
+    
+    @Test
+    void testWatergirlMovesRight() {
+        int startX = game.getWatergirlX();
+        game.player2.moveRight();
+        int newX = game.getWatergirlX();
+        assertTrue(newX > startX, "Watergirl should move right");
+        }
+    
+    @Test
+    void testWatergirlMovesLeft() {
+        int startX = game.getWatergirlX();
+        game.player2.moveLeft();
+        int newX = game.getWatergirlX();
+        assertTrue(newX < startX, "Watergirl should move left");
+        }
+    
+    @Test
+    void testFireboyJumps() {
+        int startY = game.getFireboyY();
+        game.player1.moveUp();
+        game.player1.gravity();
+        int newY = game.getFireboyY();
+        assertTrue(newY < startY, "Fireboy should jump up (Y decreases)");
+        }
+    
+    @Test
+    void testWatergirlJumps() {
+        int startY = game.getWatergirlY();
+        game.player2.moveUp();
+        game.player2.gravity();
+        int newY = game.getWatergirlY();
+        assertTrue(newY < startY, "Watergirl should jump up (Y decreases)");
+        }
+    
+    @Test
+    void testPlayerCannotMoveThroughLeftWall() {
+        for (int i = 0; i < 20; i++) {
+            game.player1.moveLeft();
+            }
+        
+        int x = game.getFireboyX();
+        assertTrue(x >= 0, "Player should not go beyond left wall");
+        }
+    
+    @Test
+    void testPlayerCannotMoveThroughRightWall() {
+        for (int i = 0; i < 20; i++) {
+            game.player1.moveRight();
+            }
+        
+        int x = game.getFireboyX();
+        assertTrue(x + 40 <= 800, "Player should not go beyond right wall");
+        }
     }
