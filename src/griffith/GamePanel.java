@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -50,9 +51,15 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 	public GamePanel(Main main) {
 		this.main = main;
+		
+		double scale = (main != null) ? main.scale : 1.0;
+		int scaledW = (int)(ScreenWidth * scale);
+		int scaledH = (int)(ScreenHeight * scale);
 
-		this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
+		this.setPreferredSize(new Dimension(scaledW, scaledH));
 		this.setDoubleBuffered(true);
+
+		this.setLayout(null);
 
 		// dark background
 		setBackground(new Color(18, 18, 38));
@@ -481,14 +488,21 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		drawBackground(g);
-		drawHazards(g);
-		drawDoor(g);
-		drawFireboy(g);
-		drawWatergirl(g);
-		drawMessages(g);
-		drawControlsInfo(g);
-		floorColor(g);
+		
+		Graphics2D g2 = (Graphics2D) g;
+		
+		if (main != null) {
+			g2.scale(main.scale, main.scale);
+		}
+		
+		drawBackground(g2);
+		drawHazards(g2);
+		drawDoor(g2);
+		drawFireboy(g2);
+		drawWatergirl(g2);
+		drawMessages(g2);
+		drawControlsInfo(g2);
+		floorColor(g2);
 		  // Display timer on screen Susan Ogozi 3157092
 	    g.setColor(Color.WHITE);
 	    g.setFont(new Font("Arial", Font.BOLD, 18));
