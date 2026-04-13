@@ -101,7 +101,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		coins.add(new Coin(new Rectangle(350, 680, 20, 20)));
 		coins.add(new Coin(new Rectangle(150, 500, 20, 20))); 
-		coins.add(new Coin(new Rectangle(320, 170, 20, 20))); 
+		coins.add(new Coin(new Rectangle(210, 170, 20, 20))); 
 
 		// ground floor
 		floors.add(new Floor(new Rectangle(0, 715, 768, 10)));
