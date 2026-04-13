@@ -1,19 +1,39 @@
 package griffith;
 
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public class Main {
 
-	private JFrame frame;        // main window
+	private JFrame frame; // main window
 	private GamePanel gamePanel; // game screen
 	private MenuPanel menuPanel; // menu screen
 
+	public double scale = 1.0;
+	private final int BaseSize = 768;
+
 	public Main() {
 		frame = new JFrame("Survive Together");
-		frame.setSize(768, 768);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
+		frame.setResizable(true);
+
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
+		int usableWidth = screen.width;
+		int usableHeight = screen.height;
+
+		int size = Math.min(usableWidth, usableHeight);
+		size = Math.min(size, BaseSize);
+
+		scale = (double) size / BaseSize;
+
+		int finalSize = (int) (BaseSize * scale);
+
+		frame.setSize(finalSize, finalSize);
+		frame.setLocationRelativeTo(null);
 
 		// create the menu and game screens
 		menuPanel = new MenuPanel(this);
@@ -23,7 +43,6 @@ public class Main {
 		showMenu(false);
 
 		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
 	}
 
 	// switches to the menu screen
@@ -38,6 +57,7 @@ public class Main {
 			menuPanel.showFullMenu();
 		}
 
+		frame.pack();
 		frame.revalidate();
 		frame.repaint();
 		menuPanel.requestFocusInWindow();
@@ -45,16 +65,17 @@ public class Main {
 
 	// switches to the game screen and starts the game loop
 	public void startGame() {
-		frame.remove(menuPanel);
+		frame.getContentPane().removeAll();
 
 		// create a fresh game panel each time
 		gamePanel = new GamePanel(this);
+		
 		frame.add(gamePanel);
 		frame.revalidate();
 		frame.repaint();
+		
 		gamePanel.requestFocusInWindow();
-
-		// start the game loop (GamePanel handles its own thread via Runnable)
+		//start the game loop (GamePanel handles its own thread via Runnable)
 		gamePanel.startGame();
 	}
 
