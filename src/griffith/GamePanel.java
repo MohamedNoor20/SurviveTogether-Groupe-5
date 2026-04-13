@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Timer gameTimer = new Timer(); // tracks level time (Susan Ogozi) 
 	ArrayList<Floor> floors;
 	ArrayList<Floor> iceFloor;
+	ArrayList<Floor> wallOpen;
 	ArrayList<Coin> coins; 
 
 	private Main main;
@@ -94,6 +95,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		// Create floors
 		floors = new ArrayList<>();
 		iceFloor = new ArrayList<>();
+		wallOpen = new ArrayList<>();
 
 		// for the coins 
 		coins = new ArrayList<>();
@@ -118,6 +120,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		floors.add(new Floor(new Rectangle(350, 300, 10, 95)));
 		floors.add(new Floor(new Rectangle(350, 300, 83, 10)));
 		floors.add(new Floor(new Rectangle(433, 300, 10, 95)));
+		wallOpen.add(new Floor(new Rectangle(700, 375, 10, 10)));
 
 		// 3rd floor
 		floors.add(new Floor(new Rectangle(123, 210, 187, 10)));
@@ -512,6 +515,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		}
 		g.setColor(new Color(245, 245, 220));
 		for (Floor floor : iceFloor) {
+			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+		}
+		g.setColor(new Color(255, 0, 0));
+		for (Floor floor : wallOpen) {
 			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
 		}
 	}
