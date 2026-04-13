@@ -17,7 +17,6 @@ public class FloorTest {
         
         assertTrue(result1 && result2);
     }
-    // Test isOnFloor FALSE
 
     @Test
     public void topCollision() {
@@ -42,7 +41,6 @@ public class FloorTest {
 	        assertFalse(player2.isJumping);
 	    }
 
-    // Test hitting ceiling
     @Test
     public void bottomCollision() {
         Floor floor = new Floor(new Rectangle(0, 100, 200, 20));
