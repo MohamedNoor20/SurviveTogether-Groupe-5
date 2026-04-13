@@ -163,10 +163,17 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			for (Floor floor : floors) {
 				floor.stopFallThrough(player1);
 				floor.stopFallThrough(player2);
+				player1.speed = 5;
 			}
 			for (Floor floor : iceFloor) {
 				floor.stopFallThrough(player1);
 				floor.stopFallThrough(player2);
+				if (floor.isOnFloor(player1)) {
+
+					player1.speed = 2;
+					
+				}
+				
 			}
 			if(!pressBottom) {
 				for (Floor floor : openWall) {

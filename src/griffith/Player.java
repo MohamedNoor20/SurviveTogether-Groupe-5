@@ -21,8 +21,7 @@ public class Player {
 	// Mohamed
 	public int width = 40;
 	public int height = 46;
-	// Susan
-	public boolean onIce = false;
+
 
 
 	// create the player
