@@ -14,6 +14,7 @@ public class Player {
 	public int gravity = 1;
 	public boolean isJumping = false;
 	public int jumpPower = -15;
+	public int speed = 5;
 	public int playerSize = 50;
 	public int screen = 768;
 	public int score = 0;
@@ -44,7 +45,7 @@ public class Player {
 
 	public void moveLeft() {
 		if (this.x - 1 > 0) {
-			this.x -= 5;
+			this.x -= speed;
 		} else {
 			this.x -= 0;
 		}
@@ -53,7 +54,7 @@ public class Player {
 
 	public void moveRight() {
 		if (this.x + 1 + playerSize <= screen) {
-			this.x += 5;
+			this.x += speed;
 		} else {
 			this.x += 0;
 		}
