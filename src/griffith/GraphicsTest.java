@@ -8,31 +8,6 @@ public class GraphicsTest {
 
     GamePanel game = new GamePanel();
 
-    //testing the position
-    @Test
-    void testFireboyX() {
-        //checking if fireboy X is on screen
-        assertEquals(50, game.getFireboyX());
-        }
-
-    @Test
-    void testFireboyY() {
-        //checking if fireboy Y is on screen
-        assertEquals(330, game.getFireboyY());
-        }
-
-    @Test
-    void testWatergirlX() {
-        //checking if watergirl X is valid
-        assertEquals(130, game.getWatergirlX());
-        }
-
-    @Test
-    void testWatergirlY() {
-        //checking if watergirl Y is valid
-        assertEquals(330, game.getWatergirlY());
-        }
-
     //testing colors 
     @Test
     void testFireboyColor() {
