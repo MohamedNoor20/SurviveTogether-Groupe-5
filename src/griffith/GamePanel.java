@@ -527,12 +527,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	}
 
 	public void floorColor(Graphics g) {
-		g.setColor(new Color(100, 100, 100));
+		g.setColor(new Color(139, 90, 43));
 		for (Floor floor : floors) {
 			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
 		}
 		if(!pressBottom) {
-			g.setColor(new Color(100, 100, 100));
+			g.setColor(new Color(139, 90, 43));
 			for (Floor floor : openWall) {
 				g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
 			}
