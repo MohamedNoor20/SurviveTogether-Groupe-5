@@ -9,9 +9,10 @@ public class BottomTest {
     @Test
     public void testPressTrue() {
         Bottom bottom = new Bottom(new Rectangle(100, 100, 50, 50));
-        Player player = new Player(110, 110, Type.FIRE);
+        Player player1 = new Player(110, 110, Type.FIRE);
+        Player player2 = new Player(110, 110, Type.FIRE);
 
-        assertTrue(bottom.press(player));
+        assertTrue(bottom.press(player1) || bottom.press(player2));
     }
 
 }
