@@ -28,14 +28,14 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Hazard waterPool;
 	Hazard greenPool;
 	Door door;
-	Timer gameTimer = new Timer(); // tracks level time (Susan Ogozi) 
+	Timer gameTimer = new Timer(); // tracks level time (Susan Ogozi)
 	ArrayList<Floor> floors;
 	ArrayList<Floor> iceFloor;
-	ArrayList<Floor> wallOpen;
-	ArrayList<Coin> coins; 
+	ArrayList<Coin> coins;
+	Bottom bottom;
 
 	private Main main;
-	
+
 	public Image coinImage;
 
 	// player 1
@@ -48,6 +48,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	boolean p2Down;
 	boolean p2Left;
 	boolean p2Right;
+	
+	public boolean pressBottom = false;
 
 	// constructor for testing
 	public GamePanel() {
@@ -56,10 +58,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 	public GamePanel(Main main) {
 		this.main = main;
-		
+
 		double scale = (main != null) ? main.scale : 1.0;
-		int scaledW = (int)(ScreenWidth * scale);
-		int scaledH = (int)(ScreenHeight * scale);
+		int scaledW = (int) (ScreenWidth * scale);
+		int scaledH = (int) (ScreenHeight * scale);
 
 		this.setPreferredSize(new Dimension(scaledW, scaledH));
 		this.setDoubleBuffered(true);
@@ -68,13 +70,13 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		// dark background
 		setBackground(new Color(18, 18, 38));
-		
-		// here to load the coins 
+
+		// here to load the coins
 		try {
-		    ImageIcon icon = new ImageIcon(getClass().getResource("coin.png"));
-		    coinImage = icon.getImage();
+			ImageIcon icon = new ImageIcon(getClass().getResource("coin.png"));
+			coinImage = icon.getImage();
 		} catch (Exception e) {
-		    System.out.println("Could not find the coin image.");
+			System.out.println("Could not find the coin image.");
 		}
 
 		// Create players
@@ -95,15 +97,15 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		// Create floors
 		floors = new ArrayList<>();
 		iceFloor = new ArrayList<>();
-		wallOpen = new ArrayList<>();
 
-		// for the coins 
+		// for the coins
 		coins = new ArrayList<>();
-		// if you want to add coin you need to use this coins.add(new Coin(new Rectangle(x, y, width, height)));
+		// if you want to add coin you need to use this coins.add(new Coin(new
+		// Rectangle(x, y, width, height)));
 
 		coins.add(new Coin(new Rectangle(350, 680, 20, 20)));
-		coins.add(new Coin(new Rectangle(150, 500, 20, 20))); 
-		coins.add(new Coin(new Rectangle(210, 170, 20, 20))); 
+		coins.add(new Coin(new Rectangle(150, 500, 20, 20)));
+		coins.add(new Coin(new Rectangle(210, 170, 20, 20)));
 
 		// ground floor
 		floors.add(new Floor(new Rectangle(0, 715, 768, 10)));
@@ -120,7 +122,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		floors.add(new Floor(new Rectangle(350, 300, 10, 95)));
 		floors.add(new Floor(new Rectangle(350, 300, 83, 10)));
 		floors.add(new Floor(new Rectangle(433, 300, 10, 95)));
-		wallOpen.add(new Floor(new Rectangle(700, 375, 10, 10)));
+		bottom = new Bottom(new Rectangle(700, 375, 10, 10));
 
 		// 3rd floor
 		floors.add(new Floor(new Rectangle(123, 210, 187, 10)));
@@ -146,7 +148,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	}
 
 	public void startGame() {
-		gameTimer.start(); // start tracking time Susan Ogozi 
+		gameTimer.start(); // start tracking time Susan Ogozi
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
@@ -188,11 +190,13 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			waterPool.check(player2);
 			greenPool.check(player1);
 			greenPool.check(player2);
-			
-			// here we check if the player did pick up the coin  
+			bottom.press(player1);
+			bottom.press(player2);
+
+			// here we check if the player did pick up the coin
 			for (Coin coin : coins) {
-			    coin.checkCollision(player1);
-			    coin.checkCollision(player2);
+				coin.checkCollision(player1);
+				coin.checkCollision(player2);
 			}
 
 			repaint();
@@ -212,8 +216,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 				gameThread = null; // stop the loop
 				return;
 			}
-			
-			if(door.bothInside(player1, player2)) {
+
+			if (door.bothInside(player1, player2)) {
 				repaint();
 				try {
 					Thread.sleep(1500);
@@ -287,7 +291,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// empty 
+		// empty
 	}
 
 	// AFAQ AHMED - GRAPHICS METHODS
@@ -424,7 +428,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			g.drawArc(waterX + 4, waterY + 11, 30, 14, 0, 180);
 			g.drawArc(waterX + 38, waterY + 11, 30, 14, 0, 180);
 		}
-		
+
 		if (greenPool != null) {
 			int greenX = greenPool.area.x;
 			int greenY = greenPool.area.y;
@@ -507,7 +511,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		g.fillRect(0, ScreenHeight - UI_Height, ScreenWidth, 4);
 	}
 
-	
 	public void floorColor(Graphics g) {
 		g.setColor(new Color(100, 100, 100));
 		for (Floor floor : floors) {
@@ -517,36 +520,42 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		for (Floor floor : iceFloor) {
 			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
 		}
-		g.setColor(new Color(255, 0, 0));
-		for (Floor floor : wallOpen) {
-			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
-		}
 	}
 
 	public void drawCoins(Graphics g) {
-	    for (Coin coin : coins) {
-	        if (!coin.isCollected) 
-	            // If the image loaded successfully it will draw it
-	            if (coinImage != null) {
-	                // The null at the end is an ImageObserver, we don't need it so it gona be null
-	                g.drawImage(coinImage, coin.area.x, coin.area.y, coin.area.width, coin.area.height, null);
-	            }
-	        }
-	    }
-	
+		for (Coin coin : coins) {
+			if (!coin.isCollected)
+				// If the image loaded successfully it will draw it
+				if (coinImage != null) {
+					// The null at the end is an ImageObserver, we don't need it so it gona be null
+					g.drawImage(coinImage, coin.area.x, coin.area.y, coin.area.width, coin.area.height, null);
+				}
+		}
+	}
 
+	public void bottomColor(Graphics g) {
+		if(!pressBottom) {
+			g.setColor(new Color(255, 0, 0));
+			g.fillRect(bottom.area.x, bottom.area.y, bottom.area.width, bottom.area.height);
+		}
+
+		if (bottom.press(player1) || bottom.press(player2) || pressBottom) {
+			g.setColor(new Color(0, 255, 0));
+			g.fillRect(bottom.area.x, bottom.area.y, bottom.area.width, bottom.area.height);
+			pressBottom = true;
+		}
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		
 		Graphics2D g2 = (Graphics2D) g;
-		
+
 		if (main != null) {
 			g2.scale(main.scale, main.scale);
 		}
-		
+
 		drawBackground(g2);
 		drawHazards(g2);
 		drawDoor(g2);
@@ -555,12 +564,13 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawMessages(g2);
 		drawControlsInfo(g2);
 		floorColor(g2);
-		  // Display timer on screen Susan Ogozi 3157092
-	    g.setColor(Color.WHITE);
-	    g.setFont(new Font("Arial", Font.BOLD, 18));
-	    g.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
+		// Display timer on screen Susan Ogozi 3157092
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Arial", Font.BOLD, 18));
+		g.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
 
-		drawCoins(g);
+		drawCoins(g2);
+		bottomColor(g2);
 
 	}
 }
