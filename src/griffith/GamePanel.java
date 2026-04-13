@@ -193,6 +193,20 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 				gameThread = null; // stop the loop
 				return;
 			}
+			
+			if(door.bothInside(player1, player2)) {
+				repaint();
+				try {
+					Thread.sleep(1500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (main != null) {
+					main.showMenu(true);
+				}
+				gameThread = null; // stop the loop
+				return;
+			}
 
 			try {
 				Thread.sleep(16); // ~60 FPS
