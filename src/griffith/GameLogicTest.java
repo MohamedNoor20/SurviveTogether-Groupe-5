@@ -49,7 +49,7 @@ public class GameLogicTest {
     }
     @Test
     //test 6 if player outside the door no win (susan ogozi)
-    void testPlayerOutsideDoor() {
+    void testPlayerOutsideDoorFireBoy() {
         Player fireboy = new Player(100, 100, Type.FIRE); // far outside the door (susan ogozi)
         Door door = new Door(new Rectangle(0, 0, 50, 50)); // door 0-50 (susan ogozi)
         assertFalse(door.isInside(fireboy)); //outside false (susan ogozi)
@@ -57,15 +57,15 @@ public class GameLogicTest {
     }
     @Test
     //test 7 no collision player is safe (susan ogozi)
-    void testNoCollisionNoDeath() {
+    void testNoCollisionNoDeathFireBoy() {
         Player fireboy = new Player(100, 100, Type.FIRE); //far from hazard (susan ogozi)
         Hazard fire = new Hazard(new Rectangle(0, 0, 50, 50), Type.FIRE); // hazard 0-50
         fire.check(fireboy); //no overlap (susan ogozi)
         assertTrue(fireboy.alive); //safe during normal movement  (susan ogozi)
     }
     @Test
-    //test 8 to test if player 
-    void testIceFloorFlag() {
+    //test 8 to test if player is on ice and flags it (susan ogozi)
+    void testIceFloorFlagFireBoy() {
         Player fireboy = new Player(0,0,Type.FIRE);
         Hazard iceFloor = new Hazard(new Rectangle(0,0,50,50), Type.ICE);
         iceFloor.check(fireboy);
