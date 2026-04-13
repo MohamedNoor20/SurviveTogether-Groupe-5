@@ -10,6 +10,8 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class GamePanel extends JPanel implements KeyListener, Runnable {
 
@@ -31,6 +33,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	ArrayList<Coin> coins; 
 
 	private Main main;
+	
+	public Image coinImage;
 
 	// player 1
 	boolean p1Up;
@@ -56,6 +60,14 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		// dark background
 		setBackground(new Color(18, 18, 38));
+		
+		// here to load the coins 
+		try {
+		    ImageIcon icon = new ImageIcon(getClass().getResource("coin.png"));
+		    coinImage = icon.getImage();
+		} catch (Exception e) {
+		    System.out.println("Could not find the coin image.");
+		}
 
 		// Create players
 		player1 = new Player(50, 670, Type.FIRE);
@@ -79,6 +91,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		// for the coins 
 		coins = new ArrayList<>();
 		// if you want to add coin you need to use this coins.add(new Coin(new Rectangle(x, y, width, height)));
+
+		coins.add(new Coin(new Rectangle(350, 680, 20, 20)));
+		coins.add(new Coin(new Rectangle(150, 500, 20, 20))); 
+		coins.add(new Coin(new Rectangle(320, 170, 20, 20))); 
 
 		// ground floor
 		floors.add(new Floor(new Rectangle(0, 715, 768, 10)));
@@ -466,6 +482,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		g.setColor(new Color(55, 42, 25));
 		g.fillRect(0, ScreenHeight - UI_Height, ScreenWidth, 4);
 	}
+
 	
 	public void floorColor(Graphics g) {
 		g.setColor(new Color(100, 100, 100));
@@ -478,6 +495,19 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		}
 	}
 
+	public void drawCoins(Graphics g) {
+	    for (Coin coin : coins) {
+	        if (!coin.isCollected) 
+	            // If the image loaded successfully it will draw it
+	            if (coinImage != null) {
+	                // The null at the end is an ImageObserver, we don't need it so it gona be null
+	                g.drawImage(coinImage, coin.area.x, coin.area.y, coin.area.width, coin.area.height, null);
+	            }
+	        }
+	    }
+	
+
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -488,10 +518,14 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawWatergirl(g);
 		drawMessages(g);
 		drawControlsInfo(g);
+
 		floorColor(g);
 		  // Display timer on screen Susan Ogozi 3157092
 	    g.setColor(Color.WHITE);
 	    g.setFont(new Font("Arial", Font.BOLD, 18));
 	    g.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
+
+		drawCoins(g);
+
 	}
 }
