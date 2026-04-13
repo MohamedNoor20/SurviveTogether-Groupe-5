@@ -526,13 +526,13 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		g.fillRect(0, ScreenHeight - UI_Height, ScreenWidth, 4);
 	}
 
-	public void floorColor(Graphics g) {
-		g.setColor(new Color(100, 100, 100));
+	/*public void floorColor(Graphics g) {
+		g.setColor(new Color(139, 90, 43));
 		for (Floor floor : floors) {
 			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
 		}
 		if(!pressBottom) {
-			g.setColor(new Color(100, 100, 100));
+			g.setColor(new Color(139, 90, 43));
 			for (Floor floor : openWall) {
 				g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
 			}
@@ -541,7 +541,43 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		for (Floor floor : iceFloor) {
 			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
 		}
-	}
+	}*/
+	
+	public void floorColor(Graphics g) {
+	    //mud colour for regular floors
+	    Color mudColor = new Color(139, 90, 43);
+	    Color mudShadow = new Color(94, 64, 32);
+	    
+	    for (Floor floor : floors) {
+	        g.setColor(mudColor);
+	        g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+	        // shadow at bottom
+	        g.setColor(mudShadow);
+	        g.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
+	        }
+	    
+	    if(!pressBottom) {
+	        for (Floor floor : openWall) {
+	            g.setColor(mudColor);
+	            g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+	            // shadow at bottom
+	            g.setColor(mudShadow);
+	            g.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
+	            }
+	        }
+	    
+	    //ice floors
+	    Color iceColor = new Color(245, 245, 220);
+	    Color iceShadow = new Color(180, 180, 160);
+	    
+	    for (Floor floor : iceFloor) {
+	        g.setColor(iceColor);
+	        g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+	        // shadow at bottom
+	        g.setColor(iceShadow);
+	        g.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
+	        }
+	    }
 
 	public void drawCoins(Graphics g) {
 		for (Coin coin : coins) {

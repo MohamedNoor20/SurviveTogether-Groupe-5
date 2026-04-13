@@ -17,6 +17,19 @@ public class MenuPanel extends JPanel {
     private Main mainFrame;
     private boolean showGameOver = false;
     
+    //getter methods for testing
+    public JButton getStartButton() {
+        return startButton;
+        }
+
+    public JButton getRestartButton() {
+        return restartButton;
+        }
+
+    public JButton getExitButton() {
+        return exitButton;
+        }
+    
     //constructor for the menu
     public MenuPanel(Main main) {
     	
