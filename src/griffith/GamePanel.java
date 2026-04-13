@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	ArrayList<Floor> iceFloor;
 	ArrayList<Coin> coins;
 	Bottom bottom;
+	ArrayList<Floor> openWall;
 
 	private Main main;
 
@@ -97,6 +98,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		// Create floors
 		floors = new ArrayList<>();
 		iceFloor = new ArrayList<>();
+		openWall = new ArrayList<>();
 
 		// for the coins
 		coins = new ArrayList<>();
@@ -105,7 +107,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		coins.add(new Coin(new Rectangle(350, 680, 20, 20)));
 		coins.add(new Coin(new Rectangle(150, 500, 20, 20)));
-		coins.add(new Coin(new Rectangle(210, 170, 20, 20)));
+		coins.add(new Coin(new Rectangle(210, 160, 30, 30)));
 
 		// ground floor
 		floors.add(new Floor(new Rectangle(0, 715, 768, 10)));
@@ -126,8 +128,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		// 3rd floor
 		floors.add(new Floor(new Rectangle(123, 210, 187, 10)));
-		floors.add(new Floor(new Rectangle(123, 120, 10, 90)));
-		floors.add(new Floor(new Rectangle(300, 120, 10, 90)));
+		openWall.add(new Floor(new Rectangle(123, 120, 10, 90)));
+		openWall.add(new Floor(new Rectangle(300, 120, 10, 90)));
 		floors.add(new Floor(new Rectangle(475, 210, 187, 10)));
 
 		// 4th floor
@@ -165,6 +167,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			for (Floor floor : iceFloor) {
 				floor.stopFallThrough(player1);
 				floor.stopFallThrough(player2);
+			}
+			if(!pressBottom) {
+				for (Floor floor : openWall) {
+					floor.stopFallThrough(player1);
+					floor.stopFallThrough(player2);
+				}
 			}
 
 			if (p1Up)
@@ -516,6 +524,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		for (Floor floor : floors) {
 			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
 		}
+		if(!pressBottom) {
+			g.setColor(new Color(100, 100, 100));
+			for (Floor floor : openWall) {
+				g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+			}
+		}
 		g.setColor(new Color(245, 245, 220));
 		for (Floor floor : iceFloor) {
 			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
@@ -539,10 +553,15 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			g.fillRect(bottom.area.x, bottom.area.y, bottom.area.width, bottom.area.height);
 		}
 
-		if (bottom.press(player1) || bottom.press(player2) || pressBottom) {
+		if (bottom.press(player1) || bottom.press(player2)) {
 			g.setColor(new Color(0, 255, 0));
 			g.fillRect(bottom.area.x, bottom.area.y, bottom.area.width, bottom.area.height);
 			pressBottom = true;
+		}
+		
+		if(pressBottom) {
+			g.setColor(new Color(0, 255, 0));
+			g.fillRect(bottom.area.x, bottom.area.y, bottom.area.width, bottom.area.height);
 		}
 	}
 
