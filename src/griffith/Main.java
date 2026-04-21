@@ -44,6 +44,9 @@ public class Main {
 		showMenu(false);
 
 		frame.setVisible(true);
+		//
+		audio = new GameAudio();
+		audio.play("background");
 	}
 
 	// switches to the menu screen
