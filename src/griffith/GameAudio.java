@@ -9,4 +9,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class GameAudio {
 	 public Clip backgroundMusic, gamePlayMusic, gameMusic2;
 	 public Clip effect1, effect2, effect3;
+	 public GameAudio() {
+	        load();
+}
 }
