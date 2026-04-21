@@ -11,6 +11,7 @@ public class Main {
 	private JFrame frame; // main window
 	private GamePanel gamePanel; // game screen
 	private MenuPanel menuPanel; // menu screen
+	private GameAudio audio;
 
 	public double scale = 1.0;
 	private final int BaseSize = 768;
