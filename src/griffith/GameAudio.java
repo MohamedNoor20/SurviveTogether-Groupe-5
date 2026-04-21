@@ -33,4 +33,19 @@ public class GameAudio {
 				e.printStackTrace();
 			}
 }
+	 public void play(String list) {
+			
+			switch(list) {
+			case "background":
+				backgroundMusic.setFramePosition(0);
+				backgroundMusic.start();
+				backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+				break;
+			case "gamePlay":
+				gamePlayMusic.setFramePosition(0);
+				gamePlayMusic.start();
+				gamePlayMusic.loop(Clip.LOOP_CONTINUOUSLY);
+				break;
+			}
+		}
 }
