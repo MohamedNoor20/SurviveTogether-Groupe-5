@@ -54,7 +54,12 @@ public class Main {
 		// remove game panel if it's there
 		frame.remove(gamePanel);
 		frame.add(menuPanel);
-
+		
+		//Update restart music when showing menu(Susan Ogozi)
+		if (audio != null) {
+			audio.stop("gamePlay");
+			audio.play("background");
+		}
 		if (isGameOver) {
 			menuPanel.showGameOverMenu();
 		} else {
@@ -77,6 +82,12 @@ public class Main {
 		frame.add(gamePanel);
 		frame.revalidate();
 		frame.repaint();
+		
+		//Update switch to game music
+		if (audio != null) {
+			audio.stop("background");
+			audio.play("gamePlay");
+		}
 		
 		gamePanel.requestFocusInWindow();
 		//start the game loop (GamePanel handles its own thread via Runnable)
