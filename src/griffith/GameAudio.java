@@ -7,5 +7,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 public class GameAudio {
-
+	 public Clip backgroundMusic, gamePlayMusic, gameMusic2;
+	 public Clip effect1, effect2, effect3;
 }
