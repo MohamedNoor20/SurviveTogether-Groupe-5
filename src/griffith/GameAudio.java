@@ -12,4 +12,25 @@ public class GameAudio {
 	 public GameAudio() {
 	        load();
 }
+	 public void load() {
+			try {
+				backgroundMusic = AudioSystem.getClip();
+				File audioFile = new File("src/static/music/IntroMusic.wav");
+				AudioInputStream audioStream1 = AudioSystem.getAudioInputStream(audioFile);
+				backgroundMusic.open(audioStream1);
+				
+				
+				gamePlayMusic = AudioSystem.getClip();
+				audioFile = new File("src/static/music/gamePlayMusic.wav");
+				AudioInputStream audioStream2 = AudioSystem.getAudioInputStream(audioFile);
+				gamePlayMusic.open(audioStream2);
+
+			}
+			catch(LineUnavailableException e) {e.printStackTrace();} 
+			catch (UnsupportedAudioFileException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+}
 }
