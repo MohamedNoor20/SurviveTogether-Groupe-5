@@ -48,4 +48,21 @@ public class GameAudio {
 				break;
 			}
 		}
+	 public void allStop() {
+			backgroundMusic.stop();
+			gamePlayMusic.stop();
+
+		}
+		
+		public void stop(String list) {
+			
+			switch(list) {
+			case "background":
+				backgroundMusic.stop();
+				break;
+			case "gamePlay":
+				gamePlayMusic.stop();
+				break;
+}
+		}
 }
