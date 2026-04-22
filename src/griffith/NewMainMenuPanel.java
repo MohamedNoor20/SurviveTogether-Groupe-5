@@ -23,5 +23,11 @@ public class NewMainMenuPanel extends JPanel {
 	        this.setPreferredSize(new Dimension(width, height));
 	        
 	        setLayout(null);
+	        try {
+	            backgroundImage = new ImageIcon("src/static/images/MenuBackground.jpg").getImage();
+	        } catch (Exception e) {
+	            System.out.println("Background image not found, using fallback");
+	        }
 }
+	    
 }
