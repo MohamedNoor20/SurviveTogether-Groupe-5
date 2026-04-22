@@ -25,4 +25,11 @@ public class Level2Door {
     private ImageIcon resizeImage(ImageIcon icon, int width, int height) {
         return new ImageIcon(icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
     }
+    public void setImage() {
+        if (state % 2 == 0) {
+            img = resizeImage(new ImageIcon("src/static/image/elements/water_door.png"), DOOR_WIDTH, DOOR_HEIGHT).getImage();
+        } else {
+            img = resizeImage(new ImageIcon("src/static/image/elements/fire_door.png"), DOOR_WIDTH, DOOR_HEIGHT).getImage();
+        }
+    }
 }
