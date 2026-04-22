@@ -40,6 +40,16 @@ public class NewMainMenuPanel extends JPanel {
 	            }
 	        });
 	        add(playButton);
+	        
+	        exitButton = new JButton("EXIT");
+	        exitButton.setBounds(284, 530, 200, 60);
+	        exitButton.setFont(new Font("Arial", Font.BOLD, 28));
+	        exitButton.setBackground(new Color(80, 80, 80));
+	        exitButton.setForeground(Color.WHITE);
+	        exitButton.setFocusPainted(false);
+	        exitButton.addActionListener(e -> System.exit(0));
+	        add(exitButton);
 }
+	    
 	    
 }
