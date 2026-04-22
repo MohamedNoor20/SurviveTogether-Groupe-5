@@ -10,7 +10,7 @@ public class Main {
 
 	private JFrame frame; // main window
 	private GamePanel gamePanel; // game screen
-	private MenuPanel menuPanel; // menu screen
+	private NewMainMenuPanel newmainmenuPanel; // menu screen
 	private GameAudio audio;
 	private DifficultyPanel difficultyPanel;
 
