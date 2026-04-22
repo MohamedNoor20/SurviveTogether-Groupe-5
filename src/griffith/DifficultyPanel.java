@@ -48,5 +48,17 @@ public class DifficultyPanel {
             }
         });
         add(mediumButton);
+        backButton = new JButton("BACK");
+        backButton.setBounds(284, 460, 200, 50);
+        backButton.setFont(new Font("Arial", Font.BOLD, 20));
+        backButton.setBackground(new Color(150, 150, 150));
+        backButton.setForeground(Color.BLACK);
+        backButton.setFocusPainted(false);
+        backButton.addActionListener(e -> {
+            if (mainFrame != null) {
+                mainFrame.showMainMenu();
+            }
+        });
+        add(backButton);
 }
 }
