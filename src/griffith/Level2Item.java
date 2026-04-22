@@ -22,9 +22,11 @@ public class Level2Item {
         this.state = state;
         setImage();
     }
+    
     private ImageIcon resizeImage(ImageIcon icon, int width, int height) {
         return new ImageIcon(icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
     }
+    
     public void setImage() {
         if (state % 2 == 0) {
             img = resizeImage(new ImageIcon("src/static/image/elements/water_gem.png"), ITEM_WIDTH, ITEM_HEIGHT).getImage();
@@ -32,4 +34,11 @@ public class Level2Item {
             img = resizeImage(new ImageIcon("src/static/image/elements/fire_gem.png"), ITEM_WIDTH, ITEM_HEIGHT).getImage();
         }
     }
+    
+    public Image getImage() { return img; }
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public int getWidth() { return w; }
+    public int getHeight() { return h; }
+    public int getState() { return state; }
 }
