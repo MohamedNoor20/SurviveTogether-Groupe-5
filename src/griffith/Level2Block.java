@@ -1,0 +1,5 @@
+package griffith;
+
+public class Level2Block {
+
+}
