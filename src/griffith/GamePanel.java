@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	ArrayList<Floor> openWall;
 
 	private Main main;
-
+	private String difficulty;
 	public Image coinImage;
 
 	// player 1
@@ -54,10 +54,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 	// constructor for testing
 	public GamePanel() {
-		this(null);
+		this(null, "easy");
 	}
 
-	public GamePanel(Main main String difficulty) {
+	public GamePanel(Main main, String difficulty) {
 		this.main = main;
 		this.difficulty = difficulty;
 
@@ -144,7 +144,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			menuButton.setBackground(new Color(200, 200, 200));
 			menuButton.setForeground(Color.BLACK);
 			menuButton.setFocusPainted(false);
-			menuButton.addActionListener(e -> main.showMenu(false));
+			menuButton.addActionListener(e -> main.showMainMenu());
 			this.setLayout(null);
 			this.add(menuButton);
 		}
@@ -227,7 +227,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 					e.printStackTrace();
 				}
 				if (main != null) {
-					main.showMenu(true);
+					main.showMainMenu();
 				}
 				gameThread = null; // stop the loop
 				return;
@@ -241,7 +241,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 					e.printStackTrace();
 				}
 				if (main != null) {
-					main.showMenu(true);
+					main.showMainMenu();
 				}
 				gameThread = null; // stop the loop
 				return;
