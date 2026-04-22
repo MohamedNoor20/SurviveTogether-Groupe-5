@@ -51,5 +51,34 @@ public class NewMainMenuPanel extends JPanel {
 	        add(exitButton);
 }
 	    
-	    
+	    @Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        
+	      
+	        if (backgroundImage != null) {
+	            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+	        } else {
+	            
+	            g.setColor(new Color(20, 30, 60));
+	            g.fillRect(0, 0, getWidth(), getHeight());
+	        }
+	        
+	       
+	        g.setFont(new Font("Arial", Font.BOLD, 52));
+	        g.setColor(new Color(255, 200, 50));
+	        g.drawString("FIREBOY", 200, 150);
+	        
+	        g.setFont(new Font("Arial", Font.BOLD, 52));
+	        g.setColor(new Color(50, 200, 255));
+	        g.drawString("&", 420, 150);
+	        
+	        g.setFont(new Font("Arial", Font.BOLD, 52));
+	        g.setColor(new Color(50, 200, 100));
+	        g.drawString("WATERGIRL", 460, 150);
+	        
+	        g.setFont(new Font("Arial", Font.ITALIC, 24));
+	        g.setColor(new Color(200, 200, 200));
+	        g.drawString("ELEMENTS", 340, 220);
+	    }
 }
