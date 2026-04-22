@@ -1,7 +1,6 @@
 package griffith;
 
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -10,9 +9,10 @@ public class Main {
 
 	private JFrame frame; // main window
 	private GamePanel gamePanel; // game screen
-	private NewMainMenuPanel newmainmenuPanel; // menu screen
-	private GameAudio audio;
+	private NewMainMenuPanel newmainmenuPanel; // menu screen new (susan ogozi)
 	private DifficultyPanel difficultyPanel;
+	private GameAudio audio;
+	private String currentDifficulty;
 
 	public double scale = 1.0;
 	private final int BaseSize = 768;
@@ -37,6 +37,7 @@ public class Main {
 		frame.setSize(finalSize, finalSize);
 		frame.setLocationRelativeTo(null);
 
+		/*
 		// create the menu and game screens
 		menuPanel = new MenuPanel(this);
 		gamePanel = new GamePanel(this);
@@ -48,8 +49,19 @@ public class Main {
 		//
 		audio = new GameAudio();
 		audio.play("background");
+		*/
+
+		newmainmenuPanel = new NewMainMenuPanel(this);
+		difficultyPanel = new DifficultyPanel(this);
+		audio = new GameAudio();
+
+		showMainMenu();
+
+		frame.setVisible(true);
+		audio.play("background");
 	}
 
+	/*
 	// switches to the menu screen
 	public void showMenu(boolean isGameOver) {
 		// remove game panel if it's there
@@ -72,7 +84,9 @@ public class Main {
 		frame.repaint();
 		menuPanel.requestFocusInWindow();
 	}
+	*/
 
+	/*
 	// switches to the game screen and starts the game loop
 	public void startGame() {
 		frame.getContentPane().removeAll();
@@ -94,10 +108,66 @@ public class Main {
 		//start the game loop (GamePanel handles its own thread via Runnable)
 		gamePanel.startGame();
 	}
+	*/
 
+	/*
 	// restart is the same as starting a new game
 	public void restartGame() {
 		startGame();
+	}
+	*/
+
+	public void showMainMenu() {
+		if (gamePanel != null) frame.remove(gamePanel);
+		if (difficultyPanel != null) frame.remove(difficultyPanel);
+		frame.add(newmainmenuPanel);
+		
+		if (audio != null) {
+			audio.stop("gamePlay");
+			audio.play("background");
+		}
+		
+		frame.revalidate();
+		frame.repaint();
+		newmainmenuPanel.requestFocusInWindow();
+	}
+
+	public void showDifficultyMenu() {
+		frame.remove(newmainmenuPanel);
+		if (gamePanel != null) frame.remove(gamePanel);
+		frame.add(difficultyPanel);
+		
+		frame.revalidate();
+		frame.repaint();
+		difficultyPanel.requestFocusInWindow();
+	}
+
+	public void startGame(String difficulty) {
+		this.currentDifficulty = difficulty;
+		frame.getContentPane().removeAll();
+
+		gamePanel = new GamePanel(this, difficulty);
+		
+		frame.add(gamePanel);
+		frame.revalidate();
+		frame.repaint();
+		
+		if (audio != null) {
+			audio.stop("background");
+			if (difficulty.equals("medium")) {
+				audio.play("gamePlay");
+			}
+		}
+		
+		gamePanel.requestFocusInWindow();
+		gamePanel.startGame();
+	}
+
+	public void showGameOver() {
+		if (audio != null) {
+			audio.stop("gamePlay");
+		}
+		showMainMenu();
 	}
 
 	public static void main(String[] args) {
