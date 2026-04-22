@@ -26,6 +26,15 @@ public class Level2Block {
         img = new ImageIcon("src/static/image/elements/block.png").getImage();
     }
     
+    public Level2Block(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.w = width;
+        this.h = height;
+        this.blockRect = new Rectangle(x, y, w, h);
+        img = new ImageIcon("src/static/image/elements/block.png").getImage();
+    }
+    
     public Image getImage() { return img; }
     public int getX() { return x; }
     public int getY() { return y; }

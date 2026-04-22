@@ -9,6 +9,7 @@ public class Main {
 
 	private JFrame frame; // main window
 	private GamePanel gamePanel; // game screen
+	private MyLevelPanel myLevelPanel; // medium mode level (SUSAN OGOZI)
 	private NewMainMenuPanel newmainmenuPanel; // menu screen new (susan ogozi)
 	private DifficultyPanel difficultyPanel;
 	private GameAudio audio;
@@ -118,8 +119,7 @@ public class Main {
 	*/
 
 	public void showMainMenu() {
-		if (gamePanel != null) frame.remove(gamePanel);
-		if (difficultyPanel != null) frame.remove(difficultyPanel);
+		frame.getContentPane().removeAll();
 		frame.add(newmainmenuPanel);
 		
 		if (audio != null) {
@@ -133,8 +133,7 @@ public class Main {
 	}
 
 	public void showDifficultyMenu() {
-		frame.remove(newmainmenuPanel);
-		if (gamePanel != null) frame.remove(gamePanel);
+		frame.getContentPane().removeAll();
 		frame.add(difficultyPanel);
 		
 		frame.revalidate();
@@ -146,21 +145,27 @@ public class Main {
 		this.currentDifficulty = difficulty;
 		frame.getContentPane().removeAll();
 
-		gamePanel = new GamePanel(this, difficulty);
-		
-		frame.add(gamePanel);
-		frame.revalidate();
-		frame.repaint();
+		if (difficulty.equals("medium")) {
+			myLevelPanel = new MyLevelPanel();
+			myLevelPanel.setMainFrame(this);
+			frame.add(myLevelPanel);
+			frame.revalidate();
+			frame.repaint();
+			myLevelPanel.requestFocusInWindow();
+			myLevelPanel.startGame();
+		} else {
+			gamePanel = new GamePanel(this, difficulty);
+			frame.add(gamePanel);
+			frame.revalidate();
+			frame.repaint();
+			gamePanel.requestFocusInWindow();
+			gamePanel.startGame();
+		}
 		
 		if (audio != null) {
 			audio.stop("background");
-			if (difficulty.equals("medium")) {
-				audio.play("gamePlay");
-			}
+			audio.play("gamePlay");
 		}
-		
-		gamePanel.requestFocusInWindow();
-		gamePanel.startGame();
 	}
 
 	public void showGameOver() {
@@ -171,7 +176,6 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		// run on the Swing event thread
 		SwingUtilities.invokeLater(() -> new Main());
 	}
 }
