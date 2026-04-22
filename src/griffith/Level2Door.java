@@ -12,4 +12,15 @@ public class Level2Door {
     private Image img;
     private int x, y, w, h;
     
+    public Level2Door() {}
+    
+    public Level2Door(int x, int y, int state) {
+        this.x = x;
+        this.y = y;
+        this.w = DOOR_WIDTH;
+        this.h = DOOR_HEIGHT;
+        this.state = state;
+        setImage();
+    }
+    
 }
