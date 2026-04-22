@@ -22,5 +22,18 @@ public class DifficultyPanel {
         
         setLayout(null);
         setBackground(new Color(18, 18, 38));
+        
+        easyButton = new JButton("EASY MODE");
+        easyButton.setBounds(234, 250, 300, 70);
+        easyButton.setFont(new Font("Arial", Font.BOLD, 28));
+        easyButton.setBackground(new Color(80, 200, 80));
+        easyButton.setForeground(Color.BLACK);
+        easyButton.setFocusPainted(false);
+        easyButton.addActionListener(e -> {
+            if (mainFrame != null) {
+                mainFrame.startGame("easy");
+            }
+        });
+        add(easyButton);
 }
 }
