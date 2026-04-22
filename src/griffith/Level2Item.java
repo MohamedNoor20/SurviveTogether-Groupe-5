@@ -22,5 +22,7 @@ public class Level2Item {
         this.state = state;
         setImage();
     }
-    
+    private ImageIcon resizeImage(ImageIcon icon, int width, int height) {
+        return new ImageIcon(icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
+    }
 }
