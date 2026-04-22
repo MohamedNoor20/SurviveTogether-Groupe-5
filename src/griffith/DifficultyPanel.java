@@ -35,5 +35,18 @@ public class DifficultyPanel {
             }
         });
         add(easyButton);
+        
+        mediumButton = new JButton("MEDIUM MODE");
+        mediumButton.setBounds(234, 350, 300, 70);
+        mediumButton.setFont(new Font("Arial", Font.BOLD, 28));
+        mediumButton.setBackground(new Color(80, 150, 255));
+        mediumButton.setForeground(Color.WHITE);
+        mediumButton.setFocusPainted(false);
+        mediumButton.addActionListener(e -> {
+            if (mainFrame != null) {
+                mainFrame.startGame("medium");
+            }
+        });
+        add(mediumButton);
 }
 }
