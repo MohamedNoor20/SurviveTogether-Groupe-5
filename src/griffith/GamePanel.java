@@ -57,8 +57,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		this(null);
 	}
 
-	public GamePanel(Main main) {
+	public GamePanel(Main main String difficulty) {
 		this.main = main;
+		this.difficulty = difficulty;
 
 		double scale = (main != null) ? main.scale : 1.0;
 		int scaledW = (int) (ScreenWidth * scale);
