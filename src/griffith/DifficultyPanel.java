@@ -61,4 +61,16 @@ public class DifficultyPanel {
         });
         add(backButton);
 }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        g.setColor(new Color(18, 18, 38));
+        g.fillRect(0, 0, getWidth(), getHeight());
+        
+        g.setFont(new Font("Arial", Font.BOLD, 48));
+        g.setColor(new Color(255, 200, 50));
+        g.drawString("SELECT", 300, 120);
+        g.drawString("DIFFICULTY", 270, 180);
+    }
 }
