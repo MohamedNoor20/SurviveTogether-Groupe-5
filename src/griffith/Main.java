@@ -12,6 +12,7 @@ public class Main {
 	private GamePanel gamePanel; // game screen
 	private MenuPanel menuPanel; // menu screen
 	private GameAudio audio;
+	private DifficultyPanel difficultyPanel;
 
 	public double scale = 1.0;
 	private final int BaseSize = 768;

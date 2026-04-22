@@ -1,16 +1,18 @@
 package griffith;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-public class DifficultyPanel {
-	private JButton easyButton;
+
+public class DifficultyPanel extends JPanel {
+    
+    private JButton easyButton;
     private JButton mediumButton;
     private JButton backButton;
     private Main mainFrame;
-    
     
     public DifficultyPanel(Main main) {
         this.mainFrame = main;
@@ -22,6 +24,7 @@ public class DifficultyPanel {
         
         setLayout(null);
         setBackground(new Color(18, 18, 38));
+        
         
         easyButton = new JButton("EASY MODE");
         easyButton.setBounds(234, 250, 300, 70);
@@ -36,6 +39,7 @@ public class DifficultyPanel {
         });
         add(easyButton);
         
+       
         mediumButton = new JButton("MEDIUM MODE");
         mediumButton.setBounds(234, 350, 300, 70);
         mediumButton.setFont(new Font("Arial", Font.BOLD, 28));
@@ -48,6 +52,8 @@ public class DifficultyPanel {
             }
         });
         add(mediumButton);
+        
+        
         backButton = new JButton("BACK");
         backButton.setBounds(284, 460, 200, 50);
         backButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -60,7 +66,8 @@ public class DifficultyPanel {
             }
         });
         add(backButton);
-}
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
