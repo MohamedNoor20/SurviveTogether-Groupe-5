@@ -8,6 +8,6 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-public class NewMainMenuPanel {
+public class NewMainMenuPanel extends JPanel {
 
 }
