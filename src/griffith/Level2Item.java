@@ -12,4 +12,15 @@ public class Level2Item {
     private Image img;
     private int x, y, w, h;
     
+    public Level2Item() {}
+    
+    public Level2Item(int x, int y, int state) {
+        this.x = x;
+        this.y = y;
+        this.w = ITEM_WIDTH;
+        this.h = ITEM_HEIGHT;
+        this.state = state;
+        setImage();
+    }
+    
 }
