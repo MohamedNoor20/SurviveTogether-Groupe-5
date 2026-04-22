@@ -9,5 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 public class NewMainMenuPanel extends JPanel {
-
+	 private JButton playButton;
+	    private JButton exitButton;
+	    private Main mainFrame;
+	    private Image backgroundImage;
 }
