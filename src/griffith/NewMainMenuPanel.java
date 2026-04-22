@@ -28,6 +28,18 @@ public class NewMainMenuPanel extends JPanel {
 	        } catch (Exception e) {
 	            System.out.println("Background image not found, using fallback");
 	        }
+	        playButton = new JButton("PLAY");
+	        playButton.setBounds(284, 450, 200, 60);
+	        playButton.setFont(new Font("Arial", Font.BOLD, 28));
+	        playButton.setBackground(new Color(255, 100, 50));
+	        playButton.setForeground(Color.WHITE);
+	        playButton.setFocusPainted(false);
+	        playButton.addActionListener(e -> {
+	            if (mainFrame != null) {
+	                mainFrame.showDifficultyMenu();
+	            }
+	        });
+	        add(playButton);
 }
 	    
 }
