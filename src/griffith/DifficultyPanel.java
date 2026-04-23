@@ -2,21 +2,17 @@ package griffith;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 
 public class DifficultyPanel extends JPanel {
     
-    private JButton easyButton;
-    private JButton mediumButton;
-    private JButton backButton;
     private Main mainFrame;
     private Image backgroundImage;
+    private Image easyImg, mediumImg, backImg;
     
     public DifficultyPanel(Main main) {
         this.mainFrame = main;
@@ -28,86 +24,42 @@ public class DifficultyPanel extends JPanel {
         
         setLayout(null);
         
-        try {
-            backgroundImage = new ImageIcon("src/static/image/background/MenuBackground.jpg").getImage();
-        } catch (Exception e) {
-            System.out.println("Background image not found");
-        }
+        backgroundImage = new ImageIcon("src/static/image/background/MenuBackground.jpg").getImage();
+
+        easyImg   = new ImageIcon("src/static/image/text/Easy_mode.png").getImage();
+        mediumImg = new ImageIcon("src/static/image/text/Medium_mode.png").getImage();
+        backImg   = new ImageIcon("src/static/image/text/BackBtn.png").getImage();
         
-        easyButton = new JButton("EASY MODE");
-        easyButton.setBounds(234, 250, 300, 70);
-        easyButton.setFont(new Font("Arial", Font.BOLD, 28));
-        easyButton.setBackground(new Color(255, 200, 50));
-        easyButton.setForeground(Color.BLACK);
-        easyButton.setFocusPainted(false);
-        easyButton.setBorder(new LineBorder(new Color(200, 150, 30), 2, true));
-        easyButton.setOpaque(true);
-        easyButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                easyButton.setBackground(new Color(255, 220, 80));
-                easyButton.setBorder(new LineBorder(new Color(255, 180, 50), 3, true));
+
+        add(createImageButton(easyImg, 234, 250, 300, 70, () -> {
+            if (mainFrame != null) mainFrame.startGame("easy");
+        }));
+
+        add(createImageButton(mediumImg, 234, 350, 300, 70, () -> {
+            if (mainFrame != null) mainFrame.startGame("medium");
+        }));
+
+        add(createImageButton(backImg, 234, 450, 300, 70, () -> {
+            if (mainFrame != null) mainFrame.showMainMenu();
+        }));
+    }
+
+    private JButton createImageButton(Image img, int x, int y, int w, int h, Runnable action) {
+        JButton btn = new JButton() {
+            protected void paintComponent(Graphics g) {
+                if (img != null) {
+                    g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+                }
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                easyButton.setBackground(new Color(255, 200, 50));
-                easyButton.setBorder(new LineBorder(new Color(200, 150, 30), 2, true));
-            }
-        });
-        easyButton.addActionListener(e -> {
-            if (mainFrame != null) {
-                mainFrame.startGame("easy");
-            }
-        });
-        add(easyButton);
-        
-        mediumButton = new JButton("MEDIUM MODE");
-        mediumButton.setBounds(234, 350, 300, 70);
-        mediumButton.setFont(new Font("Arial", Font.BOLD, 28));
-        mediumButton.setBackground(new Color(255, 200, 50));
-        mediumButton.setForeground(Color.BLACK);
-        mediumButton.setFocusPainted(false);
-        mediumButton.setBorder(new LineBorder(new Color(200, 150, 30), 2, true));
-        mediumButton.setOpaque(true);
-        mediumButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                mediumButton.setBackground(new Color(255, 220, 80));
-                mediumButton.setBorder(new LineBorder(new Color(255, 180, 50), 3, true));
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                mediumButton.setBackground(new Color(255, 200, 50));
-                mediumButton.setBorder(new LineBorder(new Color(200, 150, 30), 2, true));
-            }
-        });
-        mediumButton.addActionListener(e -> {
-            if (mainFrame != null) {
-                mainFrame.startGame("medium");
-            }
-        });
-        add(mediumButton);
-        
-        backButton = new JButton("BACK");
-        backButton.setBounds(284, 460, 200, 50);
-        backButton.setFont(new Font("Arial", Font.BOLD, 20));
-        backButton.setBackground(new Color(255, 200, 50));
-        backButton.setForeground(Color.BLACK);
-        backButton.setFocusPainted(false);
-        backButton.setBorder(new LineBorder(new Color(200, 150, 30), 2, true));
-        backButton.setOpaque(true);
-        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                backButton.setBackground(new Color(255, 220, 80));
-                backButton.setBorder(new LineBorder(new Color(255, 180, 50), 3, true));
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                backButton.setBackground(new Color(255, 200, 50));
-                backButton.setBorder(new LineBorder(new Color(200, 150, 30), 2, true));
-            }
-        });
-        backButton.addActionListener(e -> {
-            if (mainFrame != null) {
-                mainFrame.showMainMenu();
-            }
-        });
-        add(backButton);
+        };
+
+        btn.setBounds(x, y, w, h);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.addActionListener(e -> action.run());
+
+        return btn;
     }
     
     @Override
