@@ -5,18 +5,18 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public class Level2Switch {
-    
+
     public static final int SWITCH_WIDTH = 30;
     public static final int SWITCH_HEIGHT = 12;
-    
+
     private Image img;
     private int x, y, w, h;
     private Rectangle switchRect;
     private boolean isSwitchOn = false;
     private Level2SwitchBlock manageBlock;
-    
+
     public Level2Switch() {}
-    
+
     public Level2Switch(int x, int y) {
         this.x = x;
         this.y = y;
@@ -25,32 +25,34 @@ public class Level2Switch {
         this.switchRect = new Rectangle(x, y, w, h);
         setImage();
     }
-    
+
     private ImageIcon resizeImage(ImageIcon icon, int width, int height) {
         return new ImageIcon(icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
     }
-    
+
     public void setImage() {
         img = resizeImage(new ImageIcon("src/static/image/elements/switch.png"), SWITCH_WIDTH, SWITCH_HEIGHT).getImage();
     }
-    
+
     public void setManageBlock(Level2SwitchBlock manageBlock) {
         this.manageBlock = manageBlock;
     }
-    
+
     public void setSwitchState(boolean value) {
         this.isSwitchOn = value;
         manage();
     }
-    
+
     public void manage() {
-        if (isSwitchOn) {
-            manageBlock.setVisible(false);
-        } else {
-            manageBlock.setVisible(true);
+        if (manageBlock != null) {
+            if (isSwitchOn) {
+                manageBlock.setVisible(false);
+            } else {
+                manageBlock.setVisible(true);
+            }
         }
     }
-    
+
     public Image getImage() { return img; }
     public int getX() { return x; }
     public int getY() { return y; }

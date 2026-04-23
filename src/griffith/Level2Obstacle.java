@@ -5,17 +5,18 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public class Level2Obstacle {
-    
+
     public static final int OBSTACLE_WIDTH = 124;
     public static final int OBSTACLE_HEIGHT = 32;
-    private int state;
-    
+
     private Image img;
     private Rectangle obstacleRect;
     private int x, y, w, h;
-    
+    private int state;
+    private boolean isDead = false;
+
     public Level2Obstacle() {}
-    
+
     public Level2Obstacle(int x, int y, int state) {
         this.x = x;
         this.y = y;
@@ -25,11 +26,16 @@ public class Level2Obstacle {
         this.obstacleRect = new Rectangle(x, y, w, h);
         setImage();
     }
-    
+
     private ImageIcon resizeImage(ImageIcon icon, int width, int height) {
         return new ImageIcon(icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
     }
-    
+
+    public void setDieImage() {
+        isDead = true;
+        img = new ImageIcon("src/static/image/elements/smoke.gif").getImage();
+    }
+
     public void setImage() {
         if (state < 0) {
             img = resizeImage(new ImageIcon("src/static/image/elements/poison_obstacle.png"), OBSTACLE_WIDTH, OBSTACLE_HEIGHT).getImage();
@@ -39,7 +45,8 @@ public class Level2Obstacle {
             img = resizeImage(new ImageIcon("src/static/image/elements/fire_obstacle.png"), OBSTACLE_WIDTH, OBSTACLE_HEIGHT).getImage();
         }
     }
-    
+
+    public boolean isDead() { return isDead; }
     public Image getImage() { return img; }
     public int getX() { return x; }
     public int getY() { return y; }
