@@ -5,6 +5,12 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import audio.GameAudio;
+import game.GamePanel;
+import game.MyLevelPanel;
+import menu.DifficultyPanel;
+import menu.NewMainMenuPanel;
+
 public class Main {
 
 	private JFrame frame; // main window
