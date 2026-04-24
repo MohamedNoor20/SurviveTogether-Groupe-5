@@ -1,8 +1,10 @@
-package griffith;
+package menu;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import griffith.Main;
 
 public class NewMainMenuPanel extends JPanel {
 
@@ -16,6 +18,7 @@ public class NewMainMenuPanel extends JPanel {
 
     private boolean startPressed = false;
     private boolean exitPressed  = false;
+	private Image gameplayBackground;
 
     public NewMainMenuPanel(Main main) {
         this.mainFrame = main;
@@ -25,10 +28,11 @@ public class NewMainMenuPanel extends JPanel {
         // Load images safely
         backgroundImage      = tryLoad("src/static/image/background/MenuBackground.jpg");
         titleImage           = tryLoad("src/static/image/text/GameTitleBackground.png");
-        startBtnImg          = tryLoad("src/static/image/elements/start_button.png");
-        startBtnClickedImg   = tryLoad("src/static/image/elements/start_button_clicked.png");
-        exitBtnImg           = tryLoad("src/static/image/elements/exit_button.png");
-        exitBtnClickedImg    = tryLoad("src/static/image/elements/exit_button_clicked.png");
+        startBtnImg          = tryLoad("src/static/image/elements/unclickedStartBtn.png");
+        startBtnClickedImg   = tryLoad("src/static/image/elements/clickedStartBtn.png");
+        exitBtnImg           = tryLoad("src/static/image/elements/unclickedExitBtn.png");
+        exitBtnClickedImg    = tryLoad("src/static/image/elements/clickedExitBtn.png");
+        gameplayBackground   = tryLoad("src/static/image/backgorund/gamePlayBackground.jpg");
 
         // PLAY button
         JButton playButton = new JButton("PLAY") {
@@ -85,7 +89,8 @@ public class NewMainMenuPanel extends JPanel {
                 }
             }
         };
-        exitButton.setBounds(284, 605, 200, 65);
+        playButton.setBounds(284, 300, 200, 65);
+        exitButton.setBounds(284, 380, 200, 65);
         exitButton.setContentAreaFilled(false);
         exitButton.setBorderPainted(false);
         exitButton.setFocusPainted(false);

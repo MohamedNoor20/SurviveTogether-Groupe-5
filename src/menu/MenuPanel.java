@@ -1,4 +1,4 @@
-package griffith;
+package menu;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,9 +7,25 @@ import java.awt.Graphics;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import griffith.Main;
+
 public class MenuPanel extends JPanel {
     
-    //buttons for the menu
+	/*
+	 * OLD MENU SYSTEM 
+	 * 
+	 * This class was used in the original version of the game.
+	 * It has been replaced by:
+	 *   - NewMainMenuPanel
+	 *   - DifficultyPanel
+	 *
+	 * This file is kept for reference to show project upgrade (.
+	 * (susan ogozi)
+	 */
+
+	/*
+	
+	//buttons for the menu
     private JButton startButton;
     private JButton restartButton;
     private JButton exitButton;
@@ -120,11 +136,11 @@ public class MenuPanel extends JPanel {
         g.setFont(new Font("Arial", Font.BOLD, 48));
         g.drawString("FIREBOY & WATERGIRL", 160, 150);
         
-        /*//small subtitle below the title
+        small subtitle below the title
         g.setColor(new Color(180, 180, 220));
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         g.drawString("Adventure Game", 290, 210);
-        }*/
+        }
         }
     
     //adding same background as the game
@@ -157,6 +173,8 @@ public class MenuPanel extends JPanel {
         restartButton.setBounds(300, 350, 200, 50);
         showGameOver = false;
         repaint();
+         */
         }
-    }
+    
+   
    
