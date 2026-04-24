@@ -1,4 +1,4 @@
-package griffith;
+package game;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,6 +10,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+
+import entities.Bottom;
+import entities.Coin;
+import entities.Door;
+import entities.Floor;
+import entities.Hazard;
+import entities.Player;
+import entities.Type;
+import griffith.Main;
+import utils.Timer;
+
 import javax.swing.JButton;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -22,8 +33,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	final int UI_Height = 50;
 
 	Thread gameThread;
-	Player player1;
-	Player player2;
+	public Player player1;
+	public Player player2;
 	Hazard firePool;
 	Hazard waterPool;
 	Hazard greenPool;
@@ -75,7 +86,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		// here to load the coins
 		try {
-			ImageIcon icon = new ImageIcon(getClass().getResource("coin.png"));
+			ImageIcon icon = new ImageIcon(getClass().getResource("/static/image/elements/coin.png"));
 			coinImage = icon.getImage();
 		} catch (Exception e) {
 			System.out.println("Could not find the coin image.");
@@ -156,64 +167,69 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		gameThread.start();
 	}
 
+	public void updateGame() {
+
+		// game logic
+		for (Floor floor : floors) {
+			floor.stopFallThrough(player1);
+			floor.stopFallThrough(player2);
+			player1.speed = 5;
+		}
+		for (Floor floor : iceFloor) {
+			floor.stopFallThrough(player1);
+			floor.stopFallThrough(player2);
+			if (floor.isOnFloor(player1)) {
+
+				player1.speed = 2;
+				
+			}
+			
+		}
+		if(!pressBottom) {
+			for (Floor floor : openWall) {
+				floor.stopFallThrough(player1);
+				floor.stopFallThrough(player2);
+			}
+		}
+
+		if (p1Up)
+			player1.moveUp();
+		if (p1Left)
+			player1.moveLeft();
+		if (p1Right)
+			player1.moveRight();
+
+		if (p2Up)
+			player2.moveUp();
+		if (p2Left)
+			player2.moveLeft();
+		if (p2Right)
+			player2.moveRight();
+
+		player1.gravity();
+		player2.gravity();
+
+		firePool.check(player1);
+		firePool.check(player2);
+		waterPool.check(player1);
+		waterPool.check(player2);
+		greenPool.check(player1);
+		greenPool.check(player2);
+		bottom.press(player1);
+		bottom.press(player2);
+
+		// here we check if the player did pick up the coin
+		for (Coin coin : coins) {
+			coin.checkCollision(player1);
+			coin.checkCollision(player2);
+		}
+	}
+
 	@Override
 	public void run() {
 		while (gameThread != null) {
 
-			// game logic
-			for (Floor floor : floors) {
-				floor.stopFallThrough(player1);
-				floor.stopFallThrough(player2);
-				player1.speed = 5;
-			}
-			for (Floor floor : iceFloor) {
-				floor.stopFallThrough(player1);
-				floor.stopFallThrough(player2);
-				if (floor.isOnFloor(player1)) {
-
-					player1.speed = 2;
-					
-				}
-				
-			}
-			if(!pressBottom) {
-				for (Floor floor : openWall) {
-					floor.stopFallThrough(player1);
-					floor.stopFallThrough(player2);
-				}
-			}
-
-			if (p1Up)
-				player1.moveUp();
-			if (p1Left)
-				player1.moveLeft();
-			if (p1Right)
-				player1.moveRight();
-
-			if (p2Up)
-				player2.moveUp();
-			if (p2Left)
-				player2.moveLeft();
-			if (p2Right)
-				player2.moveRight();
-
-			player1.gravity();
-			player2.gravity();
-
-			firePool.check(player1);
-			firePool.check(player2);
-			waterPool.check(player1);
-			waterPool.check(player2);
-			greenPool.check(player1);
-			greenPool.check(player2);
-			bottom.press(player1);
-			bottom.press(player2);
-
-			// here we check if the player did pick up the coin
-			for (Coin coin : coins) {
-				coin.checkCollision(player1);
-				coin.checkCollision(player2);
-			}
+			updateGame();
 
 			repaint();
 
@@ -463,21 +479,21 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	public void drawDoor(Graphics g) {
 		if (door == null)
 			return;
+		Rectangle area = door.getArea();  // use getter
 		g.setColor(new Color(70, 55, 35));
-		g.fillRoundRect(door.area.x - 4, door.area.y - 4, door.area.width + 8, door.area.height + 4, 6, 6);
+		g.fillRoundRect(area.x - 4, area.y - 4, area.width + 8, area.height + 4, 6, 6);
 		g.setColor(new Color(120, 80, 30));
-		g.fillRect(door.area.x, door.area.y, door.area.width, door.area.height);
+		g.fillRect(area.x, area.y, area.width, area.height);
 		g.setColor(new Color(100, 65, 22));
-		g.fillRect(door.area.x + 6, door.area.y + 5, 20, door.area.height - 10);
-		g.fillRect(door.area.x + 34, door.area.y + 5, 20, door.area.height - 10);
+		g.fillRect(area.x + 6, area.y + 5, 20, area.height - 10);
+		g.fillRect(area.x + 34, area.y + 5, 20, area.height - 10);
 		g.setColor(new Color(220, 180, 60));
-		g.fillOval(door.area.x + door.area.width / 2 - 4, door.area.y + door.area.height / 2 - 4, 9, 9);
+		g.fillOval(area.x + area.width / 2 - 4, area.y + area.height / 2 - 4, 9, 9);
 		g.setColor(new Color(255, 240, 100, 60));
-		g.fillOval(door.area.x + 5, door.area.y - 10, door.area.width - 10, 18);
+		g.fillOval(area.x + 5, area.y - 10, area.width - 10, 18);
 		g.setColor(new Color(50, 35, 15));
-		g.drawRoundRect(door.area.x - 4, door.area.y - 4, door.area.width + 8, door.area.height + 4, 6, 6);
+		g.drawRoundRect(area.x - 4, area.y - 4, area.width + 8, area.height + 4, 6, 6);
 	}
-
 	public void drawMessages(Graphics g) {
 		if (door.isInside(player1) && door.isInside(player2)) {
 			g.setColor(new Color(0, 0, 0, 140));
@@ -592,20 +608,23 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	}
 
 	public void bottomColor(Graphics g) {
-		if(!pressBottom) {
+		if (bottom == null) return;
+		Rectangle area = bottom.getArea();   // get once
+
+		if (!pressBottom) {
 			g.setColor(new Color(255, 0, 0));
-			g.fillRect(bottom.area.x, bottom.area.y, bottom.area.width, bottom.area.height);
+			g.fillRect(area.x, area.y, area.width, area.height);
 		}
 
 		if (bottom.press(player1) || bottom.press(player2)) {
 			g.setColor(new Color(0, 255, 0));
-			g.fillRect(bottom.area.x, bottom.area.y, bottom.area.width, bottom.area.height);
+			g.fillRect(area.x, area.y, area.width, area.height);
 			pressBottom = true;
 		}
-		
-		if(pressBottom) {
+
+		if (pressBottom) {
 			g.setColor(new Color(0, 255, 0));
-			g.fillRect(bottom.area.x, bottom.area.y, bottom.area.width, bottom.area.height);
+			g.fillRect(area.x, area.y, area.width, area.height);
 		}
 	}
 
