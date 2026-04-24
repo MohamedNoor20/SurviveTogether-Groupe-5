@@ -1,4 +1,4 @@
-package griffith;
+package entities;
  
   //Player types for collision rules (susan ogozi)
 public enum Type {
