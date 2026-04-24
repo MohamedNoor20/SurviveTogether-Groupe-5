@@ -1,5 +1,17 @@
 package entities;
+/*
+ * OLD MENU SYSTEM 
+ * 
+ * This class was used in the original version of the game.
+ * It has been replaced by:
+ *   - NewMainMenuPanel
+ *   - DifficultyPanel
+ *
+ * This file is kept for reference to show project upgrade (.
+ * (susan ogozi)
+ */
 
+/*
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -84,3 +96,4 @@ public class Level2Player {
     public boolean isOnGround()         { return onGround; }
     public int getVerticalSpeed()       { return verticalSpeed; }
 }
+*/

@@ -1,5 +1,17 @@
 package entities;
+/*
+ * OLD MENU SYSTEM 
+ * 
+ * This class was used in the original version of the game.
+ * It has been replaced by:
+ *   - NewMainMenuPanel
+ *   - DifficultyPanel
+ *
+ * This file is kept for reference to show project upgrade (.
+ * (susan ogozi)
+ */
 
+/*
 import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
@@ -42,3 +54,4 @@ public class Level2Block {
     public int getHeight() { return h; }
     public Rectangle getRectangle() { return blockRect; }
 }
+*/
