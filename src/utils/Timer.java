@@ -1,4 +1,4 @@
-package griffith;
+package utils;
 
 public class Timer {
 private long timerStarts;
