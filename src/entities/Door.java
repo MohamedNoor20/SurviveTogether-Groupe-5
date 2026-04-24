@@ -1,10 +1,10 @@
-package griffith;
+package entities;
 
 import java.awt.Rectangle;
 
 //win condition for door (susan ogozi)
 public class Door {
-	Rectangle area; // this is the door hit box (susan ogozi)
+	private Rectangle area; // this is the door hit box (susan ogozi)
 	// creates the door for winning
 
 	public Door(Rectangle area) {
@@ -20,5 +20,10 @@ public class Door {
 	// Checks if BOTH players are inside door  win condition(susan ogozi)
 	public boolean bothInside(Player fireboy, Player watergirl) {
 	    return isInside(fireboy) && isInside(watergirl);
+	}
+	
+	// Public getter for the door's hitbox (susan ogozi)
+	public Rectangle getArea() {
+		return area;
 	}
 }
