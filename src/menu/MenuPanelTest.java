@@ -1,10 +1,23 @@
-package griffith;
+package menu;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import javax.swing.JButton;
 
+import javax.swing.JButton;
+/*
+ * OLD MENU SYSTEM 
+ * 
+ * This class was used in the original version of the game.
+ * It has been replaced by:
+ *   - NewMainMenuPanel
+ *   - DifficultyPanel
+ *
+ * This file is kept for reference to show project upgrade (.
+ * (susan ogozi)
+ */
+
+/*
 public class MenuPanelTest {
     
     private MenuPanel menuPanel;
@@ -58,4 +71,5 @@ public class MenuPanelTest {
         assertTrue(menuPanel.getRestartButton().isVisible());
         assertFalse(menuPanel.getExitButton().isVisible());
         }
-    }
+        */
+    

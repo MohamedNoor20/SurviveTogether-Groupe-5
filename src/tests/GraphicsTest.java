@@ -1,7 +1,10 @@
-package griffith;
+package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import game.GamePanel;
+
 import java.awt.Color;
 
 public class GraphicsTest {
@@ -39,6 +42,7 @@ public class GraphicsTest {
     void testFireboyMovesRight() {
         int startX = game.getFireboyX();
         game.player1.moveRight();
+        game.updateGame(); 
         int newX = game.getFireboyX();
         assertTrue(newX > startX, "Fireboy should move right");
         }
@@ -47,6 +51,7 @@ public class GraphicsTest {
     void testFireboyMovesLeft() {
         int startX = game.getFireboyX();
         game.player1.moveLeft();
+        game.updateGame(); 
         int newX = game.getFireboyX();
         assertTrue(newX < startX, "Fireboy should move left");
         }
@@ -55,6 +60,7 @@ public class GraphicsTest {
     void testWatergirlMovesRight() {
         int startX = game.getWatergirlX();
         game.player2.moveRight();
+        game.updateGame(); 
         int newX = game.getWatergirlX();
         assertTrue(newX > startX, "Watergirl should move right");
         }
@@ -63,6 +69,7 @@ public class GraphicsTest {
     void testWatergirlMovesLeft() {
         int startX = game.getWatergirlX();
         game.player2.moveLeft();
+        game.updateGame(); 
         int newX = game.getWatergirlX();
         assertTrue(newX < startX, "Watergirl should move left");
         }
@@ -104,4 +111,4 @@ public class GraphicsTest {
         int x = game.getFireboyX();
         assertTrue(x + 40 <= 800, "Player should not go beyond right wall");
         }
-    }
+}

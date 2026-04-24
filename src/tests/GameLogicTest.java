@@ -1,6 +1,13 @@
-package griffith;
+package tests;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import entities.Door;
+import entities.Hazard;
+import entities.Player;
+import entities.Type;
+import utils.Timer;
+
 import java.awt.Rectangle;
 //Tests all game logic (Susan Ogozi)
 public class GameLogicTest {
