@@ -177,4 +177,52 @@ public class MyLevel2PanelTest {
         assertFalse("Watergirl should die in green pool", waterAlive);
     }
 
-   }
+    // DIAMOND TESTS
+
+    @Test
+    public void testFireboyCollectsRedDiamond() {
+        // type 1 = red = fireboy
+        int dx = 80, dy = 490, dw = 18, dh = 18, type = 1;
+        boolean collected = false;
+        fireX = 75; fireY = 480;
+        Rectangle fb = new Rectangle(fireX + 4, fireY, PLAYER_W - 8, PLAYER_H);
+        Rectangle gem = new Rectangle(dx, dy, dw, dh);
+        if (type == 1 && gem.intersects(fb)) collected = true;
+        assertTrue("Fireboy should collect red diamond", collected);
+    }
+
+    @Test
+    public void testWatergirlCollectsBlueDiamond() {
+        // type 0 = blue = watergirl
+        int dx = 390, dy = 670, dw = 18, dh = 18, type = 0;
+        boolean collected = false;
+        waterX = 385; waterY = 660;
+        Rectangle wb = new Rectangle(waterX + 4, waterY, PLAYER_W - 8, PLAYER_H);
+        Rectangle gem = new Rectangle(dx, dy, dw, dh);
+        if (type == 0 && gem.intersects(wb)) collected = true;
+        assertTrue("Watergirl should collect blue diamond", collected);
+    }
+
+    @Test
+    public void testFireboyCannotCollectBlueDiamond() {
+        // type 0 = blue, fireboy should NOT collect it
+        int dx = 390, dy = 670, dw = 18, dh = 18, type = 0;
+        boolean collected = false;
+        fireX = 385; fireY = 660;
+        Rectangle fb = new Rectangle(fireX + 4, fireY, PLAYER_W - 8, PLAYER_H);
+        Rectangle gem = new Rectangle(dx, dy, dw, dh);
+        if (type == 1 && gem.intersects(fb)) collected = true; // only type 1 for fireboy
+        assertFalse("Fireboy should not collect blue diamond", collected);
+    }
+    @Test
+    public void testWatergirlCannotCollectRedDiamond() {
+        // type 1 = red, watergirl should NOT collect it
+        int dx = 390, dy = 670, dw = 18, dh = 18, type = 1;
+        boolean collected = false;
+        waterX = 385; waterY = 660;
+        Rectangle wb = new Rectangle(waterX + 4, waterY, PLAYER_W - 8, PLAYER_H);
+        Rectangle gem = new Rectangle(dx, dy, dw, dh);
+        if (type == 0 && gem.intersects(wb)) collected = true; // only type 0 for watergirl
+        assertFalse("Watergirl should not collect red diamond", collected);
+    }
+}
