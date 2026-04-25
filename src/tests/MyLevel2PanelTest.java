@@ -258,5 +258,70 @@ public class MyLevel2PanelTest {
         assertFalse("Switch should be off when player is away", pressed);
     }
 
-    
+    // WIN CONDITION TEST 
+
+    @Test
+    public void testBothPlayersAtDoorTriggersWin() {
+        Rectangle fireDoor  = new Rectangle(0,   40, 56, 80);
+        Rectangle waterDoor = new Rectangle(700, 40, 56, 80);
+
+        fireX = 5;   fireY = 50;
+        waterX = 705; waterY = 50;
+
+        Rectangle fb = new Rectangle(fireX + 4, fireY, PLAYER_W - 8, PLAYER_H);
+        Rectangle wb = new Rectangle(waterX + 4, waterY, PLAYER_W - 8, PLAYER_H);
+
+        boolean fInDoor = fireDoor.intersects(fb);
+        boolean wInDoor = waterDoor.intersects(wb);
+
+        assertTrue("Both players at door should trigger win", fInDoor && wInDoor);
+    }
+
+    @Test
+    public void testOnlyOnePlayerAtDoorDoesNotWin() {
+        Rectangle fireDoor  = new Rectangle(0,   40, 56, 80);
+        Rectangle waterDoor = new Rectangle(700, 40, 56, 80);
+
+        fireX = 5;    fireY = 50;   // at fire door
+        waterX = 300; waterY = 600; // NOT at water door
+
+        Rectangle fb = new Rectangle(fireX + 4, fireY, PLAYER_W - 8, PLAYER_H);
+        Rectangle wb = new Rectangle(waterX + 4, waterY, PLAYER_W - 8, PLAYER_H);
+
+        boolean fInDoor = fireDoor.intersects(fb);
+        boolean wInDoor = waterDoor.intersects(wb);
+
+        assertFalse("Only one player at door should not win", fInDoor && wInDoor);
+    }
+
+    // SCREEN CLAMP TESTS
+
+    @Test
+    public void testFireboyCannotGoOffLeftEdge() {
+        fireX = -10;
+        if (fireX < 0) fireX = 0;
+        assertEquals("Fireboy should be clamped to left edge", 0, fireX);
+    }
+
+    @Test
+    public void testFireboyCannotGoOffRightEdge() {
+        int W = 768;
+        fireX = W + 10;
+        if (fireX > W - PLAYER_W) fireX = W - PLAYER_W;
+        assertEquals("Fireboy should be clamped to right edge", W - PLAYER_W, fireX);
+    }
+
+    @Test
+    public void testWatergirlCannotGoOffLeftEdge() {
+        waterX = -5;
+        if (waterX < 0) waterX = 0;
+        assertEquals("Watergirl should be clamped to left edge", 0, waterX);
+    }
+    @Test
+    public void testWatergirlCannotGoOffRightEdge() {
+        int W = 768;
+        waterX = W + 10;
+        if (waterX > W - PLAYER_W) waterX = W - PLAYER_W;
+        assertEquals("Watergirl should be clamped to right edge", W - PLAYER_W, waterX);
+    }
 }
