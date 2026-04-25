@@ -122,4 +122,59 @@ public class MyLevel2PanelTest {
         if (waterVY < 5) waterVY += GRAVITY;
         assertEquals("Gravity should be capped at 5", 5, waterVY);
     }
-}
+
+    //  HAZARD TESTS
+
+    @Test
+    public void testFireboyDiesInWaterPool() {
+        Rectangle waterPool = new Rectangle(360, 694, 70, 14);
+        // place fireboy directly in water pool
+        fireX = 375; fireY = 640;
+        Rectangle fFeet = new Rectangle(fireX + PLAYER_W/2 - 5, fireY + PLAYER_H - 6, 3, 6);
+        if (waterPool.intersects(fFeet)) fireAlive = false;
+        assertFalse("Fireboy should die in water pool", fireAlive);
+    }
+
+    @Test
+    public void testWatergirlDiesInFirePool() {
+        Rectangle firePool = new Rectangle(200, 526, 70, 12);
+        waterX = 215; waterY = 470;
+        Rectangle wFeet = new Rectangle(waterX + PLAYER_W/2 - 5, waterY + PLAYER_H - 6, 3, 6);
+        if (firePool.intersects(wFeet)) waterAlive = false;
+        assertFalse("Watergirl should die in fire pool", waterAlive);
+    }
+
+    @Test
+    public void testFireboySafeInFirePool() {
+        Rectangle firePool = new Rectangle(200, 526, 70, 12);
+        fireX = 215; fireY = 470;
+        Rectangle fFeet = new Rectangle(fireX + PLAYER_W/2 - 5, fireY + PLAYER_H - 6, 3, 6);
+        // fireboy does NOT check fire pool
+        assertTrue("Fireboy should be safe in fire pool", fireAlive);
+    }
+
+    @Test
+    public void testWatergirlSafeInWaterPool() {
+        Rectangle waterPool = new Rectangle(360, 694, 70, 14);
+        waterX = 375; waterY = 640;
+        // watergirl does NOT check water pool
+        assertTrue("Watergirl should be safe in water pool", waterAlive);
+    }
+
+    @Test
+    public void testBothDieInGreenPool() {
+        Rectangle greenPool = new Rectangle(180, 370, 70, 14);
+
+        fireX = 195; fireY = 315;
+        Rectangle fFeet = new Rectangle(fireX + PLAYER_W/2 - 5, fireY + PLAYER_H - 6, 3, 6);
+        if (greenPool.intersects(fFeet)) fireAlive = false;
+
+        waterX = 195; waterY = 315;
+        Rectangle wFeet = new Rectangle(waterX + PLAYER_W/2 - 5, waterY + PLAYER_H - 6, 3, 6);
+        if (greenPool.intersects(wFeet)) waterAlive = false;
+
+        assertFalse("Fireboy should die in green pool", fireAlive);
+        assertFalse("Watergirl should die in green pool", waterAlive);
+    }
+
+   }
