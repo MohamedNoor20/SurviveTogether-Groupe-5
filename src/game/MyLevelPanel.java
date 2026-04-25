@@ -780,4 +780,99 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
             }
         }
     }
+
+    //  Fire player drawing
+    private void drawFirePlayer(Graphics2D g) {
+        int fx = fireX, fy = fireY;
+
+        if (!fireAlive) {
+            if (fireDie != null) {
+                g.drawImage(fireDie, fx, fy, PLAYER_W, PLAYER_H, this);
+            } else {
+                g.setColor(new Color(90, 90, 90));
+                g.fillRoundRect(fx + 6, fy + 16, 28, 24, 6, 6);
+                g.fillOval(fx + 8, fy + 2, 24, 22);
+                g.setColor(new Color(60, 60, 60));
+                g.drawLine(fx + 11, fy + 7, fx + 19, fy + 15);
+                g.drawLine(fx + 19, fy + 7, fx + 11, fy + 15);
+                g.drawLine(fx + 21, fy + 7, fx + 29, fy + 15);
+                g.drawLine(fx + 29, fy + 7, fx + 21, fy + 15);
+            }
+            return;
+        }
+
+        if (fireMoving && fireFacingLeft && fireLeft != null) {
+            g.drawImage(fireLeft, fx, fy, PLAYER_W, PLAYER_H, this);
+        } else if (fireMoving && !fireFacingLeft && fireRight != null) {
+            g.drawImage(fireRight, fx, fy, PLAYER_W, PLAYER_H, this);
+        } else if (fireIdle != null) {
+            g.drawImage(fireIdle, fx, fy, PLAYER_W, PLAYER_H, this);
+        } else {
+            g.setColor(new Color(200, 50, 10));
+            g.fillRoundRect(fx + 6, fy + 16, 28, 24, 6, 6);
+            g.setColor(new Color(220, 80, 20));
+            g.fillOval(fx + 8, fy + 2, 24, 22);
+            g.setColor(Color.WHITE);
+            g.fillOval(fx + 11, fy + 7, 8, 8);
+            g.fillOval(fx + 21, fy + 7, 8, 8);
+            g.setColor(new Color(60, 20, 0));
+            g.fillOval(fx + 13, fy + 9, 4, 4);
+            g.fillOval(fx + 23, fy + 9, 4, 4);
+            g.setColor(new Color(255, 140, 0));
+            g.fillPolygon(new int[] { fx + 17, fx + 20, fx + 23 }, new int[] { fy + 2, fy - 7, fy + 2 }, 3);
+            g.setColor(new Color(255, 220, 50));
+            g.fillPolygon(new int[] { fx + 18, fx + 20, fx + 22 }, new int[] { fy + 2, fy - 4, fy + 2 }, 3);
+            g.setColor(new Color(160, 40, 5));
+            g.fillRoundRect(fx + 8, fy + 38, 10, 8, 3, 3);
+            g.fillRoundRect(fx + 22, fy + 38, 10, 8, 3, 3);
+        }
+    }
+
+    // Water player drawing 
+    private void drawWaterPlayer(Graphics2D g) {
+        int wx = waterX, wy = waterY;
+
+        if (!waterAlive) {
+            if (waterDie != null) {
+                g.drawImage(waterDie, wx, wy, PLAYER_W, PLAYER_H, this);
+            } else {
+                g.setColor(new Color(90, 90, 90));
+                g.fillRoundRect(wx + 6, wy + 16, 28, 24, 6, 6);
+                g.fillOval(wx + 8, wy + 2, 24, 22);
+                g.setColor(new Color(60, 60, 60));
+                g.drawLine(wx + 11, wy + 7, wx + 19, wy + 15);
+                g.drawLine(wx + 19, wy + 7, wx + 11, wy + 15);
+                g.drawLine(wx + 21, wy + 7, wx + 29, wy + 15);
+                g.drawLine(wx + 29, wy + 7, wx + 21, wy + 15);
+            }
+            return;
+        }
+
+        if (waterMoving && waterFacingLeft && waterLeft != null) {
+            g.drawImage(waterLeft, wx, wy, PLAYER_W, PLAYER_H, this);
+        } else if (waterMoving && !waterFacingLeft && waterRight != null) {
+            g.drawImage(waterRight, wx, wy, PLAYER_W, PLAYER_H, this);
+        } else if (waterIdle != null) {
+            g.drawImage(waterIdle, wx, wy, PLAYER_W, PLAYER_H, this);
+        } else {
+            g.setColor(new Color(20, 80, 200));
+            g.fillRoundRect(wx + 6, wy + 16, 28, 24, 6, 6);
+            g.setColor(new Color(40, 120, 230));
+            g.fillOval(wx + 8, wy + 2, 24, 22);
+            g.setColor(Color.WHITE);
+            g.fillOval(wx + 11, wy + 7, 8, 8);
+            g.fillOval(wx + 21, wy + 7, 8, 8);
+            g.setColor(new Color(0, 20, 80));
+            g.fillOval(wx + 13, wy + 9, 4, 4);
+            g.fillOval(wx + 23, wy + 9, 4, 4);
+            g.setColor(new Color(100, 180, 255));
+            g.fillOval(wx + 17, wy - 7, 8, 8);
+            g.fillPolygon(new int[] { wx + 17, wx + 21, wx + 25 }, new int[] { wy, wy - 6, wy }, 3);
+            g.setColor(new Color(15, 60, 160));
+            g.fillRoundRect(wx + 8, wy + 38, 10, 8, 3, 3);
+            g.fillRoundRect(wx + 22, wy + 38, 10, 8, 3, 3);
+        }
+    }
+
+    
 }
