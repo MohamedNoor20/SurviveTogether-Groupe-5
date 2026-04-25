@@ -874,5 +874,66 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         }
     }
 
-    
+    //  UI bar at bottom
+    private void drawUI(Graphics2D g) {
+        g.setColor(new Color(230, 80, 20));
+        g.setFont(new Font("Arial", Font.BOLD, 13));
+        g.drawString("FIREBOY", 30, H - 28);
+        g.setColor(new Color(200, 160, 140));
+        g.setFont(new Font("Arial", Font.PLAIN, 12));
+        g.drawString("\u2190 / \u2192  move   \u2191  jump", 30, H - 12);
+
+        g.setColor(new Color(60, 140, 230));
+        g.setFont(new Font("Arial", Font.BOLD, 13));
+        g.drawString("WATERGIRL", 414, H - 28);
+        g.setColor(new Color(140, 170, 210));
+        g.setFont(new Font("Arial", Font.PLAIN, 12));
+        g.drawString("A / D  move   W  jump", 414, H - 12);
+     // Timer in the middle
+        Font timerFont = new Font("Arial", Font.BOLD, 18);
+        g.setFont(timerFont);
+        FontMetrics fm = g.getFontMetrics(timerFont);
+        String timeText = "Time: " + elapsedSeconds + "s";
+        int textWidth = fm.stringWidth(timeText);
+        int tx = (getWidth() - textWidth) / 2;
+        int panelH = getHeight();
+        g.setColor(new Color(0, 0, 0, 200));
+        g.fillRect(getWidth() / 2 - 65, 5, 130, 30);
+        g.setColor(Color.YELLOW);
+        g.drawString(timeText, tx, 26);
+    }
+
+    // Overlay (win / dead) 
+    private void drawOverlay(Graphics2D g) {
+    	if (gameState == State.WIN) {
+    	    g.setColor(new Color(0, 0, 0, 180));
+    	    g.fillRect(0, 0, W, H);
+    	    if (gameClearImg != null) {
+    	        int iw = 400, ih = 150;
+    	        g.drawImage(gameClearImg, (W - iw) / 2, (H - ih) / 2 - 60, iw, ih, this);
+    	    } else {
+    	        g.setColor(new Color(80, 240, 120));
+    	        g.setFont(new Font("Arial", Font.BOLD, 36));
+    	        g.drawString("GAME CLEARED!", 250, H / 2);
+    	    }
+    	}
+        if (gameState == State.DEAD) {
+            if (gameOverImg != null) {
+                int iw = 400, ih = 150;
+                g.drawImage(gameOverImg, (W - iw) / 2, (H - ih) / 2 - 60, iw, ih, this);
+            } else {
+                g.setColor(new Color(0, 0, 0, 160));
+                g.fillRoundRect(220, 270, 340, 70, 12, 12);
+                g.setColor(new Color(240, 60, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 36));
+                g.drawString("GAME OVER", 278, 318);
+            }
+        }
+
+        if (gameState == State.ENTERING) {
+            g.setColor(new Color(0, 0, 0, 100));
+            g.fillRect(0, 0, W, H);
+        }
+    }
+
 }
