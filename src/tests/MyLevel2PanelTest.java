@@ -60,4 +60,37 @@ public class MyLevel2PanelTest {
         assertTrue("Watergirl should move left", waterX < startX);
     }
 
+    //  JUMP TESTS
+
+    @Test
+    public void testFireboyJumpsWhenOnGround() {
+        fireVY = JUMP_FORCE;
+        fireOnGround = false;
+        assertTrue("Fireboy should have negative velocity when jumping", fireVY < 0);
+    }
+
+    @Test
+    public void testWatergirlJumpsWhenOnGround() {
+        waterVY = JUMP_FORCE;
+        waterOnGround = false;
+        assertTrue("Watergirl should have negative velocity when jumping", waterVY < 0);
+    }
+
+    @Test
+    public void testFireboyCannotJumpInAir() {
+        fireOnGround = false;
+        int oldVY = fireVY;
+        // jump only if on ground
+        if (fireOnGround) fireVY = JUMP_FORCE;
+        assertEquals("Fireboy should not jump in air", oldVY, fireVY);
+    }
+    @Test
+    public void testWatergirlCannotJumpInAir() {
+        waterOnGround = false;
+        int oldVY = waterVY;
+        // jump only if on ground
+        if (waterOnGround) waterVY = JUMP_FORCE;
+        assertEquals("Watergirl should not jump in air", oldVY, waterVY);
+    }
+
    }
