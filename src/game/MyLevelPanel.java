@@ -758,4 +758,26 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         }
     }
 
+    // Diamonds 
+    private void drawDiamonds(Graphics2D g) {
+        for (Diamond d : diamonds) {
+            if (d.collected)
+                continue;
+            Image gem = (d.type == 0) ? waterGemImg : fireGemImg;
+            if (gem != null) {
+                g.drawImage(gem, d.x, d.y, d.w, d.h, this);
+            } else {
+                if (d.type == 0) {
+                    g.setColor(new Color(20, 120, 255));
+                } else {
+                    g.setColor(new Color(255, 80, 10));
+                }
+                int[] dx = { d.x + d.w / 2, d.x + d.w, d.x + d.w / 2, d.x };
+                int[] dy = { d.y, d.y + d.h / 2, d.y + d.h, d.y + d.h / 2 };
+                g.fillPolygon(dx, dy, 4);
+                g.setColor(Color.WHITE);
+                g.drawPolygon(dx, dy, 4);
+            }
+        }
+    }
 }
