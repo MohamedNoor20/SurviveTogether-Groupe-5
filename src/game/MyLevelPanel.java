@@ -148,4 +148,43 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         this.mainFrame = m;
     }
 
-   }
+    //Load all images
+    private Image img(String path) {
+        java.io.File f = new java.io.File(path);
+        if (!f.exists()) {
+            System.out.println("MISSING: " + path);
+            return null;
+        }
+        return new ImageIcon(path).getImage();
+    }
+
+    private void loadImages() {
+        brickImg = img("src/static/image/elements/block.png");
+        switchImg = img("src/static/image/elements/switch.png");
+        switchOnImg = img("src/static/image/elements/switch.png");
+        switchDoorImg = img("src/static/image/elements/switch_block2.png");
+        fireDoorImg = img("src/static/image/elements/fire_door.png");
+        waterDoorImg = img("src/static/image/elements/water_door.png");
+        fireGemImg = img("src/static/image/elements/fire_gem.png");
+        waterGemImg = img("src/static/image/elements/water_gem.png");
+        fireObstacleImg = img("src/static/image/elements/fire_obstacle.png");
+        waterObstacleImg = img("src/static/image/elements/water_obstacle.png");
+        poisonObstacleImg = img("src/static/image/elements/poison_obstacle.png");
+        fireEnterGif = img("src/static/image/character/fire boy_enter room.gif");
+        waterEnterGif = img("src/static/image/character/water girl_enter room.gif");
+        gameClearImg = img("src/static/image/text/gameclear.gif");
+        gameOverImg = img("src/static/image/text/gameover.png");
+        menuBtnImg = img("src/static/image/text/MenuBtn.png");
+ 
+        // Characters
+        fireIdle = img("src/static/image/character/fire_boy_character.png");
+        fireLeft = img("src/static/image/character/fire boy_run left.gif");
+        fireRight = img("src/static/image/character/fire boy_run right.gif");
+        fireDie = img("src/static/image/character/die.gif");
+
+        waterIdle = img("src/static/image/character/water_girl_character.png");
+        waterLeft = img("src/static/image/character/water girl_run left.gif");
+        waterRight = img("src/static/image/character/water girl_run right.gif");
+        waterDie = img("src/static/image/character/die.gif");
+    }
+}
