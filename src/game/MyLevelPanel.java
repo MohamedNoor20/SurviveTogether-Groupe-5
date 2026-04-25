@@ -936,4 +936,52 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         }
     }
 
+    // Key events
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int k = e.getKeyCode();
+        if (k == KeyEvent.VK_UP) {
+            p1Up = true;
+            if (fireOnGround) {
+                fireVY = JUMP_FORCE;
+                fireOnGround = false;
+            }
+        }
+        if (k == KeyEvent.VK_LEFT)
+            p1Left = true;
+        if (k == KeyEvent.VK_RIGHT)
+            p1Right = true;
+        if (k == KeyEvent.VK_W) {
+            p2Up = true;
+            if (waterOnGround) {
+                waterVY = JUMP_FORCE;
+                waterOnGround = false;
+            }
+        }
+        if (k == KeyEvent.VK_A)
+            p2Left = true;
+        if (k == KeyEvent.VK_D)
+            p2Right = true;
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int k = e.getKeyCode();
+        if (k == KeyEvent.VK_UP)
+            p1Up = false;
+        if (k == KeyEvent.VK_LEFT)
+            p1Left = false;
+        if (k == KeyEvent.VK_RIGHT)
+            p1Right = false;
+        if (k == KeyEvent.VK_W)
+            p2Up = false;
+        if (k == KeyEvent.VK_A)
+            p2Left = false;
+        if (k == KeyEvent.VK_D)
+            p2Right = false;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 }
