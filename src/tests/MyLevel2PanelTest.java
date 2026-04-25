@@ -324,4 +324,4 @@ public class MyLevel2PanelTest {
         if (waterX > W - PLAYER_W) waterX = W - PLAYER_W;
         assertEquals("Watergirl should be clamped to right edge", W - PLAYER_W, waterX);
     }
-}
+} 
