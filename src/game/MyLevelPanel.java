@@ -282,4 +282,72 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         diamonds.add(new Diamond(350, 70, 1));   // top platform - red
     }
 
+    private void addMenuButton() {
+        JButton btn = new JButton() {
+            protected void paintComponent(Graphics g) {
+                if (menuBtnImg != null) {
+                    g.drawImage(menuBtnImg, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+
+        btn.setBounds(W - 100, 8, 70, 25);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+
+        btn.addActionListener(e -> {
+            if (mainFrame != null) mainFrame.showMainMenu();
+        });
+
+        add(btn);
+    
     }
+
+    // Start
+    public void startGame() {
+        startTime = System.currentTimeMillis();
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+    // Game loop
+    @Override
+    public void run() {
+        while (gameThread != null) {
+            update();
+            repaint();
+
+            if (gameState == State.ENTERING) {
+                if (System.currentTimeMillis() - stateTime > 1500) {
+                    gameState = State.WIN;
+                    stateTime = System.currentTimeMillis();
+                }
+            }
+
+            if (gameState == State.WIN) {
+                if (System.currentTimeMillis() - stateTime > 2500) {
+                    gameThread = null;
+                    if (mainFrame != null)
+                        mainFrame.showMainMenu();
+                    return;
+                }
+            }
+
+            if (gameState == State.DEAD) {
+                if (System.currentTimeMillis() - stateTime > 1500) {
+                    gameThread = null;
+                    if (mainFrame != null)
+                        mainFrame.showMainMenu();
+                    return;
+                }
+            }
+
+            try {
+                Thread.sleep(16);
+            } catch (InterruptedException ignored) {
+            }
+        }
+    }
+
+   
+}
