@@ -101,4 +101,35 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
     State gameState = State.PLAYING;
     long stateTime = 0;
 
+    // Switch pair class
+    static class SwitchPair {
+        Rectangle switchButton;
+        Rectangle switchBlock;
+        boolean pressed = false;
+
+        SwitchPair(Rectangle button, Rectangle block) {
+            this.switchButton = button;
+            this.switchBlock = block;
+        }
+    }
+
+    // Diamond inner class
+    static class Diamond {
+        int x, y, w, h;
+        int type; // 0=water(blue), 1=fire(red)
+        boolean collected = false;
+
+        Diamond(int x, int y, int type) {
+            this.x = x;
+            this.y = y;
+            this.w = 18;
+            this.h = 18;
+            this.type = type;
+        }
+
+        Rectangle getBounds() {
+            return new Rectangle(x, y, w, h);
+        }
+    }
+
    }
