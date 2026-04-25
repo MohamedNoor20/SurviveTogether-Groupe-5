@@ -708,4 +708,54 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
             g.drawArc(r.x + 30, r.y - 4, 25, 10, 0, 180);
         }
     }
+
+    //Doors 
+    private void drawDoors(Graphics2D g) {
+    	if (gameState == State.ENTERING) {
+    	    if (fireEnterGif != null && fireDoor != null) {
+    	        g.drawImage(fireEnterGif, fireDoor.x - 10, fireDoor.y - 20,
+    	                    fireDoor.width + 20, fireDoor.height + 20, this);
+    	    }
+    	    if (waterEnterGif != null && waterDoor != null) {
+    	        g.drawImage(waterEnterGif, waterDoor.x - 10, waterDoor.y - 20,
+    	                    waterDoor.width + 20, waterDoor.height + 20, this);
+    	    }
+    	
+        } else {
+            if (fireDoor != null) {
+                if (fireDoorImg != null) {
+                    g.drawImage(fireDoorImg, fireDoor.x, fireDoor.y, fireDoor.width, fireDoor.height, this);
+                } else {
+                    g.setColor(new Color(200, 50, 10));
+                    g.fillRect(fireDoor.x, fireDoor.y, fireDoor.width, fireDoor.height);
+                }
+            }
+            if (waterDoor != null) {
+                if (waterDoorImg != null) {
+                    g.drawImage(waterDoorImg, waterDoor.x, waterDoor.y, waterDoor.width, waterDoor.height, this);
+                } else {
+                    g.setColor(new Color(20, 80, 200));
+                    g.fillRect(waterDoor.x, waterDoor.y, waterDoor.width, waterDoor.height);
+                }
+            }
+        }
+    }
+
+    
+    private void drawSwitches(Graphics2D g) {
+        for (SwitchPair pair : switchPairs) {
+            if (pair.switchButton == null)
+                continue;
+            Image si = pair.pressed ? switchOnImg : switchImg;
+            if (si != null) {
+                g.drawImage(si, pair.switchButton.x, pair.switchButton.y, pair.switchButton.width,
+                        pair.switchButton.height, this);
+            } else {
+                g.setColor(pair.pressed ? Color.GREEN : Color.RED);
+                g.fillRect(pair.switchButton.x, pair.switchButton.y, pair.switchButton.width,
+                        pair.switchButton.height);
+            }
+        }
+    }
+
 }
