@@ -225,4 +225,38 @@ public class MyLevel2PanelTest {
         if (type == 0 && gem.intersects(wb)) collected = true; // only type 0 for watergirl
         assertFalse("Watergirl should not collect red diamond", collected);
     }
+    // SWITCH TESTS 
+
+    @Test
+    public void testSwitchActivatesWhenPlayerStepsOn() {
+        final int PLAYER_W = 30;
+        final int PLAYER_H = 60;
+        
+        Rectangle switchButton = new Rectangle(300, 514, 30, 16);
+        boolean pressed = false;
+        
+        int fireX = 295;
+        int fireY = 514 - PLAYER_H + 1;  // +1 ensures interior overlap
+        Rectangle fb = new Rectangle(fireX + 4, fireY, PLAYER_W - 8, PLAYER_H);
+        
+        if (switchButton.intersects(fb)) {
+            pressed = true;
+        }
+        
+        assertTrue("Switch should activate when player steps on it", pressed);
+    }
+
+
+    @Test
+    public void testSwitchDeactivatesWhenPlayerLeaves() {
+        Rectangle switchButton = new Rectangle(300, 514, 30, 16);
+        boolean pressed = false;
+        // player far away
+        fireX = 600; fireY = 454;
+        Rectangle fb = new Rectangle(fireX + 4, fireY, PLAYER_W - 8, PLAYER_H);
+        if (switchButton.intersects(fb)) pressed = true;
+        assertFalse("Switch should be off when player is away", pressed);
+    }
+
+    
 }
