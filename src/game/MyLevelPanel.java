@@ -593,4 +593,67 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         g.fillRect(0, H - UI_H, W, 4);
     }
 
+    //Brick floors/walls 
+    private void drawBricks(Graphics2D g) {
+        for (Rectangle r : floors)
+            drawBrickRect(g, r);
+        for (Rectangle r : walls)
+            drawBrickRect(g, r);
+
+        // Draw switch blocks (only if not pressed)
+        for (SwitchPair pair : switchPairs) {
+            if (pair.switchBlock == null) continue;
+
+            if (!pair.pressed) {
+                if (switchDoorImg != null) {
+                    g.drawImage(switchDoorImg, pair.switchBlock.x, pair.switchBlock.y,
+                                pair.switchBlock.width, pair.switchBlock.height, this);
+                } else {
+                    drawBrickRect(g, pair.switchBlock);
+                }
+            }
+        }
+            
+    }
+
+    private void drawBrickRect(Graphics2D g, Rectangle r) {
+        if (r == null)
+            return;
+        int bW = 48, bH = 24;
+
+        if (brickImg != null) {
+            for (int row = 0; row * bH < r.height + bH; row++) {
+                int offsetX = (row % 2 == 0) ? 0 : bW / 2;
+                for (int col = -bW; col < r.width + bW; col += bW) {
+                    int bx = r.x + col + offsetX;
+                    int by = r.y + row * bH;
+                    if (bx + bW > r.x && bx < r.x + r.width && by + bH > r.y && by < r.y + r.height) {
+                        Shape oldClip = g.getClip();
+                        g.setClip(r.x, r.y, r.width, r.height);
+                        g.drawImage(brickImg, bx, by, bW, bH, this);
+                        g.setClip(oldClip);
+                    }
+                }
+            }
+        } else {
+            g.setColor(new Color(160, 82, 45));
+            g.fillRect(r.x, r.y, r.width, r.height);
+            g.setColor(new Color(100, 50, 20));
+            for (int row = 0; row * bH < r.height; row++) {
+                int offsetX = (row % 2 == 0) ? 0 : bW / 2;
+                for (int col = -bW; col < r.width + bW; col += bW) {
+                    int bx = r.x + col + offsetX;
+                    int by = r.y + row * bH;
+                    if (bx + bW > r.x && bx < r.x + r.width) {
+                        g.drawRect(bx, by, bW, bH);
+                    }
+                }
+            }
+            g.setColor(new Color(200, 120, 70, 120));
+            g.fillRect(r.x, r.y, r.width, 3);
+            g.setColor(new Color(60, 30, 10, 200));
+            g.fillRect(r.x, r.y + r.height - 3, r.width, 3);
+        }
+    }
+
    }
