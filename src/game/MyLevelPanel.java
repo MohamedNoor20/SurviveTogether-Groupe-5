@@ -547,4 +547,50 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
             stateTime = System.currentTimeMillis();
         }
     }
+    private Rectangle fireRect() {
+        return new Rectangle(fireX + 4, fireY, PLAYER_W - 8, PLAYER_H);
+    }
+
+    private Rectangle waterRect() {
+        return new Rectangle(waterX + 4, waterY, PLAYER_W - 8, PLAYER_H);
+    }
+
+    //  Paint 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        drawBackground(g2);
+        drawHazards(g2);
+        drawDoors(g2);
+        drawBricks(g2);
+        drawSwitches(g2);
+        drawDiamonds(g2);
+        drawUI(g2);
+        drawOverlay(g2);
+        if (gameState != State.ENTERING) {
+            drawFirePlayer(g2);
+            drawWaterPlayer(g2);
+        }
+    }
+
+    // Background
+    private void drawBackground(Graphics2D g) {
+        g.setColor(new Color(28, 28, 52));
+        g.fillRect(0, 0, W, H - UI_H);
+        g.setColor(new Color(38, 38, 65));
+        for (int row = 0; row < H - UI_H; row += 28) {
+            int offset = (row / 28 % 2 == 0) ? 0 : 40;
+            for (int col = -40 + offset; col < W; col += 80) {
+                g.drawRoundRect(col + 2, row + 2, 76, 24, 3, 3);
+            }
+        }
+        g.setColor(new Color(15, 15, 30));
+        g.fillRect(0, H - UI_H, W, UI_H);
+        g.setColor(new Color(55, 42, 25));
+        g.fillRect(0, H - UI_H, W, 4);
+    }
+
    }
