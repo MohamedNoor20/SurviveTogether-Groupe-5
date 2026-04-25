@@ -187,4 +187,99 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         waterRight = img("src/static/image/character/water girl_run right.gif");
         waterDie = img("src/static/image/character/die.gif");
     }
-}
+
+    private void buildLevel() {
+
+        // GROUND FLOOR
+        floors.add(new Rectangle(0, 700, W, 24));
+
+        //RIGHT PILLAR 
+        walls.add(new Rectangle(680, 600, 24, 100));
+        walls.add(new Rectangle(680, 600, 88, 24));
+
+        //1ST PLATFORM
+        floors.add(new Rectangle(0, 530, 155, 24));
+
+        // left closed bricks
+       
+        walls.add(new Rectangle(0, 445, 80, 24));
+        walls.add(new Rectangle(0, 469, 24, 61));  // closes first gap permanent wall
+
+        floors.add(new Rectangle(155, 530, 478, 24));
+
+        // 2ND PLATFORM 
+        floors.add(new Rectangle(120, 375, 648, 24));
+
+        // Closed middle section
+        walls.add(new Rectangle(340, 282, 24, 80));
+        walls.add(new Rectangle(340, 282, 88, 24));
+      
+
+        // 3RD PLATFORM 
+        floors.add(new Rectangle(120, 200, 192, 24));
+        floors.add(new Rectangle(470, 200, 192, 24));
+
+        // 4TH PLATFORM (TOP) 
+        floors.add(new Rectangle(0, 110, 470, 24));
+        floors.add(new Rectangle(662, 110, 106, 24));
+
+        // Closed left section (top)
+        walls.add(new Rectangle(120, 110, 24, 100));
+       
+        
+    
+        
+        // SWITCH PAIRS 3 total  one for each closed brick
+       
+
+        // SWITCH PAIR 1 - Left on 1st platform
+        Rectangle switch1Button = new Rectangle(300, 514, 30, 16);  // On 1st platform floor
+        Rectangle switch1Block = new Rectangle(80, 469, 10, 61);     // Bottom door of alcove
+        switchPairs.add(new SwitchPair(switch1Button, switch1Block));
+        diamonds.add(new Diamond(30, 480, 1));  // Red diamond inside alcove
+
+        // SWITCH PAIR 2 - Middle closed brick on 2nd platform
+        Rectangle switch2Button = new Rectangle(600, 359, 30, 16);  // Right side of 2nd platform
+        Rectangle switch2Block = new Rectangle(428, 306, 10, 66);   // Bottom door of middle brick
+        switchPairs.add(new SwitchPair(switch2Button, switch2Block));
+        diamonds.add(new Diamond(370, 330, 0));  // Blue diamond inside middle brick
+
+        // SWITCH PAIR 3 - Left closed brick on 4th platform
+        Rectangle switch3Button = new Rectangle(550, 184, 30, 16);  // Right side of 3rd platform
+        Rectangle switch3Block = new Rectangle(190, 134, 10, 66);   // Bottom door of top brick
+        switchPairs.add(new SwitchPair(switch3Button, switch3Block));
+        diamonds.add(new Diamond(150, 150, 1));  // Red diamond inside top brick
+
+        //FIRE POOLS - merged with floors 
+        
+        firePool1 = new Rectangle(200, 526, 70, 12);   // 2st platform
+
+        //WATER POOLS - merged with floors
+        waterPool1 = new Rectangle(360, 694, 70, 14);  // ground
+        waterPool2 = new Rectangle(400, 523, 70, 30);  // 1st platform
+
+        // GREEN/POISON POOL - LEFT SIDE OF 2ND PLATFORM 
+        greenPool = new Rectangle(180, 370, 70, 14);    // Left side of 2nd platform
+
+        // DOORS at top 
+        fireDoor = new Rectangle(0, 40, 56, 80);
+        waterDoor = new Rectangle(700, 40, 56, 80);
+
+        //ADDITIONAL DIAMONDS
+        // Red diamonds IN fire pools (fire boy collects)
+        diamonds.add(new Diamond(240, 670, 1));  // firePool1
+        diamonds.add(new Diamond(230, 500, 1));  // firePool2
+
+        // Blue diamonds IN water pools (water girl collects)
+        diamonds.add(new Diamond(390, 670, 0));  // waterPool1
+        diamonds.add(new Diamond(430, 500, 0));  // waterPool2
+
+        // Safe platform diamonds
+        diamonds.add(new Diamond(60, 490, 1));   // left 1st platform - red
+
+        diamonds.add(new Diamond(490, 160, 0));  // 3rd platform right - blue
+        diamonds.add(new Diamond(200, 70, 0));   // top platform - blue
+        diamonds.add(new Diamond(350, 70, 1));   // top platform - red
+    }
+
+    }
