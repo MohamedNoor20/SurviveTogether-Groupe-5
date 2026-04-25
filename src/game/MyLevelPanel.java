@@ -453,4 +453,67 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         }
     }
 
+    private void resolveFloor(Rectangle r, boolean isFirePlayer) {
+        int px = isFirePlayer ? fireX : waterX;
+        int py = isFirePlayer ? fireY : waterY;
+        int vy = isFirePlayer ? fireVY : waterVY;
+
+        Rectangle player = new Rectangle(px + 4, py, PLAYER_W - 8, PLAYER_H);
+
+        if (!player.intersects(r)) return;
+
+        int playerBottom = py + PLAYER_H;
+        int playerTop = py;
+        int playerRight = px + PLAYER_W;
+        int playerLeft = px;
+
+        int rectTop = r.y;
+        int rectBottom = r.y + r.height;
+        int rectLeft = r.x;
+        int rectRight = r.x + r.width;
+
+        int overlapBottom = playerBottom - rectTop;
+        int overlapTop = rectBottom - playerTop;
+        int overlapLeft = playerRight - rectLeft;
+        int overlapRight = rectRight - playerLeft;
+
+        int minOverlap = Math.min(Math.min(overlapBottom, overlapTop),
+                                 Math.min(overlapLeft, overlapRight));
+
+        if (minOverlap == overlapBottom && vy >= 0) {
+            // Landing on top
+            if (isFirePlayer) {
+                fireY = rectTop - PLAYER_H;
+                fireVY = 0;
+                fireOnGround = true;
+            } else {
+                waterY = rectTop - PLAYER_H;
+                waterVY = 0;
+                waterOnGround = true;
+            }
+        } else if (minOverlap == overlapTop && vy < 0) {
+            // Hitting from below
+            if (isFirePlayer) {
+                fireY = rectBottom;
+                fireVY = 2;
+            } else {
+                waterY = rectBottom;
+                waterVY = 2;
+            }
+        } else if (minOverlap == overlapLeft) {
+            // Hit from left side
+            if (isFirePlayer) {
+                fireX = rectLeft - PLAYER_W;
+            } else {
+                waterX = rectLeft - PLAYER_W;
+            }
+        } else if (minOverlap == overlapRight) {
+            // Hit from right side
+            if (isFirePlayer) {
+                fireX = rectRight;
+            } else {
+                waterX = rectRight;
+            }
+        }
     }
+   }
