@@ -656,4 +656,56 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         }
     }
 
-   }
+    // Hazards 
+    private void drawHazards(Graphics2D g) {
+        drawFirePool(g, firePool1);
+        drawFirePool(g, firePool2);
+        drawWaterPool(g, waterPool1);
+        drawWaterPool(g, waterPool2);
+        drawGreenPool(g, greenPool);
+    }
+
+    private void drawFirePool(Graphics2D g, Rectangle r) {
+        if (r == null)
+            return;
+        if (fireObstacleImg != null) {
+            g.drawImage(fireObstacleImg, r.x, r.y, r.width, r.height, this);
+        } else {
+            g.setColor(new Color(180, 40, 10));
+            g.fillRoundRect(r.x, r.y + 2, r.width, r.height - 2, 4, 4);
+            g.setColor(new Color(255, 150, 0, 200));
+            for (int i = 0; i < 3; i++) {
+                g.fillPolygon(new int[] { r.x + 15 + i * 30, r.x + 20 + i * 30, r.x + 25 + i * 30 },
+                        new int[] { r.y, r.y - 12, r.y }, 3);
+            }
+        }
+    }
+
+    private void drawWaterPool(Graphics2D g, Rectangle r) {
+        if (r == null)
+            return;
+        if (waterObstacleImg != null) {
+            g.drawImage(waterObstacleImg, r.x, r.y, r.width, r.height, this);
+        } else {
+            g.setColor(new Color(30, 100, 210, 210));
+            g.fillRoundRect(r.x, r.y + 2, r.width, r.height - 2, 4, 4);
+            g.setColor(new Color(100, 180, 255, 180));
+            g.drawArc(r.x + 4, r.y - 4, 30, 10, 0, 180);
+            g.drawArc(r.x + 40, r.y - 4, 30, 10, 0, 180);
+        }
+    }
+
+    private void drawGreenPool(Graphics2D g, Rectangle r) {
+        if (r == null)
+            return;
+        if (poisonObstacleImg != null) {
+            g.drawImage(poisonObstacleImg, r.x, r.y, r.width, r.height, this);
+        } else {
+            g.setColor(new Color(0, 160, 10, 210));
+            g.fillRoundRect(r.x, r.y + 2, r.width, r.height - 2, 4, 4);
+            g.setColor(new Color(100, 255, 120, 180));
+            g.drawArc(r.x + 4, r.y - 4, 25, 10, 0, 180);
+            g.drawArc(r.x + 30, r.y - 4, 25, 10, 0, 180);
+        }
+    }
+}
