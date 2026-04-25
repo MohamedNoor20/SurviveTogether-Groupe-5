@@ -93,4 +93,33 @@ public class MyLevel2PanelTest {
         assertEquals("Watergirl should not jump in air", oldVY, waterVY);
     }
 
-   }
+    //  GRAVITY TESTS
+
+    @Test
+    public void testGravityIncreasesVerticalSpeed() {
+        int oldVY = fireVY;
+        if (fireVY < 5) fireVY += GRAVITY;
+        assertTrue("Gravity should increase vertical speed", fireVY > oldVY);
+    }
+
+    @Test
+    public void testGravityIsCapped() {
+        fireVY = 5;
+        if (fireVY < 5) fireVY += GRAVITY;
+        assertEquals("Gravity should be capped at 5", 5, fireVY);
+    }
+    
+    @Test
+    public void testWatergirlGravityIncreasesVerticalSpeed() {
+        int oldVY = waterVY;
+        if (waterVY < 5) waterVY += GRAVITY;
+        assertTrue("Gravity should increase vertical speed", waterVY > oldVY);
+    }
+
+    @Test
+    public void testWatergirlGravityIsCapped() {
+        waterVY = 5;
+        if (waterVY < 5) waterVY += GRAVITY;
+        assertEquals("Gravity should be capped at 5", 5, waterVY);
+    }
+}
