@@ -516,4 +516,35 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
             }
         }
     }
+    private void checkHazards() {
+    	
+    	    // very small center strip — only triggers when standing directly on the color
+    	    Rectangle fFeet = new Rectangle(fireX + PLAYER_W/2 - 5, fireY + PLAYER_H - 6, 3, 6);
+    	    Rectangle wFeet = new Rectangle(waterX + PLAYER_W/2 - 5, waterY + PLAYER_H - 6, 3, 6);
+        // FIRE POOLS — watergirl dies, fireboy is safe
+        if (firePool1 != null && firePool1.intersects(wFeet)) {
+            waterAlive = false;
+        }
+
+        // WATER POOLS — fireboy dies, watergirl is safe
+        if (waterPool1 != null && waterPool1.intersects(fFeet)) {
+            fireAlive = false;
+        }
+        if (waterPool2 != null && waterPool2.intersects(fFeet)) {
+            fireAlive = false;
+        }
+
+        // GREEN POOL — both die, no one is safe
+        if (greenPool != null && greenPool.intersects(fFeet)) {
+            fireAlive = false;
+        }
+        if (greenPool != null && greenPool.intersects(wFeet)) {
+            waterAlive = false;
+        }
+
+        if (!fireAlive || !waterAlive) {
+            gameState = State.DEAD;
+            stateTime = System.currentTimeMillis();
+        }
+    }
    }
