@@ -132,4 +132,20 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         }
     }
 
+    public MyLevelPanel() {
+        setPreferredSize(new Dimension(W, H));
+        setBackground(new Color(18, 18, 38));
+        setLayout(null);
+        setFocusable(true);
+        addKeyListener(this);
+
+        loadImages();
+        buildLevel();
+        addMenuButton();
+    }
+
+    public void setMainFrame(Main m) {
+        this.mainFrame = m;
+    }
+
    }
