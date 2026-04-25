@@ -30,4 +30,34 @@ public class MyLevel2PanelTest {
         waterAlive = true;
     }
 
+    //  MOVEMENT TESTS
+
+    @Test
+    public void testFireboyMovesRight() {
+        int startX = fireX;
+        fireX += 6; // fireSpeed = 6
+        assertTrue("Fireboy should move right", fireX > startX);
+    }
+
+    @Test
+    public void testFireboyMovesLeft() {
+        int startX = fireX;
+        fireX -= 6;
+        assertTrue("Fireboy should move left", fireX < startX);
+    }
+
+    @Test
+    public void testWatergirlMovesRight() {
+        int startX = waterX;
+        waterX += 6;
+        assertTrue("Watergirl should move right", waterX > startX);
+    }
+
+    @Test
+    public void testWatergirlMovesLeft() {
+        int startX = waterX;
+        waterX -= 6;
+        assertTrue("Watergirl should move left", waterX < startX);
+    }
+
    }
