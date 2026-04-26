@@ -1,6 +1,7 @@
 package game;
 //Susan Ogozi
 //3157092
+import java.util.HashMap;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -228,15 +229,22 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
        
         
     
-        
-        // SWITCH PAIRS 3 total  one for each closed brick
-       
+     // SWITCH PAIR 0 - Horizontal block on 1st PLATFORM 
+     // This block has TWO switches controlling it
+     Rectangle switch0Block = new Rectangle(630, 506, 180, 20);  // The horizontal block
 
-        // SWITCH PAIR 1 - Left on 1st platform
-        Rectangle switch1Button = new Rectangle(300, 514, 30, 16);  // On 1st platform floor
-        Rectangle switch1Block = new Rectangle(80, 469, 10, 61);     // Bottom door of alcove
-        switchPairs.add(new SwitchPair(switch1Button, switch1Block));
-        diamonds.add(new Diamond(30, 480, 1));  // Red diamond inside alcove
+     // Switch 0a - on GROUND FLOOR
+     Rectangle switch0ButtonGround = new Rectangle(300, 686, 30, 14);
+     switchPairs.add(new SwitchPair(switch0ButtonGround, switch0Block));
+
+     // Switch 0b - on 1st PLATFORM (second switch for the SAME block)
+     Rectangle switch0ButtonPlatform = new Rectangle(550, 514, 30, 16);
+     switchPairs.add(new SwitchPair(switch0ButtonPlatform, switch0Block));
+
+     // SWITCH PAIR 1 - Left on 1st platform alcove (vertical block)
+     Rectangle switch1Button = new Rectangle(300, 514, 30, 16);
+     Rectangle switch1Block = new Rectangle(80, 469, 10, 61);
+     switchPairs.add(new SwitchPair(switch1Button, switch1Block));
 
         // SWITCH PAIR 2 - Middle closed brick on 2nd platform
         Rectangle switch2Button = new Rectangle(600, 359, 30, 16);  // Right side of 2nd platform
@@ -348,110 +356,122 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
             }
         }
     }
+//  Update 
+private void update() {
+    if (gameState != State.PLAYING)
+        return;
 
-    //  Update 
-    private void update() {
-        if (gameState != State.PLAYING)
-            return;
+    // Fire player movement
+    fireMoving = false;
+    if (p1Left) {
+        fireX -= fireSpeed;
+        fireFacingLeft = true;
+        fireMoving = true;
+    }
+    if (p1Right) {
+        fireX += fireSpeed;
+        fireFacingLeft = false;
+        fireMoving = true;
+    }
 
-        // Fire player movement
-        fireMoving = false;
-        if (p1Left) {
-            fireX -= fireSpeed;
-            fireFacingLeft = true;
-            fireMoving = true;
-        }
-        if (p1Right) {
-            fireX += fireSpeed;
-            fireFacingLeft = false;
-            fireMoving = true;
-        }
+    //Water player movement
+    waterMoving = false;
+    if (p2Left) {
+        waterX -= waterSpeed;
+        waterFacingLeft = true;
+        waterMoving = true;
+    }
+    if (p2Right) {
+        waterX += waterSpeed;
+        waterFacingLeft = false;
+        waterMoving = true;
+    }
 
-        //Water player movement
-        waterMoving = false;
-        if (p2Left) {
-            waterX -= waterSpeed;
-            waterFacingLeft = true;
-            waterMoving = true;
-        }
-        if (p2Right) {
-            waterX += waterSpeed;
-            waterFacingLeft = false;
-            waterMoving = true;
-        }
+    //Gravity
+    if (fireVY < 5) fireVY += GRAVITY;
+    if (waterVY < 5) waterVY += GRAVITY;
+    fireY += fireVY;
+    waterY += waterVY;
 
-        //Gravity
-        if (fireVY < 5) fireVY += GRAVITY;
-        if (waterVY < 5) waterVY += GRAVITY;
-        fireY += fireVY;
-        waterY += waterVY;
+    //Floor collision
+    fireOnGround = false;
+    waterOnGround = false;
 
-        //Floor collision
-        fireOnGround = false;
-        waterOnGround = false;
+    for (Rectangle floor : floors) {
+        resolveFloor(floor, true);
+        resolveFloor(floor, false);
+    }
+    for (Rectangle wall : walls) {
+        resolveFloor(wall, true);
+        resolveFloor(wall, false);
+    }
 
-        for (Rectangle floor : floors) {
-            resolveFloor(floor, true);
-            resolveFloor(floor, false);
-        }
-        for (Rectangle wall : walls) {
-            resolveFloor(wall, true);
-            resolveFloor(wall, false);
-        }
+    // FIRST: Get player rectangles
+    Rectangle fb = fireRect();
+    Rectangle wb = waterRect();
 
-        // Switch checks (update all switches) 
-        Rectangle fb = fireRect();
-        Rectangle wb = waterRect();
-
-        for (SwitchPair pair : switchPairs) {
-            boolean playerOnSwitch = pair.switchButton.intersects(fb) || pair.switchButton.intersects(wb);
-            pair.pressed = playerOnSwitch;
-
-            // If switch not pressed, block is solid
-            if (!pair.pressed) {
-                resolveFloor(pair.switchBlock, true);
-                resolveFloor(pair.switchBlock, false);
-            }
-        }
-
-        // Clamp to screen 
-        if (fireX < 0)
-            fireX = 0;
-        if (fireX > W - PLAYER_W)
-            fireX = W - PLAYER_W;
-        if (waterX < 0)
-            waterX = 0;
-        if (waterX > W - PLAYER_W)
-            waterX = W - PLAYER_W;
-
-        // Hazard collision
-        checkHazards();
-
-        // Diamond pickup 
-        for (Diamond d : diamonds) {
-            if (!d.collected) {
-                if (d.type == 1 && d.getBounds().intersects(fb)) {
-                    d.collected = true;
-                }
-                if (d.type == 0 && d.getBounds().intersects(wb)) {
-                    d.collected = true;
-                }
-            }
-        }
+    // SECOND: Switch checks - MULTIPLE switches can control the SAME block
+    HashMap<Rectangle, Boolean> blockPressed = new HashMap<>();
+    
+    for (SwitchPair pair : switchPairs) {
+        boolean playerOnSwitch = pair.switchButton.intersects(fb) || pair.switchButton.intersects(wb);
         
-        elapsedSeconds = (int)((System.currentTimeMillis() - startTime) / 1000);
-        
-        //  Door and win check 
-        Rectangle fd = fireDoor != null ? fireDoor : new Rectangle(0, 0, 0, 0);
-        Rectangle wd = waterDoor != null ? waterDoor : new Rectangle(0, 0, 0, 0);
-        boolean fInDoor = fd.intersects(fb);
-        boolean wInDoor = wd.intersects(wb);
-
-        if (fInDoor && wInDoor && gameState == State.PLAYING) {
-            gameState = State.ENTERING;
-            stateTime = System.currentTimeMillis();
+        // If ANY switch for this block is pressed, mark the block as pressed
+        if (playerOnSwitch) {
+            blockPressed.put(pair.switchBlock, true);
         }
     }
+    
+    // Now apply the pressed state to all switch pairs
+    for (SwitchPair pair : switchPairs) {
+        Boolean isPressed = blockPressed.get(pair.switchBlock);
+        pair.pressed = (isPressed != null && isPressed);
+        
+        // If block is NOT pressed by any switch, it's solid
+        if (!pair.pressed) {
+            resolveFloor(pair.switchBlock, true);
+            resolveFloor(pair.switchBlock, false);
+        }
+    }
+
+    // Clamp to screen 
+    if (fireX < 0)
+        fireX = 0;
+    if (fireX > W - PLAYER_W)
+        fireX = W - PLAYER_W;
+    if (waterX < 0)
+        waterX = 0;
+    if (waterX > W - PLAYER_W)
+        waterX = W - PLAYER_W;
+
+    // Hazard collision
+    checkHazards();
+
+    // Diamond pickup 
+    for (Diamond d : diamonds) {
+        if (!d.collected) {
+            if (d.type == 1 && d.getBounds().intersects(fb)) {
+                d.collected = true;
+            }
+            if (d.type == 0 && d.getBounds().intersects(wb)) {
+                d.collected = true;
+            }
+        }
+    }
+    
+    elapsedSeconds = (int)((System.currentTimeMillis() - startTime) / 1000);
+    
+    // Door and win check 
+    Rectangle fd = fireDoor != null ? fireDoor : new Rectangle(0, 0, 0, 0);
+    Rectangle wd = waterDoor != null ? waterDoor : new Rectangle(0, 0, 0, 0);
+    boolean fInDoor = fd.intersects(fb);
+    boolean wInDoor = wd.intersects(wb);
+
+    if (fInDoor && wInDoor && gameState == State.PLAYING) {
+        gameState = State.ENTERING;
+        stateTime = System.currentTimeMillis();
+    }
+}
 
     private void resolveFloor(Rectangle r, boolean isFirePlayer) {
         int px = isFirePlayer ? fireX : waterX;
