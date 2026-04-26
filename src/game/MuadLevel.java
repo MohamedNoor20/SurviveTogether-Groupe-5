@@ -1,5 +1,13 @@
 package game;
 
-public class MuadLevel {
+import entities.Door;
+import entities.Floor;
+import java.awt.Rectangle;
 
+public class MuadLevel{
+
+
+public MuadLevel() {
+
+	}
 }
