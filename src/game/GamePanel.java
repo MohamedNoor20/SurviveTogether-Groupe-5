@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -25,7 +27,7 @@ import javax.swing.JButton;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class GamePanel extends JPanel implements KeyListener, Runnable {
+public class GamePanel extends JPanel implements KeyListener, Runnable, MouseListener  {
 
 	final int TileSize = 16 * 3;
 	final int ScreenWidth = TileSize * 16;
@@ -49,6 +51,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	private Main main;
 	private String difficulty;
 	public Image coinImage;
+	private Rectangle menuButton;
+	private int mouseX, mouseY;
 
 	// player 1
 	boolean p1Up;
@@ -71,12 +75,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	public GamePanel(Main main, String difficulty) {
 		this.main = main;
 		this.difficulty = difficulty;
+		addMouseListener(this);
 
-		double scale = (main != null) ? main.scale : 1.0;
-		int scaledW = (int) (ScreenWidth * scale);
-		int scaledH = (int) (ScreenHeight * scale);
-
-		this.setPreferredSize(new Dimension(scaledW, scaledH));
+		this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
 		this.setDoubleBuffered(true);
 
 		this.setLayout(null);
@@ -149,15 +150,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		// ADD MENU BUTTON - only add if we have a main reference (not in test mode)
 		if (main != null) {
-			JButton menuButton = new JButton("MENU");
-			menuButton.setBounds(ScreenWidth - 90, 10, 80, 30);
-			menuButton.setFont(new Font("Arial", Font.BOLD, 14));
-			menuButton.setBackground(new Color(200, 200, 200));
-			menuButton.setForeground(Color.BLACK);
-			menuButton.setFocusPainted(false);
-			menuButton.addActionListener(e -> main.showMainMenu());
-			this.setLayout(null);
-			this.add(menuButton);
+			menuButton = new Rectangle(650, 10, 100, 40);
 		}
 	}
 
@@ -325,6 +318,35 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	public void keyTyped(KeyEvent e) {
 		// empty
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	    if (menuButton == null) return;
+
+	    // Adjust for scaling
+	    double scaleX = getWidth() / (double) ScreenWidth;
+	    double scaleY = getHeight() / (double) ScreenHeight;
+
+	    int mouseX = (int)(e.getX() / scaleX);
+	    int mouseY = (int)(e.getY() / scaleY);
+
+	    if (menuButton.contains(mouseX, mouseY)) {
+	        System.out.println("Menu clicked!");
+
+	        if (main != null) {
+	            main.showMainMenu();
+	        }
+	    }
+	}
+	@Override 
+	public void mousePressed(MouseEvent e) {}
+	@Override 
+	public void mouseReleased(MouseEvent e) {}
+	@Override 
+	public void mouseEntered(MouseEvent e) {}
+	@Override 
+	public void mouseExited(MouseEvent e) {}
 
 	// AFAQ AHMED - GRAPHICS METHODS
 
@@ -630,29 +652,39 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+	    super.paintComponent(g);
 
-		Graphics2D g2 = (Graphics2D) g;
+	    Graphics2D g2 = (Graphics2D) g.create();
 
-		if (main != null) {
-			g2.scale(main.scale, main.scale);
-		}
+	    double scaleX = getWidth() / (double) ScreenWidth;
+	    double scaleY = getHeight() / (double) ScreenHeight;
 
-		drawBackground(g2);
-		drawHazards(g2);
-		drawDoor(g2);
-		drawFireboy(g2);
-		drawWatergirl(g2);
-		drawMessages(g2);
-		drawControlsInfo(g2);
-		floorColor(g2);
-		// Display timer on screen Susan Ogozi 3157092
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("Arial", Font.BOLD, 18));
-		g.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
+	    g2.scale(scaleX, scaleY);
+	    
+	    if (menuButton != null) {
+	        g2.setColor(Color.BLACK);
+	        g2.fillRect(menuButton.x, menuButton.y, menuButton.width, menuButton.height);
 
-		drawCoins(g2);
-		bottomColor(g2);
+	        g2.setColor(Color.WHITE);
+	        g2.drawString("MENU", menuButton.x + 20, menuButton.y + 25);
+	    }
 
+	    drawBackground(g2);
+	    drawHazards(g2);
+	    drawDoor(g2);
+	    drawFireboy(g2);
+	    drawWatergirl(g2);
+	    drawMessages(g2);
+	    drawControlsInfo(g2);
+	    floorColor(g2);
+	    // Display timer on screen Susan Ogozi 3157092
+	    g2.setColor(Color.WHITE);
+	    g2.setFont(new Font("Arial", Font.BOLD, 18));
+	    g2.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
+
+	    drawCoins(g2);
+	    bottomColor(g2);
+
+	    g2.dispose();
 	}
 }
