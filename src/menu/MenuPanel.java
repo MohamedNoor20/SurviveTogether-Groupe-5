@@ -25,7 +25,7 @@ public class MenuPanel extends JPanel {
         setPreferredSize(new Dimension(768, 768));
         setLayout(null);
 
-        // Load images safely
+        // Load images safel
         backgroundImage      = tryLoad("src/static/image/background/MenuBackground.jpg");
         titleImage           = tryLoad("src/static/image/text/GameTitleBackground.png");
         startBtnImg          = tryLoad("src/static/image/elements/unclickedStartBtn.png");
