@@ -7,6 +7,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import java.awt.Font;
 
 import griffith.Main;
 
@@ -32,15 +33,31 @@ public class DifficultyPanel extends JPanel {
 		mediumImg = new ImageIcon("src/static/image/text/Medium_mode.png").getImage();
 		backImg = new ImageIcon("src/static/image/text/BackBtn.png").getImage();
 
-		add(createImageButton(easyImg, 234, 250, 300, 70, () -> {
+		add(createImageButton(easyImg, 234, 150, 300, 70, () -> {
 			if (mainFrame != null)
 				mainFrame.startGame("easy");
 		}));
 
-		add(createImageButton(mediumImg, 234, 350, 300, 70, () -> {
+		add(createImageButton(mediumImg, 234, 250, 300, 70, () -> {
 			if (mainFrame != null)
 				mainFrame.startGame("medium");
 		}));
+		
+		
+		// new button for muad level
+		JButton muadLevelBtn = new JButton("muad level");
+		muadLevelBtn.setFont(new Font("Arial", Font.BOLD, 26));
+		muadLevelBtn.setBackground(new Color(150, 50, 200));
+		muadLevelBtn.setForeground(Color.WHITE);
+		muadLevelBtn.setFocusPainted(false);
+		muadLevelBtn.setBounds(234, 350, 300, 70); 		
+		muadLevelBtn.addActionListener(e -> {
+			if (mainFrame != null) {
+				mainFrame.startGame("muad");
+			}
+		});
+		add(muadLevelBtn);		
+		
 
 		add(createImageButton(backImg, 234, 450, 300, 70, () -> {
 			if (mainFrame != null)
