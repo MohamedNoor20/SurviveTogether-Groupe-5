@@ -89,7 +89,7 @@ public class MenuPanel extends JPanel {
                 }
             }
         };
-        playButton.setBounds(284, 300, 200, 65);
+        
         exitButton.setBounds(284, 380, 200, 65);
         exitButton.setContentAreaFilled(false);
         exitButton.setBorderPainted(false);
