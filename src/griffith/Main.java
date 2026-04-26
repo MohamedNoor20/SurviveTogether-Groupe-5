@@ -10,7 +10,6 @@ import game.GamePanel;
 import game.MyLevelPanel;
 import menu.DifficultyPanel;
 import menu.MenuPanel;
-import menu.MenuPanel;
 
 public class Main {
 
@@ -45,20 +44,6 @@ public class Main {
 		frame.setSize(finalSize, finalSize);
 		frame.setLocationRelativeTo(null);
 
-		/*
-		// create the menu and game screens
-		menuPanel = new MenuPanel(this);
-		gamePanel = new GamePanel(this);
-
-		// show the menu first when program starts
-		showMenu(false);
-
-		frame.setVisible(true);
-		//
-		audio = new GameAudio();
-		audio.play("background");
-		*/
-
 		menuPanel = new MenuPanel(this);
 		difficultyPanel = new DifficultyPanel(this);
 		audio = new GameAudio();
@@ -69,71 +54,15 @@ public class Main {
 		audio.play("background");
 	}
 
-	/*
-	// switches to the menu screen
-	public void showMenu(boolean isGameOver) {
-		// remove game panel if it's there
-		frame.remove(gamePanel);
-		frame.add(menuPanel);
-		
-		//Update restart music when showing menu(Susan Ogozi)
-		if (audio != null) {
-			audio.stop("gamePlay");
-			audio.play("background");
-		}
-		if (isGameOver) {
-			menuPanel.showGameOverMenu();
-		} else {
-			menuPanel.showFullMenu();
-		}
-
-		frame.pack();
-		frame.revalidate();
-		frame.repaint();
-		menuPanel.requestFocusInWindow();
-	}
-	*/
-
-	/*
-	// switches to the game screen and starts the game loop
-	public void startGame() {
-		frame.getContentPane().removeAll();
-
-		// create a fresh game panel each time
-		gamePanel = new GamePanel(this);
-		
-		frame.add(gamePanel);
-		frame.revalidate();
-		frame.repaint();
-		
-		//Update switch to game music
-		if (audio != null) {
-			audio.stop("background");
-			audio.play("gamePlay");
-		}
-		
-		gamePanel.requestFocusInWindow();
-		//start the game loop (GamePanel handles its own thread via Runnable)
-		gamePanel.startGame();
-	}
-	*/
-
-	/*
-	// restart is the same as starting a new game
-	public void restartGame() {
-		startGame();
-	}
-	*/
-
 	public void showMainMenu() {
 		frame.getContentPane().removeAll();
 		frame.add(menuPanel);
-		
+
 		if (audio != null) {
 			audio.stop("gamePlay");
 			audio.play("background");
 		}
-		
+
 		frame.revalidate();
 		frame.repaint();
 		menuPanel.requestFocusInWindow();
@@ -142,7 +71,7 @@ public class Main {
 	public void showDifficultyMenu() {
 		frame.getContentPane().removeAll();
 		frame.add(difficultyPanel);
-		
+
 		frame.revalidate();
 		frame.repaint();
 		difficultyPanel.requestFocusInWindow();
@@ -168,7 +97,7 @@ public class Main {
 			gamePanel.requestFocusInWindow();
 			gamePanel.startGame();
 		}
-		
+
 		if (audio != null) {
 			audio.stop("background");
 			audio.play("gamePlay");
