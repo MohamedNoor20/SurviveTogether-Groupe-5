@@ -1,16 +1,25 @@
 package griffith;
 
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import audio.GameAudio;
+import game.GamePanel;
+import game.MyLevelPanel;
+import menu.DifficultyPanel;
+import menu.MenuPanel;
 
 public class Main {
 
 	private JFrame frame; // main window
 	private GamePanel gamePanel; // game screen
-	private MenuPanel menuPanel; // menu screen
+	private MyLevelPanel myLevelPanel; // medium mode level (SUSAN OGOZI)
+	private MenuPanel menuPanel; // menu screen new (susan ogozi)
+	private DifficultyPanel difficultyPanel;
+	private GameAudio audio;
+	private String currentDifficulty;
 
 	public double scale = 1.0;
 	private final int BaseSize = 768;
@@ -35,57 +44,74 @@ public class Main {
 		frame.setSize(finalSize, finalSize);
 		frame.setLocationRelativeTo(null);
 
-		// create the menu and game screens
 		menuPanel = new MenuPanel(this);
-		gamePanel = new GamePanel(this);
+		difficultyPanel = new DifficultyPanel(this);
+		audio = new GameAudio();
 
-		// show the menu first when program starts
-		showMenu(false);
+		showMainMenu();
 
 		frame.setVisible(true);
+		audio.play("background");
 	}
 
-	// switches to the menu screen
-	public void showMenu(boolean isGameOver) {
-		// remove game panel if it's there
-		frame.remove(gamePanel);
+	public void showMainMenu() {
+		frame.getContentPane().removeAll();
 		frame.add(menuPanel);
 
-		if (isGameOver) {
-			menuPanel.showGameOverMenu();
-		} else {
-			menuPanel.showFullMenu();
+		if (audio != null) {
+			audio.stop("gamePlay");
+			audio.play("background");
 		}
 
-		frame.pack();
 		frame.revalidate();
 		frame.repaint();
 		menuPanel.requestFocusInWindow();
 	}
 
-	// switches to the game screen and starts the game loop
-	public void startGame() {
+	public void showDifficultyMenu() {
 		frame.getContentPane().removeAll();
+		frame.add(difficultyPanel);
 
-		// create a fresh game panel each time
-		gamePanel = new GamePanel(this);
-		
-		frame.add(gamePanel);
 		frame.revalidate();
 		frame.repaint();
-		
-		gamePanel.requestFocusInWindow();
-		//start the game loop (GamePanel handles its own thread via Runnable)
-		gamePanel.startGame();
+		difficultyPanel.requestFocusInWindow();
 	}
 
-	// restart is the same as starting a new game
-	public void restartGame() {
-		startGame();
+	public void startGame(String difficulty) {
+		this.currentDifficulty = difficulty;
+		frame.getContentPane().removeAll();
+
+		if (difficulty.equals("medium")) {
+			myLevelPanel = new MyLevelPanel();
+			myLevelPanel.setMainFrame(this);
+			frame.add(myLevelPanel);
+			frame.revalidate();
+			frame.repaint();
+			myLevelPanel.requestFocusInWindow();
+			myLevelPanel.startGame();
+		} else {
+			gamePanel = new GamePanel(this, difficulty);
+			frame.add(gamePanel);
+			frame.revalidate();
+			frame.repaint();
+			gamePanel.requestFocusInWindow();
+			gamePanel.startGame();
+		}
+
+		if (audio != null) {
+			audio.stop("background");
+			audio.play("gamePlay");
+		}
+	}
+
+	public void showGameOver() {
+		if (audio != null) {
+			audio.stop("gamePlay");
+		}
+		showMainMenu();
 	}
 
 	public static void main(String[] args) {
-		// run on the Swing event thread
 		SwingUtilities.invokeLater(() -> new Main());
 	}
 }
