@@ -25,7 +25,8 @@ public class MenuPanel extends JPanel {
         setPreferredSize(new Dimension(768, 768));
         setLayout(null);
 
-        // Load images safel
+
+        // Load images safely
         backgroundImage      = tryLoad("src/static/image/background/MenuBackground.jpg");
         titleImage           = tryLoad("src/static/image/text/GameTitleBackground.png");
         startBtnImg          = tryLoad("src/static/image/elements/unclickedStartBtn.png");
@@ -89,7 +90,7 @@ public class MenuPanel extends JPanel {
                 }
             }
         };
-        playButton.setBounds(284, 300, 200, 65);
+
         exitButton.setBounds(284, 380, 200, 65);
         exitButton.setContentAreaFilled(false);
         exitButton.setBorderPainted(false);
