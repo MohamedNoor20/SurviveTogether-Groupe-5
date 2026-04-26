@@ -9,14 +9,15 @@ import audio.GameAudio;
 import game.GamePanel;
 import game.MyLevelPanel;
 import menu.DifficultyPanel;
-import menu.NewMainMenuPanel;
+import menu.MenuPanel;
+import menu.MenuPanel;
 
 public class Main {
 
 	private JFrame frame; // main window
 	private GamePanel gamePanel; // game screen
 	private MyLevelPanel myLevelPanel; // medium mode level (SUSAN OGOZI)
-	private NewMainMenuPanel newmainmenuPanel; // menu screen new (susan ogozi)
+	private MenuPanel menuPanel; // menu screen new (susan ogozi)
 	private DifficultyPanel difficultyPanel;
 	private GameAudio audio;
 	private String currentDifficulty;
@@ -58,7 +59,7 @@ public class Main {
 		audio.play("background");
 		*/
 
-		newmainmenuPanel = new NewMainMenuPanel(this);
+		menuPanel = new MenuPanel(this);
 		difficultyPanel = new DifficultyPanel(this);
 		audio = new GameAudio();
 
@@ -126,7 +127,7 @@ public class Main {
 
 	public void showMainMenu() {
 		frame.getContentPane().removeAll();
-		frame.add(newmainmenuPanel);
+		frame.add(menuPanel);
 		
 		if (audio != null) {
 			audio.stop("gamePlay");
@@ -135,7 +136,7 @@ public class Main {
 		
 		frame.revalidate();
 		frame.repaint();
-		newmainmenuPanel.requestFocusInWindow();
+		menuPanel.requestFocusInWindow();
 	}
 
 	public void showDifficultyMenu() {
