@@ -1,7 +1,10 @@
 package griffith;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -82,7 +85,7 @@ public class Main {
 		frame.getContentPane().removeAll();
 
 		if (difficulty.equals("medium")) {
-			myLevelPanel = new MyLevelPanel();
+			myLevelPanel = new MyLevelPanel(this);
 			myLevelPanel.setMainFrame(this);
 			frame.add(myLevelPanel);
 			frame.revalidate();
@@ -113,5 +116,25 @@ public class Main {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> new Main());
+	}
+	// added menu button method and it is inside the game 
+	public JButton createMenuButton(int baseX, int baseY, int baseW, int baseH) {
+
+		double s = scale;
+
+		JButton btn = new JButton("MENU");
+		btn.setBackground(Color.BLACK);
+		btn.setForeground(Color.WHITE);
+
+		btn.setBounds((int) (baseX * s), (int) (baseY * s), (int) (baseW * s), (int) (baseH * s));
+
+		btn.setFocusPainted(false);
+		btn.setContentAreaFilled(true);
+		btn.setOpaque(true);
+		btn.setBorderPainted(true);
+
+		btn.addActionListener(e -> showMainMenu());
+
+		return btn;
 	}
 }
