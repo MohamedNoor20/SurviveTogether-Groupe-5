@@ -71,6 +71,7 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
     Image gameOverImg;
     Image menuBtnImg;
     Image switchDoorImg;
+    Image backgroundImg;
     // Characters
     Image fireIdle, fireLeft, fireRight, fireDie;
     Image waterIdle, waterLeft, waterRight, waterDie;
@@ -176,6 +177,7 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         gameClearImg = img("src/static/image/text/gameclear.gif");
         gameOverImg = img("src/static/image/text/gameover.png");
         menuBtnImg = img("src/static/image/text/MenuBtn.png");
+        backgroundImg = img("src/static/image/background/game_play_background.png");
  
         // Characters
         fireIdle = img("src/static/image/character/fire_boy_character.png");
@@ -596,24 +598,23 @@ private void update() {
         }
     }
 
-    // Background
+ // Background
     private void drawBackground(Graphics2D g) {
-        g.setColor(new Color(28, 28, 52));
-        g.fillRect(0, 0, W, H - UI_H);
-        g.setColor(new Color(38, 38, 65));
-        for (int row = 0; row < H - UI_H; row += 28) {
-            int offset = (row / 28 % 2 == 0) ? 0 : 40;
-            for (int col = -40 + offset; col < W; col += 80) {
-                g.drawRoundRect(col + 2, row + 2, 76, 24, 3, 3);
-            }
+        if (backgroundImg != null) {
+            // Draw background image stretched to fit the panel
+            g.drawImage(backgroundImg, 0, 0, W, H - UI_H, this);
+        } else {
+            // Fallback color if image is missing
+            g.setColor(new Color(28, 28, 52));
+            g.fillRect(0, 0, W, H - UI_H);
         }
+        
+        // Bottom UI bar (keep this)
         g.setColor(new Color(15, 15, 30));
         g.fillRect(0, H - UI_H, W, UI_H);
         g.setColor(new Color(55, 42, 25));
         g.fillRect(0, H - UI_H, W, 4);
     }
-
-    //Brick floors/walls 
     private void drawBricks(Graphics2D g) {
         for (Rectangle r : floors)
             drawBrickRect(g, r);
@@ -633,9 +634,7 @@ private void update() {
                 }
             }
         }
-            
     }
-
     private void drawBrickRect(Graphics2D g, Rectangle r) {
         if (r == null)
             return;
