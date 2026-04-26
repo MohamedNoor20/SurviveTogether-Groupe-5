@@ -214,7 +214,7 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         floors.add(new Rectangle(120, 375, 648, 24));
 
         // Closed middle section
-        walls.add(new Rectangle(340, 282, 24, 80));
+        walls.add(new Rectangle(340, 282, 24, 94));
         walls.add(new Rectangle(340, 282, 88, 24));
       
 
