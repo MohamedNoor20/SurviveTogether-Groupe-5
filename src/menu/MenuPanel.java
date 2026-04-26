@@ -1,180 +1,130 @@
 package menu;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import javax.swing.JButton;
-import javax.swing.JPanel;
+//updated menu panel 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 import griffith.Main;
 
 public class MenuPanel extends JPanel {
-    
-	/*
-	 * OLD MENU SYSTEM 
-	 * 
-	 * This class was used in the original version of the game.
-	 * It has been replaced by:
-	 *   - NewMainMenuPanel
-	 *   - DifficultyPanel
-	 *
-	 * This file is kept for reference to show project upgrade (.
-	 * (susan ogozi)
-	 */
 
-	/*
-	
-	//buttons for the menu
-    private JButton startButton;
-    private JButton restartButton;
-    private JButton exitButton;
-    //reference to main to switch screens
     private Main mainFrame;
-    private boolean showGameOver = false;
-    
-    //getter methods for testing
-    public JButton getStartButton() {
-        return startButton;
-        }
+    private Image backgroundImage;
+    private Image titleImage;
+    private Image startBtnImg;
+    private Image startBtnClickedImg;
+    private Image exitBtnImg;
+    private Image exitBtnClickedImg;
 
-    public JButton getRestartButton() {
-        return restartButton;
-        }
+    private boolean startPressed = false;
+    private boolean exitPressed  = false;
+	private Image gameplayBackground;
 
-    public JButton getExitButton() {
-        return exitButton;
-        }
-    
-    //constructor for the menu
     public MenuPanel(Main main) {
-    	
-    	this.mainFrame = main;
-
-    	double scale = (main != null) ? main.scale : 1.0;
-        int width = (int)(768 * scale);
-        int height = (int)(768 * scale);
-        this.setPreferredSize(new Dimension(width, height));
-
+        this.mainFrame = main;
+        setPreferredSize(new Dimension(768, 768));
         setLayout(null);
-        setBackground(new Color(18, 18, 38));
-        
-        //START BUTTON
-        startButton = new JButton("START GAME");
-        startButton.setBounds(300, 280, 200, 50);
-        startButton.setFont(new Font("Arial", Font.BOLD, 20));
-        startButton.setBackground(new Color(80, 200, 80));
-        startButton.setForeground(Color.BLACK);
-        //when clicked
-        startButton.setFocusPainted(false);
-        startButton.addActionListener(e -> {
-            if (mainFrame != null) {
-                showFullMenu();
-                mainFrame.startGame();
-            } else {
-                System.out.println("mainFrame is null");
+
+        // Load images safely
+        backgroundImage      = tryLoad("src/static/image/background/MenuBackground.jpg");
+        titleImage           = tryLoad("src/static/image/text/GameTitleBackground.png");
+        startBtnImg          = tryLoad("src/static/image/elements/unclickedStartBtn.png");
+        startBtnClickedImg   = tryLoad("src/static/image/elements/clickedStartBtn.png");
+        exitBtnImg           = tryLoad("src/static/image/elements/unclickedExitBtn.png");
+        exitBtnClickedImg    = tryLoad("src/static/image/elements/clickedExitBtn.png");
+        gameplayBackground   = tryLoad("src/static/image/backgorund/gamePlayBackground.jpg");
+
+        // PLAY button
+        JButton playButton = new JButton("PLAY") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Image img = startPressed ? startBtnClickedImg : startBtnImg;
+                if (img != null) {
+                    g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    // solid fallback so it's always visible
+                    g.setColor(startPressed ? new Color(200, 150, 20) : new Color(255, 200, 50));
+                    g.fillRoundRect(0, 0, getWidth(), getHeight(), 16, 16);
+                    g.setColor(new Color(80, 50, 0));
+                    g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 16, 16);
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font("Arial", Font.BOLD, 26));
+                    FontMetrics fm = g.getFontMetrics();
+                    int tx = (getWidth() - fm.stringWidth("PLAY")) / 2;
+                    int ty = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
+                    g.drawString("PLAY", tx, ty);
+                }
             }
+        };
+        playButton.setBounds(284, 520, 200, 65);
+        playButton.setContentAreaFilled(false);
+        playButton.setBorderPainted(false);
+        playButton.setFocusPainted(false);
+        playButton.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e)  { startPressed = true;  repaint(); }
+            public void mouseReleased(MouseEvent e) { startPressed = false; repaint(); }
         });
-        add(startButton);
-        
-        //RESTART BUTTON
-        restartButton = new JButton("RESTART GAME");
-        restartButton.setBounds(300, 350, 200, 50);
-        restartButton.setFont(new Font("Arial", Font.BOLD, 20));
-        restartButton.setBackground(new Color(200, 200, 80));
-        restartButton.setForeground(Color.BLACK);
-        restartButton.setFocusPainted(false);
-        restartButton.addActionListener(e -> {
-            if (mainFrame != null) {
-                showFullMenu();
-                mainFrame.startGame();
-            } else {
-                System.out.println("ERROR: mainFrame is null");
+        playButton.addActionListener(e -> { if (mainFrame != null) mainFrame.showDifficultyMenu(); });
+        add(playButton);
+
+        // EXIT button
+        JButton exitButton = new JButton("EXIT") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Image img = exitPressed ? exitBtnClickedImg : exitBtnImg;
+                if (img != null) {
+                    g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    // solid fallback so it's always visible
+                    g.setColor(exitPressed ? new Color(200, 150, 20) : new Color(255, 200, 50));
+                    g.fillRoundRect(0, 0, getWidth(), getHeight(), 16, 16);
+                    g.setColor(new Color(80, 50, 0));
+                    g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 16, 16);
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font("Arial", Font.BOLD, 26));
+                    FontMetrics fm = g.getFontMetrics();
+                    int tx = (getWidth() - fm.stringWidth("EXIT")) / 2;
+                    int ty = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
+                    g.drawString("EXIT", tx, ty);
+                }
             }
-        });
-        add(restartButton);
-        
-        //EXIT BUTTON
-        exitButton = new JButton("EXIT");
-        exitButton.setBounds(300, 420, 200, 50);
-        exitButton.setFont(new Font("Arial", Font.BOLD, 20));
-        exitButton.setBackground(new Color(200, 80, 80));
-        exitButton.setForeground(Color.BLACK);
+        };
+        playButton.setBounds(284, 300, 200, 65);
+        exitButton.setBounds(284, 380, 200, 65);
+        exitButton.setContentAreaFilled(false);
+        exitButton.setBorderPainted(false);
         exitButton.setFocusPainted(false);
+        exitButton.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e)  { exitPressed = true;  repaint(); }
+            public void mouseReleased(MouseEvent e) { exitPressed = false; repaint(); }
+        });
         exitButton.addActionListener(e -> System.exit(0));
         add(exitButton);
+    }
+
+    private Image tryLoad(String path) {
+        try {
+            ImageIcon icon = new ImageIcon(path);
+            // check image actually loaded (width > 0 means success)
+            if (icon.getIconWidth() > 0) return icon.getImage();
+        } catch (Exception e) {
+            System.out.println("Could not load: " + path);
         }
-    
-    //this shows only restart button when player dies
-    public void showGameOverMenu() {
-        startButton.setVisible(false);
-        exitButton.setVisible(false);
-        restartButton.setBounds(300, 320, 200, 50);
-        showGameOver = true;
-        repaint();
-        }
-    
-    //this will draw the title every time the screen refreshes
+        return null;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //add background first
-        drawBackground(g);
-        //then draw title on top
-        drawTitle(g);
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        } else {
+            g.setColor(new Color(20, 30, 60));
+            g.fillRect(0, 0, getWidth(), getHeight());
         }
-    
-    //draws the title text
-    private void drawTitle(Graphics g) {
-        //shadow first
-        g.setColor(new Color(0, 0, 0, 100));
-        g.setFont(new Font("Arial", Font.BOLD, 48));
-        g.drawString("FIREBOY & WATERGIRL", 165, 155);
-        
-        //main title text
-        g.setColor(new Color(255, 200, 50));
-        g.setFont(new Font("Arial", Font.BOLD, 48));
-        g.drawString("FIREBOY & WATERGIRL", 160, 150);
-        
-        small subtitle below the title
-        g.setColor(new Color(180, 180, 220));
-        g.setFont(new Font("Arial", Font.PLAIN, 20));
-        g.drawString("Adventure Game", 290, 210);
+        if (titleImage != null) {
+            int tw = 500, th = 200;
+            g.drawImage(titleImage, (getWidth() - tw) / 2, 80, tw, th, this);
         }
-        }
-    
-    //adding same background as the game
-    //draws background with brick pattern
-    public void drawBackground(java.awt.Graphics g) {
-        //back wall
-        g.setColor(new Color(28, 28, 52));
-        g.fillRect(0, 0, 768, 768);
-        
-        //brick pattern
-        g.setColor(new Color(38, 38, 65));
-        for (int row = 0; row < 510; row += 28) {
-            int offset = (row / 28 % 2 == 0) ? 0 : 40;
-            for (int col = -40 + offset; col < 800; col += 80) {
-                g.drawRoundRect(col + 2, row + 2, 76, 24, 3, 3);
-            }
-        }
-        
-        //floor line
-        g.setColor(new Color(55, 42, 25));
-        g.fillRect(0, 510, 800, 4);
     }
-    
-
-    //this will show 3 buttons when menu button is clicked not only restart button
-    public void showFullMenu() {
-        startButton.setVisible(true);
-        exitButton.setVisible(true);
-        //back to the original position
-        restartButton.setBounds(300, 350, 200, 50);
-        showGameOver = false;
-        repaint();
-         */
-        }
-    
-   
-   
+}
