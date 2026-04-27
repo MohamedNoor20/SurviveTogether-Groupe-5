@@ -193,6 +193,13 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 				portal.checkTeleport(player2);
 			}
 		}
+		
+		if (bouncePads != null) {
+		    for (BouncePad pad : bouncePads) {
+		        pad.checkBounce(player1);
+		        pad.checkBounce(player2);
+		    }
+		}
 	}
 
 	@Override
