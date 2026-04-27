@@ -324,4 +324,27 @@ public class MyLevel2PanelTest {
         if (waterX > W - PLAYER_W) waterX = W - PLAYER_W;
         assertEquals("Watergirl should be clamped to right edge", W - PLAYER_W, waterX);
     }
+    @Test
+    public void testScoreIncreasesWhenFireboyCollectsRedDiamond() {
+        int score = 0;
+        int type = 1;
+        int dx = 80, dy = 490, dw = 18, dh = 18;
+        fireX = 75; fireY = 480;
+        Rectangle fb  = new Rectangle(fireX + 4, fireY, PLAYER_W - 8, PLAYER_H);
+        Rectangle gem = new Rectangle(dx, dy, dw, dh);
+        if (type == 1 && gem.intersects(fb)) score += 10;
+        assertEquals("Score should increase by 10 when Fireboy collects red diamond", 10, score);
+    }
+
+    @Test
+    public void testScoreIncreasesWhenWatergirlCollectsBlueDiamond() {
+        int score = 0;
+        int type = 0;
+        int dx = 390, dy = 670, dw = 18, dh = 18;
+        waterX = 385; waterY = 660;
+        Rectangle wb  = new Rectangle(waterX + 4, waterY, PLAYER_W - 8, PLAYER_H);
+        Rectangle gem = new Rectangle(dx, dy, dw, dh);
+        if (type == 0 && gem.intersects(wb)) score += 10;
+        assertEquals("Score should increase by 10 when Watergirl collects blue diamond", 10, score);
+    }
 } 
