@@ -41,6 +41,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	ArrayList<Floor> openWall;
 	ArrayList<Coin> coins;
 	ArrayList<Portal> portal;
+	ArrayList<BouncePad> bouncePads;
 	
 	Timer gameTimer = new Timer(); 
 	private Main main;
@@ -118,6 +119,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		this.waterPool = currentLevel.waterPool;
 		this.greenPool = currentLevel.greenPool;
 		this.portal = currentLevel.portal;
+		this.bouncePads = currentLevel.bouncePads;
 
 
 		// ADD MENU BUTTON
