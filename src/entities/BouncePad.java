@@ -10,6 +10,10 @@ public class BouncePad {
     public BouncePad(Rectangle area) {
         this.area = area;
     }
+    
+    public void checkBounce(Player p) {
+
+    }
 	
 
 }
