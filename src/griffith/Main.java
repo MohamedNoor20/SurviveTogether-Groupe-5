@@ -103,7 +103,7 @@ public class Main {
 		frame.getContentPane().removeAll();
 
 		if (difficulty.equals("medium")) {
-			myLevelPanel = new MyLevelPanel(this);
+			myLevelPanel = new MyLevelPanel();
 			myLevelPanel.setMainFrame(this);
 			frame.add(myLevelPanel);
 			frame.revalidate();
