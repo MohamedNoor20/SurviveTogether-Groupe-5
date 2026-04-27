@@ -64,6 +64,8 @@ public class Player {
 	    this.yVelocity += gravity;
 	    // Apply velocity to position
 	    this.y += yVelocity;
+	    
+	    
 	}
 
 

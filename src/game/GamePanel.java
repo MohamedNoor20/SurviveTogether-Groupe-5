@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	ArrayList<Floor> openWall;
 	ArrayList<Coin> coins;
 	ArrayList<Portal> portal;
-	ArrayList<BouncePad> bouncePads;
+	ArrayList<BouncePad> bouncePad;
 	
 	Timer gameTimer = new Timer(); 
 	private Main main;
@@ -119,7 +119,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		this.waterPool = currentLevel.waterPool;
 		this.greenPool = currentLevel.greenPool;
 		this.portal = currentLevel.portal;
-		this.bouncePads = currentLevel.bouncePads;
+		this.bouncePad = currentLevel.bouncePad;
 
 
 		// ADD MENU BUTTON
@@ -194,8 +194,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			}
 		}
 		
-		if (bouncePads != null) {
-		    for (BouncePad pad : bouncePads) {
+		if (bouncePad != null) {
+		    for (BouncePad pad : bouncePad) {
 		        pad.checkBounce(player1);
 		        pad.checkBounce(player2);
 		    }
@@ -439,8 +439,8 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	}
 	
 	public void drawBouncePads(Graphics g) {
-	    if (bouncePads == null) return;
-	    for (BouncePad pad : bouncePads) {
+	    if (bouncePad == null) return;
+	    for (BouncePad pad : bouncePad) {
 	        g.setColor(new Color(50, 220, 50)); 
 	        g.fillRoundRect(pad.area.x, pad.area.y, pad.area.width, pad.area.height, 8, 8);
 	    }
