@@ -119,7 +119,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			 */  
 		}else if ("afaq".equals(difficulty)) {
 			    currentLevel = new AfaqLevel(); 
-			} else {
+			    
+			} else if ("mohamed".equals(difficulty)) {
+			    currentLevel = new MohamedLevel(); 
+			    }else {
 			currentLevel = new EasyLevel();
 		}
 

@@ -33,12 +33,12 @@ public class DifficultyPanel extends JPanel {
 		mediumImg = new ImageIcon("src/static/image/text/Medium_mode.png").getImage();
 		backImg = new ImageIcon("src/static/image/text/BackBtn.png").getImage();
 
-		add(createImageButton(easyImg, 234, 150, 300, 70, () -> {
+		add(createImageButton(easyImg, 234, 50, 300, 70, () -> {
 			if (mainFrame != null)
 				mainFrame.startGame("easy");
 		}));
 
-		add(createImageButton(mediumImg, 234, 250, 300, 70, () -> {
+		add(createImageButton(mediumImg, 234, 150, 300, 70, () -> {
 			if (mainFrame != null)
 				mainFrame.startGame("medium");
 		}));
@@ -50,7 +50,7 @@ public class DifficultyPanel extends JPanel {
 		muadLevelBtn.setBackground(new Color(150, 50, 200));
 		muadLevelBtn.setForeground(Color.WHITE);
 		muadLevelBtn.setFocusPainted(false);
-		muadLevelBtn.setBounds(234, 350, 300, 70); 		
+		muadLevelBtn.setBounds(234, 250, 300, 70); 		
 		muadLevelBtn.addActionListener(e -> {
 			if (mainFrame != null) {
 				mainFrame.startGame("muad");
@@ -64,13 +64,27 @@ public class DifficultyPanel extends JPanel {
 		afaqLevelBtn.setBackground(new Color(255, 100, 50));
 		afaqLevelBtn.setForeground(Color.WHITE);
 		afaqLevelBtn.setFocusPainted(false);
-		afaqLevelBtn.setBounds(234, 450, 300, 70);
+		afaqLevelBtn.setBounds(234, 350, 300, 70);
 		afaqLevelBtn.addActionListener(e -> {
 		    if (mainFrame != null) {
 		        mainFrame.startGame("afaq");
 		    }
 		});
 		add(afaqLevelBtn);
+		
+		//Afaq level button
+				JButton mohamedLevelBtn = new JButton("MOHAMED LEVEL");
+				mohamedLevelBtn.setFont(new Font("Arial", Font.BOLD, 26));
+				mohamedLevelBtn.setBackground(new Color(255, 100, 50));
+				mohamedLevelBtn.setForeground(Color.WHITE);
+				mohamedLevelBtn.setFocusPainted(false);
+				mohamedLevelBtn.setBounds(234, 450, 300, 70);
+				mohamedLevelBtn.addActionListener(e -> {
+				    if (mainFrame != null) {
+				        mainFrame.startGame("mohamed");
+				    }
+				});
+				add(mohamedLevelBtn);
 		
 
 		add(createImageButton(backImg, 234, 540, 300, 70, () -> {
