@@ -73,7 +73,7 @@ public class DifficultyPanel extends JPanel {
 		add(afaqLevelBtn);
 		
 
-		add(createImageButton(backImg, 234, 450, 300, 70, () -> {
+		add(createImageButton(backImg, 234, 540, 300, 70, () -> {
 			if (mainFrame != null)
 				mainFrame.showMainMenu();
 		}));
