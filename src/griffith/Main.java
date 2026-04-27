@@ -89,14 +89,25 @@ public class Main {
 			frame.repaint();
 			myLevelPanel.requestFocusInWindow();
 			myLevelPanel.startGame();
-		} else {
+			}
+		 
+		else if (difficulty.equals("afaq")) {
+			gamePanel = new GamePanel(this, "afaq");
+			frame.add(gamePanel);
+			frame.revalidate();
+			frame.repaint();
+			gamePanel.requestFocusInWindow();
+			gamePanel.startGame();
+			}
+		
+		else {
 			gamePanel = new GamePanel(this, difficulty);
 			frame.add(gamePanel);
 			frame.revalidate();
 			frame.repaint();
 			gamePanel.requestFocusInWindow();
 			gamePanel.startGame();
-		}
+			}
 
 		if (audio != null) {
 			audio.stop("background");
