@@ -86,6 +86,11 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
     int fireX = 80, fireY = 630;
     int waterX = 160, waterY = 630;
     
+ // Score system
+    int score = 0;
+    int fireScore = 0;
+    int waterScore = 0;
+    
     int fireVY = 0, waterVY = 0;
     boolean fireOnGround = false;
     boolean waterOnGround = false;
@@ -231,7 +236,7 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
        
         
     
-     // SWITCH PAIR 0 - Horizontal block on 1st PLATFORM 
+    
      // This block has TWO switches controlling it
      Rectangle switch0Block = new Rectangle(630, 506, 180, 20);  // The horizontal block
 
@@ -407,6 +412,7 @@ private void update() {
         resolveFloor(wall, true);
         resolveFloor(wall, false);
     }
+    
 
     // FIRST: Get player rectangles
     Rectangle fb = fireRect();
@@ -454,9 +460,13 @@ private void update() {
         if (!d.collected) {
             if (d.type == 1 && d.getBounds().intersects(fb)) {
                 d.collected = true;
+                fireScore += 10;
+                score += 10;
             }
             if (d.type == 0 && d.getBounds().intersects(wb)) {
                 d.collected = true;
+                waterScore += 10;
+                score += 10;
             }
         }
     }
@@ -470,11 +480,13 @@ private void update() {
     boolean wInDoor = wd.intersects(wb);
 
     if (fInDoor && wInDoor && gameState == State.PLAYING) {
+        // time bonus — faster completion = more points
+        int timeBonus = Math.max(0, 300 - (elapsedSeconds * 5));
+        score += timeBonus;
         gameState = State.ENTERING;
         stateTime = System.currentTimeMillis();
     }
 }
-
     private void resolveFloor(Rectangle r, boolean isFirePlayer) {
         int px = isFirePlayer ? fireX : waterX;
         int py = isFirePlayer ? fireY : waterY;
@@ -913,6 +925,22 @@ private void update() {
         g.fillRect(getWidth() / 2 - 65, 5, 130, 30);
         g.setColor(Color.YELLOW);
         g.drawString(timeText, tx, 26);
+        
+        
+     // Fire score on left
+        g.setColor(new Color(230, 80, 20));
+        g.setFont(new Font("Arial", Font.BOLD, 13));
+        g.drawString("FIRE: " + fireScore, 0, 20);
+
+        // Water score on right
+        g.setColor(new Color(60, 140, 230));
+        g.setFont(new Font("Arial", Font.BOLD, 13));
+        g.drawString("WATER: " + waterScore, 600, 20);
+
+        // Total score 
+        g.setColor(new Color(255, 200, 50));
+        g.setFont(new Font("Arial", Font.BOLD, 14));
+        g.drawString("SCORE: " + score, 80, 20);
     }
 
     // Overlay (win / dead) 
@@ -922,12 +950,32 @@ private void update() {
     	    g.fillRect(0, 0, W, H);
     	    if (gameClearImg != null) {
     	        int iw = 400, ih = 150;
-    	        g.drawImage(gameClearImg, (W - iw) / 2, (H - ih) / 2 - 60, iw, ih, this);
+    	        g.drawImage(gameClearImg, (W - iw) / 2, (H - ih) / 2 - 80, iw, ih, this);
     	    } else {
     	        g.setColor(new Color(80, 240, 120));
     	        g.setFont(new Font("Arial", Font.BOLD, 36));
-    	        g.drawString("GAME CLEARED!", 250, H / 2);
+    	        g.drawString("GAME CLEARED!", 250, H / 2 - 40);
     	    }
+    	    // show final score
+    	    g.setColor(new Color(255, 200, 50));
+    	    g.setFont(new Font("Arial", Font.BOLD, 28));
+    	    String finalScore = "FINAL SCORE: " + score;
+    	    FontMetrics fm = g.getFontMetrics();
+    	    int fx = (W - fm.stringWidth(finalScore)) / 2;
+    	    g.drawString(finalScore, fx, H / 2 + 20);
+
+    	    // show individual scores
+    	    g.setColor(new Color(230, 80, 20));
+    	    g.setFont(new Font("Arial", Font.BOLD, 20));
+    	    g.drawString("FIRE: " + fireScore, W/2 - 120, H / 2 + 60);
+    	    g.setColor(new Color(60, 140, 230));
+    	    g.drawString("WATER: " + waterScore, W/2 + 20, H / 2 + 60);
+
+    	    // time bonus message
+    	    g.setColor(Color.WHITE);
+    	    g.setFont(new Font("Arial", Font.PLAIN, 16));
+    	    g.drawString("Completed in " + elapsedSeconds + "s", W/2 - 70, H / 2 + 95);
+    	
     	}
         if (gameState == State.DEAD) {
             if (gameOverImg != null) {
