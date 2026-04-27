@@ -22,10 +22,7 @@ public MuadLevel() {
     waterPool = new Hazard(new Rectangle(100, 100, 80, 10), Type.WATER);
     greenPool = new Hazard(new Rectangle(100, 100, 80, 10), Type.GREEN);
     iceFloor.add(new Floor(new Rectangle(150, 715, 490, 10)));
-
-
     
-
     floors.add(new Floor(new Rectangle(0, 715, 768, 40)));
 
 
@@ -55,26 +52,32 @@ public MuadLevel() {
  to add an open wall use this:
  
 openWall.add(new Floor(new Rectangle(300, 120, 10, 90)));
+---------------------------------------------------------
 
 this to add normal floor:
 
 floors.add(new Floor(new Rectangle(0, 715, 768, 40)));
+---------------------------------------------------------
 
 this to add ice floor:
 
 iceFloor.add(new Floor(new Rectangle(150, 540, 490, 10)));
+---------------------------------------------------------
 
 this to add a door:
 
 door = new Door(new Rectangle(640,680, 60, 80));
+---------------------------------------------------------
 
 this to add coins:
 
 coins.add(new Coin(new Rectangle(150, 510, 20, 20)));
+---------------------------------------------------------
 
 this to add a button:
 
 bottom = new Bottom(new Rectangle(100, 100, 80, 10)); 
+---------------------------------------------------------
 
 this to add fire pool or water pool or green pool:
 
