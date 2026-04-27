@@ -88,6 +88,8 @@ firePool = new Hazard(new Rectangle(100, 100, 80, 10), Type.FIRE);
 waterPool = new Hazard(new Rectangle(100, 100, 80, 10), Type.WATER);
 greenPool = new Hazard(new Rectangle(100, 100, 80, 10), Type.GREEN);
 
+the same thing for the others like Bounce Pad and Portals 
+
 */
 
 
