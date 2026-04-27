@@ -56,7 +56,21 @@ public class DifficultyPanel extends JPanel {
 				mainFrame.startGame("muad");
 			}
 		});
-		add(muadLevelBtn);		
+		add(muadLevelBtn);	
+		
+		//Afaq level button
+		JButton afaqLevelBtn = new JButton("AFAQ LEVEL");
+		afaqLevelBtn.setFont(new Font("Arial", Font.BOLD, 26));
+		afaqLevelBtn.setBackground(new Color(255, 100, 50));
+		afaqLevelBtn.setForeground(Color.WHITE);
+		afaqLevelBtn.setFocusPainted(false);
+		afaqLevelBtn.setBounds(234, 450, 300, 70);
+		afaqLevelBtn.addActionListener(e -> {
+		    if (mainFrame != null) {
+		        mainFrame.startGame("afaq");
+		    }
+		});
+		add(afaqLevelBtn);
 		
 
 		add(createImageButton(backImg, 234, 450, 300, 70, () -> {
