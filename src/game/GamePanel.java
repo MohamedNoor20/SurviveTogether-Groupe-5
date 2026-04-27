@@ -25,9 +25,11 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	Hazard firePool, waterPool, greenPool;
 	Door door;
 	Bottom bottom;
+	Bottom bottom2;
 	ArrayList<Floor> floors;
 	ArrayList<Floor> iceFloor;
 	ArrayList<Floor> openWall;
+	ArrayList<Floor> closeWall;
 	ArrayList<Coin> coins;
 	ArrayList<Portal> portal;
 	ArrayList<BouncePad> bouncePad;
@@ -49,6 +51,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	private int offsetY;
 
 	public boolean pressBottom = false;
+	public boolean pressBottom2 = false;
 
 	public GamePanel() {
 		this(null, "easy");
@@ -134,9 +137,11 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		this.floors = currentLevel.floors;
 		this.iceFloor = currentLevel.iceFloor;
 		this.openWall = currentLevel.openWall;
+		this.closeWall = currentLevel.closeWall;
 		this.coins = currentLevel.coins;
 		this.door = currentLevel.door;
 		this.bottom = currentLevel.bottom;
+		this.bottom2 = currentLevel.bottom2;
 		this.firePool = currentLevel.firePool;
 		this.waterPool = currentLevel.waterPool;
 		this.greenPool = currentLevel.greenPool;
@@ -165,6 +170,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		}
 		if (!pressBottom) {
 			for (Floor floor : openWall) {
+				floor.stopFallThrough(player1);
+				floor.stopFallThrough(player2);
+			}
+		}
+		if (!pressBottom2 && pressBottom) {
+			for (Floor floor : closeWall) {
 				floor.stopFallThrough(player1);
 				floor.stopFallThrough(player2);
 			}
@@ -203,6 +214,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		if (bottom != null) {
 			bottom.press(player1);
 			bottom.press(player2);
+		}
+		if (bottom2 != null) {
+			bottom2.press(player1);
+			bottom2.press(player2);
 		}
 
 		// here we check if the player did pick up the coin
@@ -355,6 +370,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawBouncePads(g2);
 		drawCoins(g2);
 		bottomColor(g2);
+		bottomColor2(g2);
 		drawFireboy(g2);
 		drawWatergirl(g2);
 		drawControlsInfo(g2);
@@ -494,7 +510,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			g2.fillRoundRect(gX, gY + 25, w, h, 4, 4);
 			g2.setColor(new Color(0, 100, 5, 210));
 			g2.fillRoundRect(gX + 2, gY + 15, w - 4, h, 4, 4);
-			g2.setColor(new Color(100, 180, 255, 180));
+			g2.setColor(new Color(0, 100, 5, 180));
 			g2.drawArc(gX + 4, gY + 11, 30, 14, 0, 180);
 			g2.drawArc(gX + 38, gY + 11, 30, 14, 0, 180);
 		}
@@ -536,6 +552,14 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 				g2.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
 			}
 		}
+		if (!pressBottom2 && pressBottom) {
+			for (Floor floor : closeWall) {
+				g2.setColor(mudColor);
+				g2.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+				g2.setColor(mudShadow);
+				g2.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
+			}
+		}
 		Color iceColor = new Color(245, 245, 220);
 		Color iceShadow = new Color(180, 180, 160);
 		for (Floor floor : iceFloor) {
@@ -570,6 +594,23 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			g2.fillRect(area.x, area.y, area.width, area.height);
 		}
 	}
+	public void bottomColor2(Graphics2D g2) {
+		if (bottom == null)
+			return;
+		Rectangle area = bottom2.getArea();
+		if (!pressBottom2) {
+			g2.setColor(new Color(255, 0, 0));
+			g2.fillRect(area.x, area.y, area.width, area.height);
+		}
+		if (bottom2.press(player1) || bottom2.press(player2)) {
+			pressBottom2 = true;
+		}
+		if (pressBottom2) {
+			g2.setColor(new Color(0, 255, 0));
+			g2.fillRect(area.x, area.y, area.width, area.height);
+		}
+	}
+	
 
 	public void drawPortal(Graphics2D g2) {
 		if (portal == null)
