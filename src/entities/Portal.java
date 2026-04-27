@@ -16,7 +16,11 @@ public class Portal {
 	}
 	
 	public void checkTeleport(Player p) {
-
+		if (p.getBounds().intersects(area)) {
+			
+			p.x = X;
+			p.y = Y;
+		}
 	}
 	
 
