@@ -71,7 +71,7 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
     Image gameOverImg;
     Image menuBtnImg;
     Image switchDoorImg;
-    Image backgroundImg;
+
     // Characters
     Image fireIdle, fireLeft, fireRight, fireDie;
     Image waterIdle, waterLeft, waterRight, waterDie;
@@ -177,7 +177,7 @@ public class MyLevelPanel extends JPanel implements KeyListener, Runnable {
         gameClearImg = img("src/static/image/text/gameclear.gif");
         gameOverImg = img("src/static/image/text/gameover.png");
         menuBtnImg = img("src/static/image/text/MenuBtn.png");
-        backgroundImg = img("src/static/image/background/game_play_background.png");
+        
  
         // Characters
         fireIdle = img("src/static/image/character/fire_boy_character.png");
@@ -600,14 +600,7 @@ private void update() {
 
  // Background
     private void drawBackground(Graphics2D g) {
-        if (backgroundImg != null) {
-            // Draw background image stretched to fit the panel
-            g.drawImage(backgroundImg, 0, 0, W, H - UI_H, this);
-        } else {
-            // Fallback color if image is missing
-            g.setColor(new Color(28, 28, 52));
-            g.fillRect(0, 0, W, H - UI_H);
-        }
+       
         
         // Bottom UI bar (keep this)
         g.setColor(new Color(15, 15, 30));
