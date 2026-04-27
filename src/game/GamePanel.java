@@ -437,6 +437,14 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	        g.fillOval(p.X, p.Y, p.area.width, p.area.height);
 		}
 	}
+	
+	public void drawBouncePads(Graphics g) {
+	    if (bouncePads == null) return;
+	    for (BouncePad pad : bouncePads) {
+	        g.setColor(new Color(50, 220, 50)); 
+	        g.fillRoundRect(pad.area.x, pad.area.y, pad.area.width, pad.area.height, 8, 8);
+	    }
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -453,6 +461,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawControlsInfo(g2);
 		floorColor(g2);
 		drawPortal(g2);
+		drawBouncePads(g2);
 		
 		g.setColor(Color.WHITE); g.setFont(new Font("Arial", Font.BOLD, 18));
 		g.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
