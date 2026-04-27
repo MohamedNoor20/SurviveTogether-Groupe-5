@@ -1,73 +1,50 @@
 package game;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 
-import entities.Bottom;
-import entities.Coin;
-import entities.Door;
-import entities.Floor;
-import entities.Hazard;
-import entities.Player;
-import entities.Type;
+import entities.*;
 import griffith.Main;
 import utils.Timer;
 
-import javax.swing.JButton;
-import java.awt.Image;
-import javax.swing.ImageIcon;
+public class GamePanel extends JPanel implements KeyListener, Runnable {
 
-public class GamePanel extends JPanel implements KeyListener, Runnable, MouseListener  {
-
-	final int TileSize = 16 * 3;
-	final int ScreenWidth = TileSize * 16;
-	final int ScreenHeight = TileSize * 16;
+	static final int BaseW = 768;
+	static final int BaseH = 768;
 	final int UI_Height = 50;
+	final int TileSize = 16 * 3;
 
 	Thread gameThread;
 	public Player player1;
 	public Player player2;
-	Hazard firePool;
-	Hazard waterPool;
-	Hazard greenPool;
+
+	// Game Items
+	Hazard firePool, waterPool, greenPool;
 	Door door;
-	Timer gameTimer = new Timer(); // tracks level time (Susan Ogozi)
+	Bottom bottom;
 	ArrayList<Floor> floors;
 	ArrayList<Floor> iceFloor;
-	ArrayList<Coin> coins;
-	Bottom bottom;
 	ArrayList<Floor> openWall;
+	ArrayList<Coin> coins;
+	ArrayList<Portal> portal;
+	ArrayList<BouncePad> bouncePad;
 
+	Timer gameTimer = new Timer();
 	private Main main;
 	private String difficulty;
 	public Image coinImage;
-	private Rectangle menuButton;
-	private int mouseX, mouseY;
-
-	// player 1
-	boolean p1Up;
-	boolean p1Down;
-	boolean p1Left;
-	boolean p1Right;
-	// player 2
-	boolean p2Up;
-	boolean p2Down;
-	boolean p2Left;
-	boolean p2Right;
-	
 	public boolean pressBottom = false;
 
-	// constructor for testing
+	// Controls
+	boolean p1Up, p1Down, p1Left, p1Right;
+	boolean p2Up, p2Down, p2Left, p2Right;
+
+	private final Rectangle menuBtnBase = new Rectangle(678, 8, 80, 30);
+	private boolean menuBtnHover = false;
+
 	public GamePanel() {
 		this(null, "easy");
 	}
@@ -77,15 +54,11 @@ public class GamePanel extends JPanel implements KeyListener, Runnable, MouseLis
 		this.difficulty = difficulty;
 		addMouseListener(this);
 
-		this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
+		this.setPreferredSize(new Dimension(BaseW, BaseH));
 		this.setDoubleBuffered(true);
-
 		this.setLayout(null);
-
-		// dark background
 		setBackground(new Color(18, 18, 38));
 
-		// here to load the coins
 		try {
 			ImageIcon icon = new ImageIcon(getClass().getResource("/static/image/elements/coin.png"));
 			coinImage = icon.getImage();
@@ -93,76 +66,119 @@ public class GamePanel extends JPanel implements KeyListener, Runnable, MouseLis
 			System.out.println("Could not find the coin image.");
 		}
 
-		// Create players
-		player1 = new Player(50, 670, Type.FIRE);
-		player2 = new Player(130, 670, Type.WATER);
-
 		setFocusable(true);
 		addKeyListener(this);
 
-		// Create hazards
-		firePool = new Hazard(new Rectangle(210, 695, 80, 5), Type.FIRE);
-		waterPool = new Hazard(new Rectangle(430, 695, 80, 5), Type.WATER);
-		greenPool = new Hazard(new Rectangle(550, 365, 80, 5), Type.GREEN);
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				if (main == null)
+					return;
+				// getting mouse coords
+				int bx = (int) (e.getX() / main.scale);
+				int by = (int) (e.getY() / main.scale);
+				boolean was = menuBtnHover;
+				menuBtnHover = menuBtnBase.contains(bx, by);
+				if (menuBtnHover != was)
+					repaint();
+			}
+		});
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (main == null)
+					return;
+				int bx = (int) (e.getX() / main.scale);
+				int by = (int) (e.getY() / main.scale);
+				if (menuBtnBase.contains(bx, by)) {
+					main.showMainMenu();
+				}
+			}
+		});
 
-		// Create door
-		door = new Door(new Rectangle(10, 40, 60, 80));
+		// here it will load the level
+		Level currentLevel;
 
-		// Create floors
-		floors = new ArrayList<>();
-		iceFloor = new ArrayList<>();
-		openWall = new ArrayList<>();
+		if ("muad".equals(difficulty)) {
+			currentLevel = new MuadLevel();
 
-		// for the coins
-		coins = new ArrayList<>();
-		// if you want to add coin you need to use this coins.add(new Coin(new
-		// Rectangle(x, y, width, height)));
+			// if you want to add you level to be loaded you need to do this
+			// example:
+			/*
+			 * else if ("example".equals(difficulty)) { currentLevel = new example(); }
+			 * 
+			 * 
+			 * 
+			 */
 
-		coins.add(new Coin(new Rectangle(350, 680, 20, 20)));
-		coins.add(new Coin(new Rectangle(150, 500, 20, 20)));
-		coins.add(new Coin(new Rectangle(210, 160, 30, 30)));
-
-		// ground floor
-		floors.add(new Floor(new Rectangle(0, 715, 768, 10)));
-		floors.add(new Floor(new Rectangle(685, 630, 10, 95)));
-		floors.add(new Floor(new Rectangle(685, 630, 83, 10)));
-		// 1st floor
-		floors.add(new Floor(new Rectangle(0, 540, 150, 10)));
-		floors.add(new Floor(new Rectangle(83, 455, 10, 95)));
-		floors.add(new Floor(new Rectangle(0, 455, 83, 10)));
-		iceFloor.add(new Floor(new Rectangle(150, 540, 490, 10)));
-
-		// 2nd floor
-		floors.add(new Floor(new Rectangle(123, 385, 645, 10)));
-		floors.add(new Floor(new Rectangle(350, 300, 10, 95)));
-		floors.add(new Floor(new Rectangle(350, 300, 83, 10)));
-		floors.add(new Floor(new Rectangle(433, 300, 10, 95)));
-		bottom = new Bottom(new Rectangle(700, 375, 10, 10));
-
-		// 3rd floor
-		floors.add(new Floor(new Rectangle(123, 210, 187, 10)));
-		openWall.add(new Floor(new Rectangle(123, 120, 10, 90)));
-		openWall.add(new Floor(new Rectangle(300, 120, 10, 90)));
-		floors.add(new Floor(new Rectangle(475, 210, 187, 10)));
-
-		// 4th floor
-		floors.add(new Floor(new Rectangle(0, 120, 475, 10)));
-
-		// ADD MENU BUTTON - only add if we have a main reference (not in test mode)
-		if (main != null) {
-			menuButton = new Rectangle(650, 10, 100, 40);
+		} else {
+			// this is the default level
+			currentLevel = new EasyLevel();
 		}
+
+		// Spawn point for players
+		player1 = new Player(currentLevel.p1StartX, currentLevel.p1StartY, Type.FIRE);
+		player2 = new Player(currentLevel.p2StartX, currentLevel.p2StartY, Type.WATER);
+
+		// here it loads all the data of the level
+		this.floors = currentLevel.floors;
+		this.iceFloor = currentLevel.iceFloor;
+		this.openWall = currentLevel.openWall;
+		this.coins = currentLevel.coins;
+		this.door = currentLevel.door;
+		this.bottom = currentLevel.bottom;
+		this.firePool = currentLevel.firePool;
+		this.waterPool = currentLevel.waterPool;
+		this.greenPool = currentLevel.greenPool;
+		this.portal = currentLevel.portal;
+		this.bouncePad = currentLevel.bouncePad;
+
 	}
 
 	public void startGame() {
-		gameTimer.start(); // start tracking time Susan Ogozi
+		gameTimer.start();
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
 
-	public void updateGame() {
+	@Override
+	public void run() {
+		while (gameThread != null) {
+			updateGame();
+			repaint();
 
-		// game logic
+			if (!player1.alive || !player2.alive) {
+				repaint();
+				try {
+					Thread.sleep(1500);
+				} catch (Exception e) {
+				}
+				if (main != null)
+					main.showMainMenu();
+				gameThread = null;
+				return;
+			}
+
+			if (door != null && door.bothInside(player1, player2)) {
+				repaint();
+				try {
+					Thread.sleep(1500);
+				} catch (Exception e) {
+				}
+				if (main != null)
+					main.showMainMenu();
+				gameThread = null;
+				return;
+			}
+
+			try {
+				Thread.sleep(16);
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	public void updateGame() {
 		for (Floor floor : floors) {
 			floor.stopFallThrough(player1);
 			floor.stopFallThrough(player2);
@@ -172,13 +188,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable, MouseLis
 			floor.stopFallThrough(player1);
 			floor.stopFallThrough(player2);
 			if (floor.isOnFloor(player1)) {
-
 				player1.speed = 2;
-				
 			}
-			
 		}
-		if(!pressBottom) {
+		if (!pressBottom) {
 			for (Floor floor : openWall) {
 				floor.stopFallThrough(player1);
 				floor.stopFallThrough(player2);
@@ -202,64 +215,41 @@ public class GamePanel extends JPanel implements KeyListener, Runnable, MouseLis
 		player1.gravity();
 		player2.gravity();
 
-		firePool.check(player1);
-		firePool.check(player2);
-		waterPool.check(player1);
-		waterPool.check(player2);
-		greenPool.check(player1);
-		greenPool.check(player2);
-		bottom.press(player1);
-		bottom.press(player2);
+		if (firePool != null) {
+			firePool.check(player1);
+			firePool.check(player2);
+		}
+		if (waterPool != null) {
+			waterPool.check(player1);
+			waterPool.check(player2);
+		}
+		if (greenPool != null) {
+			greenPool.check(player1);
+			greenPool.check(player2);
+		}
+
+		if (bottom != null) {
+			bottom.press(player1);
+			bottom.press(player2);
+		}
 
 		// here we check if the player did pick up the coin
 		for (Coin coin : coins) {
 			coin.checkCollision(player1);
 			coin.checkCollision(player2);
 		}
-	}
 
-	@Override
-	public void run() {
-		while (gameThread != null) {
-
-			updateGame();
-
-			repaint();
-
-			// Lose condition
-			// show menu after a short delay
-			if (!player1.alive || !player2.alive) {
-				repaint();
-				try {
-					Thread.sleep(1500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				if (main != null) {
-					main.showMainMenu();
-				}
-				gameThread = null; // stop the loop
-				return;
+		if (portal != null) {
+			for (Portal portal : portal) {
+				portal.checkTeleport(player1);
+				portal.checkTeleport(player2);
 			}
+		}
 
-			if (door.bothInside(player1, player2)) {
-				repaint();
-				try {
-					Thread.sleep(1500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				if (main != null) {
-					main.showMainMenu();
-				}
-				gameThread = null; // stop the loop
-				return;
-			}
-
-			try {
-				Thread.sleep(16); // ~60 FPS
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		if (bouncePad != null) {
+			for (BouncePad pad : bouncePad) {
+				pad.checkBounce(player1);
+				pad.checkBounce(player2);
 			}
 		}
 	}
@@ -267,7 +257,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable, MouseLis
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-
 		// player 1 controls (arrow keys)
 		if (key == KeyEvent.VK_UP)
 			p1Up = true;
@@ -292,7 +281,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable, MouseLis
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-
 		// player 1
 		if (key == KeyEvent.VK_UP)
 			p1Up = false;
@@ -316,375 +304,303 @@ public class GamePanel extends JPanel implements KeyListener, Runnable, MouseLis
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// empty
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	    if (menuButton == null) return;
-
-	    // Adjust for scaling
-	    double scaleX = getWidth() / (double) ScreenWidth;
-	    double scaleY = getHeight() / (double) ScreenHeight;
-
-	    int mouseX = (int)(e.getX() / scaleX);
-	    int mouseY = (int)(e.getY() / scaleY);
-
-	    if (menuButton.contains(mouseX, mouseY)) {
-	        System.out.println("Menu clicked!");
-
-	        if (main != null) {
-	            main.showMainMenu();
-	        }
-	    }
-	}
-	@Override 
-	public void mousePressed(MouseEvent e) {}
-	@Override 
-	public void mouseReleased(MouseEvent e) {}
-	@Override 
-	public void mouseEntered(MouseEvent e) {}
-	@Override 
-	public void mouseExited(MouseEvent e) {}
-
-	// AFAQ AHMED - GRAPHICS METHODS
-
-	public int getFireboyX() {
-		return player1.x;
-	}
-
-	public int getFireboyY() {
-		return player1.y;
-	}
-
-	public int getWatergirlX() {
-		return player2.x;
-	}
-
-	public int getWatergirlY() {
-		return player2.y;
-	}
-
-	public boolean isFireboyAlive() {
-		return player1.alive;
-	}
-
-	public boolean isWatergirlAlive() {
-		return player2.alive;
-	}
-
-	public java.awt.Color getFireboyColor() {
-		return new java.awt.Color(200, 50, 10);
-	}
-
-	public java.awt.Color getWatergirlColor() {
-		return new java.awt.Color(20, 80, 200);
-	}
-
-	public void drawFireboy(Graphics g) {
-		if (!player1.alive) {
-			g.setColor(new Color(90, 90, 90));
-			g.fillRoundRect(player1.x + 6, player1.y + 16, 28, 24, 6, 6);
-			g.fillOval(player1.x + 8, player1.y + 2, 24, 22);
-			g.setColor(new Color(60, 60, 60));
-			g.drawLine(player1.x + 11, player1.y + 7, player1.x + 19, player1.y + 15);
-			g.drawLine(player1.x + 19, player1.y + 7, player1.x + 11, player1.y + 15);
-			g.drawLine(player1.x + 21, player1.y + 7, player1.x + 29, player1.y + 15);
-			g.drawLine(player1.x + 29, player1.y + 7, player1.x + 21, player1.y + 15);
-			return;
-		}
-
-		int fx = player1.x;
-		int fy = player1.y;
-
-		g.setColor(new Color(200, 50, 10));
-		g.fillRoundRect(fx + 6, fy + 16, 28, 24, 6, 6);
-		g.setColor(new Color(220, 80, 20));
-		g.fillOval(fx + 8, fy + 2, 24, 22);
-		g.setColor(Color.WHITE);
-		g.fillOval(fx + 11, fy + 7, 8, 8);
-		g.fillOval(fx + 21, fy + 7, 8, 8);
-		g.setColor(new Color(60, 20, 0));
-		g.fillOval(fx + 13, fy + 9, 4, 4);
-		g.fillOval(fx + 23, fy + 9, 4, 4);
-		g.setColor(new Color(255, 140, 0));
-		g.fillPolygon(new int[] { fx + 17, fx + 20, fx + 23 }, new int[] { fy + 2, fy - 7, fy + 2 }, 3);
-		g.setColor(new Color(255, 220, 50));
-		g.fillPolygon(new int[] { fx + 18, fx + 20, fx + 22 }, new int[] { fy + 2, fy - 4, fy + 2 }, 3);
-		g.setColor(new Color(160, 40, 5));
-		g.fillRoundRect(fx + 8, fy + 38, 10, 8, 3, 3);
-		g.fillRoundRect(fx + 22, fy + 38, 10, 8, 3, 3);
-	}
-
-	public void drawWatergirl(Graphics g) {
-		if (!player2.alive) {
-			g.setColor(new Color(90, 90, 90));
-			g.fillRoundRect(player2.x + 6, player2.y + 16, 28, 24, 6, 6);
-			g.fillOval(player2.x + 8, player2.y + 2, 24, 22);
-			g.setColor(new Color(60, 60, 60));
-			g.drawLine(player2.x + 11, player2.y + 7, player2.x + 19, player2.y + 15);
-			g.drawLine(player2.x + 19, player2.y + 7, player2.x + 11, player2.y + 15);
-			g.drawLine(player2.x + 21, player2.y + 7, player2.x + 29, player2.y + 15);
-			g.drawLine(player2.x + 29, player2.y + 7, player2.x + 21, player2.y + 15);
-			return;
-		}
-
-		int wx = player2.x;
-		int wy = player2.y;
-
-		g.setColor(new Color(20, 80, 200));
-		g.fillRoundRect(wx + 6, wy + 16, 28, 24, 6, 6);
-		g.setColor(new Color(40, 120, 230));
-		g.fillOval(wx + 8, wy + 2, 24, 22);
-		g.setColor(Color.WHITE);
-		g.fillOval(wx + 11, wy + 7, 8, 8);
-		g.fillOval(wx + 21, wy + 7, 8, 8);
-		g.setColor(new Color(0, 20, 80));
-		g.fillOval(wx + 13, wy + 9, 4, 4);
-		g.fillOval(wx + 23, wy + 9, 4, 4);
-		g.setColor(new Color(100, 180, 255));
-		g.fillOval(wx + 17, wy - 7, 8, 8);
-		g.fillPolygon(new int[] { wx + 17, wx + 21, wx + 25 }, new int[] { wy, wy - 6, wy }, 3);
-		g.setColor(new Color(15, 60, 160));
-		g.fillRoundRect(wx + 8, wy + 38, 10, 8, 3, 3);
-		g.fillRoundRect(wx + 22, wy + 38, 10, 8, 3, 3);
-	}
-
-	public void drawHazards(Graphics g) {
-		if (firePool != null) {
-			int fireX = firePool.area.x;
-			int fireY = firePool.area.y;
-			int w = firePool.area.width;
-			int h = firePool.area.height;
-			g.setColor(new Color(180, 40, 10));
-			g.fillRoundRect(fireX, fireY + 25, w, h, 4, 4);
-			g.setColor(new Color(230, 90, 10, 200));
-			g.fillRoundRect(fireX + 4, fireY + 15, w - 8, h, 4, 4);
-			g.setColor(new Color(255, 150, 0));
-			int[] fx = { fireX + 10, fireX + 20, fireX + 30, fireX + 40, fireX + 55, fireX + 70 };
-			for (int i = 0; i < fx.length - 1; i += 2) {
-				g.fillPolygon(new int[] { fx[i], fx[i] + 10, fx[i + 1] },
-						new int[] { fireY + 15, fireY - 3, fireY + 15 }, 3);
-			}
-		}
-
-		if (waterPool != null) {
-			int waterX = waterPool.area.x;
-			int waterY = waterPool.area.y;
-			int w = waterPool.area.width;
-			int h = waterPool.area.height;
-			g.setColor(new Color(10, 40, 140));
-			g.fillRoundRect(waterX, waterY + 25, w, h, 4, 4);
-			g.setColor(new Color(30, 100, 210, 210));
-			g.fillRoundRect(waterX + 2, waterY + 15, w - 4, h, 4, 4);
-			g.setColor(new Color(100, 180, 255, 180));
-			g.drawArc(waterX + 4, waterY + 11, 30, 14, 0, 180);
-			g.drawArc(waterX + 38, waterY + 11, 30, 14, 0, 180);
-		}
-
-		if (greenPool != null) {
-			int greenX = greenPool.area.x;
-			int greenY = greenPool.area.y;
-			int w = greenPool.area.width;
-			int h = greenPool.area.height;
-			g.setColor(new Color(0, 100, 5));
-			g.fillRoundRect(greenX, greenY + 25, w, h, 4, 4);
-			g.setColor(new Color(0, 100, 5, 210));
-			g.fillRoundRect(greenX + 2, greenY + 15, w - 4, h, 4, 4);
-			g.setColor(new Color(100, 180, 255, 180));
-			g.drawArc(greenX + 4, greenY + 11, 30, 14, 0, 180);
-			g.drawArc(greenX + 38, greenY + 11, 30, 14, 0, 180);
-		}
-	}
-
-	public void drawDoor(Graphics g) {
-		if (door == null)
-			return;
-		Rectangle area = door.getArea();  // use getter
-		g.setColor(new Color(70, 55, 35));
-		g.fillRoundRect(area.x - 4, area.y - 4, area.width + 8, area.height + 4, 6, 6);
-		g.setColor(new Color(120, 80, 30));
-		g.fillRect(area.x, area.y, area.width, area.height);
-		g.setColor(new Color(100, 65, 22));
-		g.fillRect(area.x + 6, area.y + 5, 20, area.height - 10);
-		g.fillRect(area.x + 34, area.y + 5, 20, area.height - 10);
-		g.setColor(new Color(220, 180, 60));
-		g.fillOval(area.x + area.width / 2 - 4, area.y + area.height / 2 - 4, 9, 9);
-		g.setColor(new Color(255, 240, 100, 60));
-		g.fillOval(area.x + 5, area.y - 10, area.width - 10, 18);
-		g.setColor(new Color(50, 35, 15));
-		g.drawRoundRect(area.x - 4, area.y - 4, area.width + 8, area.height + 4, 6, 6);
-	}
-	public void drawMessages(Graphics g) {
-		if (door.isInside(player1) && door.isInside(player2)) {
-			g.setColor(new Color(0, 0, 0, 140));
-			g.fillRoundRect(260, 220, 280, 60, 12, 12);
-			g.setColor(new Color(80, 240, 120));
-			g.setFont(new Font("Arial", Font.BOLD, 32));
-			g.drawString("YOU WIN!", 320, 262);
-		}
-
-		if (!player1.alive || !player2.alive) {
-			g.setColor(new Color(0, 0, 0, 140));
-			g.fillRoundRect(250, 220, 300, 60, 12, 12);
-			g.setColor(new Color(240, 60, 60));
-			g.setFont(new Font("Arial", Font.BOLD, 32));
-			g.drawString("GAME OVER", 290, 262);
-		}
-	}
-
-	public void drawControlsInfo(Graphics g) {
-		g.setColor(new Color(15, 15, 30));
-		g.fillRect(0, ScreenHeight - UI_Height, ScreenWidth, UI_Height);
-		g.setColor(new Color(230, 80, 20));
-		g.setFont(new Font("Arial", Font.BOLD, 13));
-		g.drawString("FIREBOY", 30, 740);
-		g.setColor(new Color(200, 160, 140));
-		g.setFont(new Font("Arial", Font.PLAIN, 12));
-		g.drawString("\u2190 / \u2192  move   \u2191  jump", 30, 760);
-		g.setColor(new Color(60, 140, 230));
-		g.setFont(new Font("Arial", Font.BOLD, 13));
-		g.drawString("WATERGIRL", 414, 740);
-		g.setColor(new Color(140, 170, 210));
-		g.setFont(new Font("Arial", Font.PLAIN, 12));
-		g.drawString("A / D  move   W  jump", 414, 760);
-	}
-
-	public void drawBackground(Graphics g) {
-		g.setColor(new Color(28, 28, 52));
-		g.fillRect(0, 0, ScreenWidth, ScreenHeight - UI_Height);
-		g.setColor(new Color(38, 38, 65));
-		for (int row = 0; row < 510; row += 28) {
-			int offset = (row / 28 % 2 == 0) ? 0 : 40;
-			for (int col = -40 + offset; col < ScreenWidth; col += 80) {
-				g.drawRoundRect(col + 2, row + 2, 76, 24, 3, 3);
-			}
-		}
-		g.setColor(new Color(55, 42, 25));
-		g.fillRect(0, ScreenHeight - UI_Height, ScreenWidth, 4);
-	}
-
-	/*public void floorColor(Graphics g) {
-		g.setColor(new Color(139, 90, 43));
-		for (Floor floor : floors) {
-			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
-		}
-		if(!pressBottom) {
-			g.setColor(new Color(139, 90, 43));
-			for (Floor floor : openWall) {
-				g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
-			}
-		}
-		g.setColor(new Color(245, 245, 220));
-		for (Floor floor : iceFloor) {
-			g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
-		}
-	}*/
-	
-	public void floorColor(Graphics g) {
-	    //mud colour for regular floors
-	    Color mudColor = new Color(139, 90, 43);
-	    Color mudShadow = new Color(94, 64, 32);
-	    
-	    for (Floor floor : floors) {
-	        g.setColor(mudColor);
-	        g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
-	        // shadow at bottom
-	        g.setColor(mudShadow);
-	        g.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
-	        }
-	    
-	    if(!pressBottom) {
-	        for (Floor floor : openWall) {
-	            g.setColor(mudColor);
-	            g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
-	            // shadow at bottom
-	            g.setColor(mudShadow);
-	            g.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
-	            }
-	        }
-	    
-	    //ice floors
-	    Color iceColor = new Color(245, 245, 220);
-	    Color iceShadow = new Color(180, 180, 160);
-	    
-	    for (Floor floor : iceFloor) {
-	        g.setColor(iceColor);
-	        g.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
-	        // shadow at bottom
-	        g.setColor(iceShadow);
-	        g.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
-	        }
-	    }
-
-	public void drawCoins(Graphics g) {
-		for (Coin coin : coins) {
-			if (!coin.isCollected)
-				// If the image loaded successfully it will draw it
-				if (coinImage != null) {
-					// The null at the end is an ImageObserver, we don't need it so it gona be null
-					g.drawImage(coinImage, coin.area.x, coin.area.y, coin.area.width, coin.area.height, null);
-				}
-		}
-	}
-
-	public void bottomColor(Graphics g) {
-		if (bottom == null) return;
-		Rectangle area = bottom.getArea();   // get once
-
-		if (!pressBottom) {
-			g.setColor(new Color(255, 0, 0));
-			g.fillRect(area.x, area.y, area.width, area.height);
-		}
-
-		if (bottom.press(player1) || bottom.press(player2)) {
-			g.setColor(new Color(0, 255, 0));
-			g.fillRect(area.x, area.y, area.width, area.height);
-			pressBottom = true;
-		}
-
-		if (pressBottom) {
-			g.setColor(new Color(0, 255, 0));
-			g.fillRect(area.x, area.y, area.width, area.height);
-		}
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 	    super.paintComponent(g);
 
-	    Graphics2D g2 = (Graphics2D) g.create();
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, getWidth(), getHeight());
 
-	    double scaleX = getWidth() / (double) ScreenWidth;
-	    double scaleY = getHeight() / (double) ScreenHeight;
+		Graphics2D g2 = (Graphics2D) g.create();
 
-	    g2.scale(scaleX, scaleY);
-	    
-	    if (menuButton != null) {
-	        g2.setColor(Color.BLACK);
-	        g2.fillRect(menuButton.x, menuButton.y, menuButton.width, menuButton.height);
+		if (main != null) {
+			int physicalSize = (int) (BaseW * main.scale);
+			int offsetX = (getWidth() - physicalSize) / 2;
+			int offsetY = (getHeight() - physicalSize) / 2;
+			g2.translate(offsetX, offsetY);
+			g2.scale(main.scale, main.scale);
+		}
 
-	        g2.setColor(Color.WHITE);
-	        g2.drawString("MENU", menuButton.x + 20, menuButton.y + 25);
-	    }
+		// Clip to base area so nothing draws outside the square
+		g2.setClip(0, 0, BaseW, BaseH);
 
-	    drawBackground(g2);
-	    drawHazards(g2);
-	    drawDoor(g2);
-	    drawFireboy(g2);
-	    drawWatergirl(g2);
-	    drawMessages(g2);
-	    drawControlsInfo(g2);
-	    floorColor(g2);
-	    // Display timer on screen Susan Ogozi 3157092
-	    g2.setColor(Color.WHITE);
-	    g2.setFont(new Font("Arial", Font.BOLD, 18));
-	    g2.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
+		drawBackground(g2);
+		drawHazards(g2);
+		drawDoor(g2);
+		floorColor(g2);
+		drawPortal(g2);
+		drawBouncePads(g2);
+		drawCoins(g2);
+		bottomColor(g2);
+		drawFireboy(g2);
+		drawWatergirl(g2);
+		drawControlsInfo(g2);
+		drawMessages(g2);
+		drawMenuButton(g2);
 
-	    drawCoins(g2);
-	    bottomColor(g2);
+		g2.setColor(Color.WHITE);
+		g2.setFont(new Font("Arial", Font.BOLD, 18));
+		FontMetrics fm = g2.getFontMetrics();
+		String timeStr = "Time: " + gameTimer.getSeconds() + "s";
+		g2.drawString(timeStr, (BaseW - fm.stringWidth(timeStr)) / 2, 28);
 
-	    g2.dispose();
+		g2.dispose();
+	}
+
+	// --- GRAPHICS METHODS ---
+
+	public void drawMenuButton(Graphics2D g2) {
+		int x = menuBtnBase.x, y = menuBtnBase.y;
+		int w = menuBtnBase.width, h = menuBtnBase.height;
+
+		g2.setColor(menuBtnHover ? new Color(220, 220, 220) : new Color(160, 160, 160));
+		g2.fillRoundRect(x, y, w, h, 8, 8);
+		g2.setColor(new Color(60, 60, 60));
+		g2.drawRoundRect(x, y, w - 1, h - 1, 8, 8);
+		g2.setColor(Color.BLACK);
+		g2.setFont(new Font("Arial", Font.BOLD, 14));
+		FontMetrics fm = g2.getFontMetrics();
+		g2.drawString("MENU", x + (w - fm.stringWidth("MENU")) / 2, y + (h + fm.getAscent() - fm.getDescent()) / 2);
+	}
+
+	public void drawBackground(Graphics2D g2) {
+		g2.setColor(new Color(28, 28, 52));
+		g2.fillRect(0, 0, BaseW, BaseH - UI_Height);
+		g2.setColor(new Color(38, 38, 65));
+		for (int row = 0; row < 510; row += 28) {
+			int offset = (row / 28 % 2 == 0) ? 0 : 40;
+			for (int col = -40 + offset; col < BaseW; col += 80) {
+				g2.drawRoundRect(col + 2, row + 2, 76, 24, 3, 3);
+			}
+		}
+		g2.setColor(new Color(55, 42, 25));
+		g2.fillRect(0, BaseH - UI_Height, BaseW, 4);
+	}
+
+	public void drawFireboy(Graphics2D g2) {
+		if (!player1.alive) {
+			g2.setColor(new Color(90, 90, 90));
+			g2.fillRoundRect(player1.x + 6, player1.y + 16, 28, 24, 6, 6);
+			g2.fillOval(player1.x + 8, player1.y + 2, 24, 22);
+			g2.setColor(new Color(60, 60, 60));
+			g2.drawLine(player1.x + 11, player1.y + 7, player1.x + 19, player1.y + 15);
+			g2.drawLine(player1.x + 19, player1.y + 7, player1.x + 11, player1.y + 15);
+			g2.drawLine(player1.x + 21, player1.y + 7, player1.x + 29, player1.y + 15);
+			g2.drawLine(player1.x + 29, player1.y + 7, player1.x + 21, player1.y + 15);
+			return;
+		}
+		int fx = player1.x, fy = player1.y;
+		g2.setColor(new Color(200, 50, 10));
+		g2.fillRoundRect(fx + 6, fy + 16, 28, 24, 6, 6);
+		g2.setColor(new Color(220, 80, 20));
+		g2.fillOval(fx + 8, fy + 2, 24, 22);
+		g2.setColor(Color.WHITE);
+		g2.fillOval(fx + 11, fy + 7, 8, 8);
+		g2.fillOval(fx + 21, fy + 7, 8, 8);
+		g2.setColor(new Color(60, 20, 0));
+		g2.fillOval(fx + 13, fy + 9, 4, 4);
+		g2.fillOval(fx + 23, fy + 9, 4, 4);
+		g2.setColor(new Color(255, 140, 0));
+		g2.fillPolygon(new int[] { fx + 17, fx + 20, fx + 23 }, new int[] { fy + 2, fy - 7, fy + 2 }, 3);
+		g2.setColor(new Color(255, 220, 50));
+		g2.fillPolygon(new int[] { fx + 18, fx + 20, fx + 22 }, new int[] { fy + 2, fy - 4, fy + 2 }, 3);
+		g2.setColor(new Color(160, 40, 5));
+		g2.fillRoundRect(fx + 8, fy + 38, 10, 8, 3, 3);
+		g2.fillRoundRect(fx + 22, fy + 38, 10, 8, 3, 3);
+	}
+
+	public void drawWatergirl(Graphics2D g2) {
+		if (!player2.alive) {
+			g2.setColor(new Color(90, 90, 90));
+			g2.fillRoundRect(player2.x + 6, player2.y + 16, 28, 24, 6, 6);
+			g2.fillOval(player2.x + 8, player2.y + 2, 24, 22);
+			g2.setColor(new Color(60, 60, 60));
+			g2.drawLine(player2.x + 11, player2.y + 7, player2.x + 19, player2.y + 15);
+			g2.drawLine(player2.x + 19, player2.y + 7, player2.x + 11, player2.y + 15);
+			g2.drawLine(player2.x + 21, player2.y + 7, player2.x + 29, player2.y + 15);
+			g2.drawLine(player2.x + 29, player2.y + 7, player2.x + 21, player2.y + 15);
+			return;
+		}
+		int wx = player2.x, wy = player2.y;
+		g2.setColor(new Color(20, 80, 200));
+		g2.fillRoundRect(wx + 6, wy + 16, 28, 24, 6, 6);
+		g2.setColor(new Color(40, 120, 230));
+		g2.fillOval(wx + 8, wy + 2, 24, 22);
+		g2.setColor(Color.WHITE);
+		g2.fillOval(wx + 11, wy + 7, 8, 8);
+		g2.fillOval(wx + 21, wy + 7, 8, 8);
+		g2.setColor(new Color(0, 20, 80));
+		g2.fillOval(wx + 13, wy + 9, 4, 4);
+		g2.fillOval(wx + 23, wy + 9, 4, 4);
+		g2.setColor(new Color(100, 180, 255));
+		g2.fillOval(wx + 17, wy - 7, 8, 8);
+		g2.fillPolygon(new int[] { wx + 17, wx + 21, wx + 25 }, new int[] { wy, wy - 6, wy }, 3);
+		g2.setColor(new Color(15, 60, 160));
+		g2.fillRoundRect(wx + 8, wy + 38, 10, 8, 3, 3);
+		g2.fillRoundRect(wx + 22, wy + 38, 10, 8, 3, 3);
+	}
+
+	public void drawHazards(Graphics2D g2) {
+		if (firePool != null) {
+			int fX = firePool.area.x, fY = firePool.area.y;
+			int w = firePool.area.width, h = firePool.area.height;
+			g2.setColor(new Color(180, 40, 10));
+			g2.fillRoundRect(fX, fY + 25, w, h, 4, 4);
+			g2.setColor(new Color(230, 90, 10, 200));
+			g2.fillRoundRect(fX + 4, fY + 15, w - 8, h, 4, 4);
+			g2.setColor(new Color(255, 150, 0));
+			int[] fx = { fX + 10, fX + 20, fX + 30, fX + 40, fX + 55, fX + 70 };
+			for (int i = 0; i < fx.length - 1; i += 2)
+				g2.fillPolygon(new int[] { fx[i], fx[i] + 10, fx[i + 1] }, new int[] { fY + 15, fY - 3, fY + 15 }, 3);
+		}
+		if (waterPool != null) {
+			int wX = waterPool.area.x, wY = waterPool.area.y;
+			int w = waterPool.area.width, h = waterPool.area.height;
+			g2.setColor(new Color(10, 40, 140));
+			g2.fillRoundRect(wX, wY + 25, w, h, 4, 4);
+			g2.setColor(new Color(30, 100, 210, 210));
+			g2.fillRoundRect(wX + 2, wY + 15, w - 4, h, 4, 4);
+			g2.setColor(new Color(100, 180, 255, 180));
+			g2.drawArc(wX + 4, wY + 11, 30, 14, 0, 180);
+			g2.drawArc(wX + 38, wY + 11, 30, 14, 0, 180);
+		}
+		if (greenPool != null) {
+			int gX = greenPool.area.x, gY = greenPool.area.y;
+			int w = greenPool.area.width, h = greenPool.area.height;
+			g2.setColor(new Color(0, 100, 5));
+			g2.fillRoundRect(gX, gY + 25, w, h, 4, 4);
+			g2.setColor(new Color(0, 100, 5, 210));
+			g2.fillRoundRect(gX + 2, gY + 15, w - 4, h, 4, 4);
+			g2.setColor(new Color(100, 180, 255, 180));
+			g2.drawArc(gX + 4, gY + 11, 30, 14, 0, 180);
+			g2.drawArc(gX + 38, gY + 11, 30, 14, 0, 180);
+		}
+	}
+
+	public void drawDoor(Graphics2D g2) {
+		if (door == null)
+			return;
+		Rectangle area = door.getArea();
+		g2.setColor(new Color(70, 55, 35));
+		g2.fillRoundRect(area.x - 4, area.y - 4, area.width + 8, area.height + 4, 6, 6);
+		g2.setColor(new Color(120, 80, 30));
+		g2.fillRect(area.x, area.y, area.width, area.height);
+		g2.setColor(new Color(100, 65, 22));
+		g2.fillRect(area.x + 6, area.y + 5, 20, area.height - 10);
+		g2.fillRect(area.x + 34, area.y + 5, 20, area.height - 10);
+		g2.setColor(new Color(220, 180, 60));
+		g2.fillOval(area.x + area.width / 2 - 4, area.y + area.height / 2 - 4, 9, 9);
+		g2.setColor(new Color(255, 240, 100, 60));
+		g2.fillOval(area.x + 5, area.y - 10, area.width - 10, 18);
+		g2.setColor(new Color(50, 35, 15));
+		g2.drawRoundRect(area.x - 4, area.y - 4, area.width + 8, area.height + 4, 6, 6);
+	}
+
+	public void floorColor(Graphics2D g2) {
+		Color mudColor = new Color(139, 90, 43);
+		Color mudShadow = new Color(94, 64, 32);
+		for (Floor floor : floors) {
+			g2.setColor(mudColor);
+			g2.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+			g2.setColor(mudShadow);
+			g2.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
+		}
+		if (!pressBottom) {
+			for (Floor floor : openWall) {
+				g2.setColor(mudColor);
+				g2.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+				g2.setColor(mudShadow);
+				g2.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
+			}
+		}
+		Color iceColor = new Color(245, 245, 220);
+		Color iceShadow = new Color(180, 180, 160);
+		for (Floor floor : iceFloor) {
+			g2.setColor(iceColor);
+			g2.fillRect(floor.area.x, floor.area.y, floor.area.width, floor.area.height);
+			g2.setColor(iceShadow);
+			g2.fillRect(floor.area.x, floor.area.y + floor.area.height - 3, floor.area.width, 3);
+		}
+	}
+
+	public void drawCoins(Graphics2D g2) {
+		for (Coin coin : coins) {
+			if (!coin.isCollected && coinImage != null) {
+				g2.drawImage(coinImage, coin.area.x, coin.area.y, coin.area.width, coin.area.height, null);
+			}
+		}
+	}
+
+	public void bottomColor(Graphics2D g2) {
+		if (bottom == null)
+			return;
+		Rectangle area = bottom.getArea();
+		if (!pressBottom) {
+			g2.setColor(new Color(255, 0, 0));
+			g2.fillRect(area.x, area.y, area.width, area.height);
+		}
+		if (bottom.press(player1) || bottom.press(player2)) {
+			pressBottom = true;
+		}
+		if (pressBottom) {
+			g2.setColor(new Color(0, 255, 0));
+			g2.fillRect(area.x, area.y, area.width, area.height);
+		}
+	}
+
+	public void drawPortal(Graphics2D g2) {
+		if (portal == null)
+			return;
+		for (Portal p : portal) {
+			g2.setColor(new Color(200, 50, 50, 150));
+			g2.fillOval(p.area.x, p.area.y, p.area.width, p.area.height);
+			g2.setColor(new Color(50, 200, 255, 150));
+			g2.fillOval(p.X, p.Y, p.area.width, p.area.height);
+		}
+	}
+
+	public void drawBouncePads(Graphics2D g2) {
+		if (bouncePad == null)
+			return;
+		for (BouncePad pad : bouncePad) {
+			g2.setColor(new Color(50, 220, 50));
+			g2.fillRoundRect(pad.area.x, pad.area.y, pad.area.width, pad.area.height, 8, 8);
+		}
+	}
+
+	public void drawControlsInfo(Graphics2D g2) {
+		g2.setColor(new Color(15, 15, 30));
+		g2.fillRect(0, BaseH - UI_Height, BaseW, UI_Height);
+		g2.setColor(new Color(230, 80, 20));
+		g2.setFont(new Font("Arial", Font.BOLD, 13));
+		g2.drawString("FIREBOY", 30, BaseH - 28);
+		g2.setColor(new Color(200, 160, 140));
+		g2.setFont(new Font("Arial", Font.PLAIN, 12));
+		g2.drawString("\u2190 / \u2192  move   \u2191  jump", 30, BaseH - 10);
+		g2.setColor(new Color(60, 140, 230));
+		g2.setFont(new Font("Arial", Font.BOLD, 13));
+		g2.drawString("WATERGIRL", 414, BaseH - 28);
+		g2.setColor(new Color(140, 170, 210));
+		g2.setFont(new Font("Arial", Font.PLAIN, 12));
+		g2.drawString("A / D  move   W  jump", 414, BaseH - 10);
+	}
+
+	public void drawMessages(Graphics2D g2) {
+		if (door != null && door.bothInside(player1, player2)) {
+			g2.setColor(new Color(0, 0, 0, 140));
+			g2.fillRoundRect(260, 220, 280, 60, 12, 12);
+			g2.setColor(new Color(80, 240, 120));
+			g2.setFont(new Font("Arial", Font.BOLD, 32));
+			g2.drawString("YOU WIN!", 320, 262);
+		}
+		if (!player1.alive || !player2.alive) {
+			g2.setColor(new Color(0, 0, 0, 140));
+			g2.fillRoundRect(250, 220, 300, 60, 12, 12);
+			g2.setColor(new Color(240, 60, 60));
+			g2.setFont(new Font("Arial", Font.BOLD, 32));
+			g2.drawString("GAME OVER", 290, 262);
+		}
 	}
 }

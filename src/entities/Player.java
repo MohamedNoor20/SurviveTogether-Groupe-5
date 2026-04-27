@@ -64,6 +64,9 @@ public class Player {
 	    this.yVelocity += gravity;
 	    // Apply velocity to position
 	    this.y += yVelocity;
+	    //this when the player is in mid air/falling down, it will not allow him to jump
+	    this.isJumping = true;
+	    
 	}
 
 
