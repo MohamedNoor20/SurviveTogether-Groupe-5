@@ -36,7 +36,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	private Main main;
 	private String difficulty;
 	public Image coinImage;
-	public boolean pressBottom = false;
 
 	// Controls
 	boolean p1Up, p1Down, p1Left, p1Right;
@@ -44,6 +43,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 	private final Rectangle menuBtnBase = new Rectangle(678, 8, 80, 30);
 	private boolean menuBtnHover = false;
+
+	private double scale;
+	private int offsetX;
+	private int offsetY;
+
+	public boolean pressBottom = false;
 
 	public GamePanel() {
 		this(null, "easy");
@@ -74,10 +79,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 				if (main == null)
 					return;
 
-			    Point p = toGameCoords(e);
+				Point p = toGameCoords(e);
 
-			    boolean was = menuBtnHover;
-			    menuBtnHover = menuBtnBase.contains(p);
+				boolean was = menuBtnHover;
+				menuBtnHover = menuBtnBase.contains(p);
 				if (menuBtnHover != was)
 					repaint();
 			}
@@ -87,10 +92,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			public void mouseClicked(MouseEvent e) {
 				if (main == null)
 					return;
-				
+
 				Point p = toGameCoords(e);
 
-			    if (menuBtnBase.contains(p)) {
+				if (menuBtnBase.contains(p)) {
 					main.showMainMenu();
 				}
 			}
@@ -101,18 +106,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		if ("muad".equals(difficulty)) {
 			currentLevel = new MuadLevel();
-
-			// if you want to add you level to be loaded you need to do this
-			// example:
-			/*
-			 * else if ("example".equals(difficulty)) { currentLevel = new example(); }
-			 * 
-			 * 
-			 * 
-			 */
-
 		} else {
-			// this is the default level
 			currentLevel = new EasyLevel();
 		}
 
@@ -132,50 +126,12 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		this.greenPool = currentLevel.greenPool;
 		this.portal = currentLevel.portal;
 		this.bouncePad = currentLevel.bouncePad;
-
 	}
 
 	public void startGame() {
 		gameTimer.start();
 		gameThread = new Thread(this);
 		gameThread.start();
-	}
-
-	@Override
-	public void run() {
-		while (gameThread != null) {
-			updateGame();
-			repaint();
-
-			if (!player1.alive || !player2.alive) {
-				repaint();
-				try {
-					Thread.sleep(1500);
-				} catch (Exception e) {
-				}
-				if (main != null)
-					main.showMainMenu();
-				gameThread = null;
-				return;
-			}
-
-			if (door != null && door.bothInside(player1, player2)) {
-				repaint();
-				try {
-					Thread.sleep(1500);
-				} catch (Exception e) {
-				}
-				if (main != null)
-					main.showMainMenu();
-				gameThread = null;
-				return;
-			}
-
-			try {
-				Thread.sleep(16);
-			} catch (Exception e) {
-			}
-		}
 	}
 
 	public void updateGame() {
@@ -255,6 +211,43 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	}
 
 	@Override
+	public void run() {
+		while (gameThread != null) {
+			updateGame();
+			repaint();
+
+			if (!player1.alive || !player2.alive) {
+				repaint();
+				try {
+					Thread.sleep(1500);
+				} catch (Exception e) {
+				}
+				if (main != null)
+					main.showMainMenu();
+				gameThread = null;
+				return;
+			}
+
+			if (door != null && door.bothInside(player1, player2)) {
+				repaint();
+				try {
+					Thread.sleep(1500);
+				} catch (Exception e) {
+				}
+				if (main != null)
+					main.showMainMenu();
+				gameThread = null;
+				return;
+			}
+
+			try {
+				Thread.sleep(16);
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		// player 1 controls (arrow keys)
@@ -305,23 +298,17 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	@Override
 	public void keyTyped(KeyEvent e) {
 	}
-	// this changes the clickable area to the new position of the menu 
+
+	// this changes the clickable area to the new position of the menu
 	private Point toGameCoords(MouseEvent e) {
-	    if (main == null) return new Point(e.getX(), e.getY());
-
-	    int physicalSize = (int) (BaseW * main.scale);
-	    int offsetX = (getWidth() - physicalSize) / 2;
-	    int offsetY = (getHeight() - physicalSize) / 2;
-
-	    int x = (int) ((e.getX() - offsetX) / main.scale);
-	    int y = (int) ((e.getY() - offsetY) / main.scale);
-
+	    int x = (int) ((e.getX() - offsetX) / scale);
+	    int y = (int) ((e.getY() - offsetY) / scale);
 	    return new Point(x, y);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
-	    super.paintComponent(g);
+		super.paintComponent(g);
 
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -329,11 +316,16 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		if (main != null) {
-			int physicalSize = (int) (BaseW * main.scale);
-			int offsetX = (getWidth() - physicalSize) / 2;
-			int offsetY = (getHeight() - physicalSize) / 2;
+			scale = Math.min(getWidth() / (double) BaseW, getHeight() / (double) BaseH);
+
+			int physicalWidth = (int) (BaseW * scale);
+			int physicalHeight = (int) (BaseH * scale);
+
+			offsetX = (getWidth() - physicalWidth) / 2;
+			offsetY = (getHeight() - physicalHeight) / 2;
+
 			g2.translate(offsetX, offsetY);
-			g2.scale(main.scale, main.scale);
+			g2.scale(scale, scale);
 		}
 
 		// Clip to base area so nothing draws outside the square
