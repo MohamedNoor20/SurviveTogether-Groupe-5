@@ -20,6 +20,7 @@ public class DifficultyPanel extends JPanel {
 	private boolean mediumPressed = false;
 	private boolean muadPressed = false;
 	private boolean afaqPressed = false;
+	private boolean mohamedPressed = false;
 	private boolean backPressed = false;
 
 	// All button positions
@@ -27,7 +28,8 @@ public class DifficultyPanel extends JPanel {
 	private final Rectangle mediumBtnBase = new Rectangle(234, 250, 300, 70);
 	private final Rectangle muadBtnBase = new Rectangle(234, 350, 300, 70);
 	private final Rectangle afaqBtnBase = new Rectangle(234, 450, 300, 70);
-	private final Rectangle backBtnBase = new Rectangle(234, 540, 300, 70);
+	private final Rectangle mohamedBtnBase = new Rectangle(234, 550, 300, 70);
+	private final Rectangle backBtnBase = new Rectangle(234, 650, 300, 70);
 
 	public DifficultyPanel(Main main) {
 		this.mainFrame = main;
@@ -66,6 +68,10 @@ public class DifficultyPanel extends JPanel {
 					afaqPressed = true;
 					repaint();
 				}
+				if (mohamedBtnBase.contains(base)) {
+					mohamedPressed = true;
+					repaint();
+				}
 				if (backBtnBase.contains(base)) {
 					backPressed = true;
 					repaint();
@@ -78,6 +84,7 @@ public class DifficultyPanel extends JPanel {
 				mediumPressed = false;
 				muadPressed = false;
 				afaqPressed = false;
+				mohamedPressed = false;
 				backPressed = false;
 				repaint();
 			}
@@ -93,6 +100,8 @@ public class DifficultyPanel extends JPanel {
 					mainFrame.startGame("muad");
 				if (afaqBtnBase.contains(base) && mainFrame != null)
 					mainFrame.startGame("afaq");
+				if (mohamedBtnBase.contains(base) && mainFrame != null)
+					mainFrame.startGame("mohamed");
 				if (backBtnBase.contains(base) && mainFrame != null)
 					mainFrame.showMainMenu();
 			}
@@ -170,6 +179,7 @@ public class DifficultyPanel extends JPanel {
 		drawImageButton(g2, mediumBtnBase, mediumImg, mediumPressed, "MEDIUM", baseMouse);
 		drawSolidButton(g2, muadBtnBase, muadPressed, "Muad Level", new Color(150, 50, 200), baseMouse);
 		drawSolidButton(g2, afaqBtnBase, afaqPressed, "AFAQ LEVEL", new Color(255, 100, 50), baseMouse);
+		drawSolidButton(g2, mohamedBtnBase, mohamedPressed, "Mohamed LEVEL", new Color(200, 185, 80), baseMouse);
 		drawImageButton(g2, backBtnBase, backImg, backPressed, "BACK", baseMouse);
 
 		g2.dispose();
