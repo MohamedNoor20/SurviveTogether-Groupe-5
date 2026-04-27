@@ -56,7 +56,7 @@ public class MenuPanel extends JPanel {
                 }
             }
         };
-        playButton.setBounds(284, 520, 200, 65);
+        playButton.setBounds(284, 300, 200, 65);
         playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
         playButton.setFocusPainted(false);
