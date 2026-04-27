@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import audio.GameAudio;
