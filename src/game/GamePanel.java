@@ -98,24 +98,9 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		setFocusable(true);
 		addKeyListener(this);
-
-		// Create hazards
-		firePool = new Hazard(new Rectangle(210, 695, 80, 5), Type.FIRE);
-		waterPool = new Hazard(new Rectangle(430, 695, 80, 5), Type.WATER);
-		greenPool = new Hazard(new Rectangle(550, 365, 80, 5), Type.GREEN);
-
-		// Create door
-		door = new Door(new Rectangle(10, 40, 60, 80));
-
-		// Create floors
-		floors = new ArrayList<>();
-		iceFloor = new ArrayList<>();
-		openWall = new ArrayList<>();
-
-		// for the coins
-		coins = new ArrayList<>();
-		// if you want to add coin you need to use this coins.add(new Coin(new
-		// Rectangle(x, y, width, height)));
+		
+		
+		
 
 
 		// ADD MENU BUTTON - only add if we have a main reference (not in test mode)

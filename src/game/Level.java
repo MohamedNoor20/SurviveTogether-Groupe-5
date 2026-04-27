@@ -19,5 +19,7 @@ public class Level {
     public ArrayList<Floor> iceFloor = new ArrayList<>();
     public ArrayList<Floor> openWall = new ArrayList<>();
     public ArrayList<Coin> coins = new ArrayList<>();
+ // if you want to add coin you need to use this coins.add(new Coin(new
+ 		// Rectangle(x, y, width, height)));
 
 }
