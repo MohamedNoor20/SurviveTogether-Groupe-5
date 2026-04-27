@@ -106,7 +106,20 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 		if ("muad".equals(difficulty)) {
 			currentLevel = new MuadLevel();
-		} else {
+			
+			// if you want to add you level to be loaded you need to do this 
+			//example:     
+			/*
+			  else if ("example".equals(difficulty)) {
+			    currentLevel = new example(); 
+			}
+			  
+			  
+			  
+			 */  
+		}else if ("afaq".equals(difficulty)) {
+			    currentLevel = new AfaqLevel(); 
+			} else {
 			currentLevel = new EasyLevel();
 		}
 
