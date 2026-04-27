@@ -86,23 +86,13 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		
 		if ("muad".equals(difficulty)) {
 		    currentLevel = new MuadLevel();
-		    
-		// if you want to add you level to be loaded you need to do this 
-		//example:     
-		/*
-		  else if ("example".equals(difficulty)) {
-		    currentLevel = new example(); 
-		}
-		  
-		  
-		  
-		 */    
-		   
-		    
-		} else {
-			//this is the default level
+		    } 
+		else if ("afaq".equals(difficulty)) {
+		    currentLevel = new AfaqLevel();
+		    }
+		else {
 		    currentLevel = new EasyLevel();
-		}
+		    }
 
 		// Spawn point for players 
 		player1 = new Player(currentLevel.p1StartX, currentLevel.p1StartY, Type.FIRE);
