@@ -421,7 +421,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	public void drawPortal(Graphics g) {
 		if (portal == null)return;
 		for (Portal p : portal) {
-			g.setColor(new Color(200, 50, 255, 150));
+			g.setColor(new Color(200, 50, 50, 150));
 	        g.fillOval(p.area.x, p.area.y, p.area.width, p.area.height);
 	        
 	        g.setColor(new Color(50, 200, 255, 150));
