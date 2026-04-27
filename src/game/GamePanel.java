@@ -73,11 +73,11 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			public void mouseMoved(MouseEvent e) {
 				if (main == null)
 					return;
-				// getting mouse coords
-				int bx = (int) (e.getX() / main.scale);
-				int by = (int) (e.getY() / main.scale);
-				boolean was = menuBtnHover;
-				menuBtnHover = menuBtnBase.contains(bx, by);
+
+			    Point p = toGameCoords(e);
+
+			    boolean was = menuBtnHover;
+			    menuBtnHover = menuBtnBase.contains(p);
 				if (menuBtnHover != was)
 					repaint();
 			}
@@ -87,9 +87,10 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			public void mouseClicked(MouseEvent e) {
 				if (main == null)
 					return;
-				int bx = (int) (e.getX() / main.scale);
-				int by = (int) (e.getY() / main.scale);
-				if (menuBtnBase.contains(bx, by)) {
+				
+				Point p = toGameCoords(e);
+
+			    if (menuBtnBase.contains(p)) {
 					main.showMainMenu();
 				}
 			}
@@ -303,6 +304,19 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+	}
+	// this changes the clickable area to the new position of the menu 
+	private Point toGameCoords(MouseEvent e) {
+	    if (main == null) return new Point(e.getX(), e.getY());
+
+	    int physicalSize = (int) (BaseW * main.scale);
+	    int offsetX = (getWidth() - physicalSize) / 2;
+	    int offsetY = (getHeight() - physicalSize) / 2;
+
+	    int x = (int) ((e.getX() - offsetX) / main.scale);
+	    int y = (int) ((e.getY() - offsetY) / main.scale);
+
+	    return new Point(x, y);
 	}
 
 	@Override
