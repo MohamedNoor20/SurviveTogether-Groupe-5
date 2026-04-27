@@ -99,8 +99,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		setFocusable(true);
 		addKeyListener(this);
 		
-		
-		
 
 
 		// ADD MENU BUTTON - only add if we have a main reference (not in test mode)
