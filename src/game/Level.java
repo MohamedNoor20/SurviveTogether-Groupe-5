@@ -22,5 +22,6 @@ public class Level {
  // if you want to add coin you need to use this coins.add(new Coin(new
  		// Rectangle(x, y, width, height)));
 	public ArrayList<Portal> portal = new ArrayList<>();
+	public ArrayList<BouncePad> bouncePads = new ArrayList<>(); 
 
 }
