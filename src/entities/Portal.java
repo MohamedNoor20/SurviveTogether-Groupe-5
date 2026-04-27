@@ -15,5 +15,9 @@ public class Portal {
 		this.Y = Y;
 	}
 	
+	public void checkTeleport(Player p) {
+
+	}
+	
 
 }
