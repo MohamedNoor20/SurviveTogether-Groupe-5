@@ -184,6 +184,13 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 			coin.checkCollision(player1);
 			coin.checkCollision(player2);
 		}
+		
+		if (portal != null) {
+			for (Portal portal : portal) {
+				portal.checkTeleport(player1);
+				portal.checkTeleport(player2);
+			}
+		}
 	}
 
 	@Override
@@ -410,6 +417,14 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		}
 		if (pressBottom) { g.setColor(new Color(0, 255, 0)); g.fillRect(area.x, area.y, area.width, area.height); }
 	}
+	
+	public void drawPortal(Graphics g) {
+		if (portal == null)return;
+		for (Portal p : portal) {
+			g.setColor(new Color(200, 50, 255, 150));
+	        g.fillOval(p.area.x, p.area.y, p.area.width, p.area.height);
+		}
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -425,6 +440,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		drawMessages(g2);
 		drawControlsInfo(g2);
 		floorColor(g2);
+		drawPortal(g2);
 		
 		g.setColor(Color.WHITE); g.setFont(new Font("Arial", Font.BOLD, 18));
 		g.drawString("Time: " + gameTimer.getSeconds() + "s", 350, 30);
