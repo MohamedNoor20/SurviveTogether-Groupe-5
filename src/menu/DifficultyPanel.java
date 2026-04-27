@@ -91,22 +91,30 @@ public class DifficultyPanel extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Point base = toBase(e.getPoint());
-				if (easyBtnBase.contains(base) && mainFrame != null)
-					mainFrame.startGame("easy");
-				if (mediumBtnBase.contains(base) && mainFrame != null)
-					mainFrame.startGame("medium");
-				if (muadBtnBase.contains(base) && mainFrame != null)
-					mainFrame.startGame("muad");
-				if (afaqBtnBase.contains(base) && mainFrame != null)
-					mainFrame.startGame("afaq");
-				if (mohamedBtnBase.contains(base) && mainFrame != null)
-					mainFrame.startGame("mohamed");
-				if (backBtnBase.contains(base) && mainFrame != null)
-					mainFrame.showMainMenu();
+				handleClick(toBase(e.getPoint()));
 			}
 		});
 
+	}
+
+	public void handleClick(Point base) {
+		if (easyBtnBase.contains(base) && mainFrame != null)
+			mainFrame.startGame("easy");
+
+		if (mediumBtnBase.contains(base) && mainFrame != null)
+			mainFrame.startGame("medium");
+
+		if (muadBtnBase.contains(base) && mainFrame != null)
+			mainFrame.startGame("muad");
+
+		if (afaqBtnBase.contains(base) && mainFrame != null)
+			mainFrame.startGame("afaq");
+
+		if (mohamedBtnBase.contains(base) && mainFrame != null)
+			mainFrame.startGame("mohamed");
+
+		if (backBtnBase.contains(base) && mainFrame != null)
+			mainFrame.showMainMenu();
 	}
 
 	private JButton createImageButton(Image img, int x, int y, int w, int h, Runnable action) {
@@ -127,7 +135,7 @@ public class DifficultyPanel extends JPanel {
 		return btn;
 	}
 
-	// Convert physical mouse point to base coordinate 
+	// Convert physical mouse point to base coordinate
 	private Point toBase(Point p) {
 		if (mainFrame == null)
 			return p;
