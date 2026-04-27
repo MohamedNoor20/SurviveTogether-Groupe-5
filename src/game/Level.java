@@ -10,7 +10,14 @@ public class Level {
     public int p2StartX, p2StartY;
     
     public Door door;
+    public Bottom bottom;
+    public Hazard firePool;
+    public Hazard waterPool;
+    public Hazard greenPool;
     
     public ArrayList<Floor> floors = new ArrayList<>();
+    public ArrayList<Floor> iceFloor = new ArrayList<>();
+    public ArrayList<Floor> openWall = new ArrayList<>();
+    public ArrayList<Coin> coins = new ArrayList<>();
 
 }
