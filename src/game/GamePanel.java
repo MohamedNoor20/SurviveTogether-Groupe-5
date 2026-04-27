@@ -52,7 +52,6 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 	public GamePanel(Main main, String difficulty) {
 		this.main = main;
 		this.difficulty = difficulty;
-		addMouseListener(this);
 
 		this.setPreferredSize(new Dimension(BaseW, BaseH));
 		this.setDoubleBuffered(true);
