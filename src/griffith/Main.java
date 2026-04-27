@@ -2,9 +2,10 @@ package griffith;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
 import audio.GameAudio;
 import game.GamePanel;
 import game.MyLevelPanel;
@@ -22,7 +23,7 @@ public class Main {
 	private String currentDifficulty;
 
 	public double scale = 1.0;
-	private final int BaseSize = 768;
+	public static final int BaseSize = 768;
 
 	public Main() {
 		frame = new JFrame("Survive Together");
@@ -30,19 +31,36 @@ public class Main {
 		frame.setResizable(true);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-
-		int usableWidth = screen.width;
-		int usableHeight = screen.height;
-
-		int size = Math.min(usableWidth, usableHeight);
+		int size = Math.min(screen.width, screen.height - 80); // -80 for the taskbar
 		size = Math.min(size, BaseSize);
-
 		scale = (double) size / BaseSize;
 
-		int finalSize = (int) (BaseSize * scale);
+		int initial = (int) (BaseSize * scale);
 
-		frame.setSize(finalSize, finalSize);
+		frame.setSize(initial + frame.getInsets().left + frame.getInsets().right,
+				initial + frame.getInsets().top + frame.getInsets().bottom);
+
 		frame.setLocationRelativeTo(null);
+
+		// When window is resized, this will update the scale and refresh current panel
+		frame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				int w = frame.getContentPane().getWidth();
+				int h = frame.getContentPane().getHeight();
+				// Always square: use the smaller dimension
+				int s = Math.min(w, h);
+				if (s > 0) {
+					scale = (double) s / BaseSize;
+				}
+				// Tell the current panel to resize and repaint
+				if (frame.getContentPane().getComponentCount() > 0) {
+					java.awt.Component current = frame.getContentPane().getComponent(0);
+					current.revalidate();
+					current.repaint();
+				}
+			}
+		});
 
 		menuPanel = new MenuPanel(this);
 		difficultyPanel = new DifficultyPanel(this);

@@ -91,8 +91,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		    currentLevel = new AfaqLevel();
 		    }
 		else {
-		    currentLevel = new EasyLevel();
-		    }
+		    currentLevel = new EasyLevel();}
 
 		// Spawn point for players 
 		player1 = new Player(currentLevel.p1StartX, currentLevel.p1StartY, Type.FIRE);
