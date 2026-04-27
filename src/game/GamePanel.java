@@ -11,13 +11,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
-import entities.Bottom;
-import entities.Coin;
-import entities.Door;
-import entities.Floor;
-import entities.Hazard;
-import entities.Player;
-import entities.Type;
+import entities.*;
 import griffith.Main;
 import utils.Timer;
 
