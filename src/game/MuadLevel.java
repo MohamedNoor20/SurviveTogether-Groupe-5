@@ -40,6 +40,7 @@ public MuadLevel() {
 
     coins.add(new Coin(new Rectangle(150, 510, 20, 20)));
     coins.add(new Coin(new Rectangle(450, 380, 20, 20)));
+    portal.add(new Portal(new Rectangle(600, 655, 40, 60), 50, 655));
 
 	}
 }

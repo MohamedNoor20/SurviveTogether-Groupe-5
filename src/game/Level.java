@@ -21,6 +21,6 @@ public class Level {
     public ArrayList<Coin> coins = new ArrayList<>();
  // if you want to add coin you need to use this coins.add(new Coin(new
  		// Rectangle(x, y, width, height)));
-	public ArrayList<Portal> portal;
+	public ArrayList<Portal> portal = new ArrayList<>();
 
 }
