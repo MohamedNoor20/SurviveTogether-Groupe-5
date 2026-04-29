@@ -595,7 +595,7 @@ public class GamePanel extends JPanel implements KeyListener, Runnable {
 		}
 	}
 	public void bottomColor2(Graphics2D g2) {
-		if (bottom == null)
+		if (bottom2 == null)
 			return;
 		Rectangle area = bottom2.getArea();
 		if (!pressBottom2) {
